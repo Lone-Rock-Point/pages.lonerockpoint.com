@@ -23,7 +23,8 @@
 }
 
 html, body {
-  height: 100vh;
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
   overflow: hidden;
   font-family: var(--body);
@@ -33,14 +34,16 @@ html, body {
 .magazine {
   display: flex;
   width: 1000vw;
-  height: 100vh;
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
   transition: transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
   will-change: transform;
 }
 
 .page {
   flex: 0 0 100vw;
-  height: 100vh;
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
   position: relative;
   overflow: hidden;
@@ -820,6 +823,98 @@ html, body {
   color: rgba(255,255,255,0.18);
   white-space: nowrap;
 }
+
+/* ════════════════════════════════════════
+   MOBILE RESPONSIVE
+   ════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Pages become vertically scrollable when content exceeds viewport */
+  .page {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Pattern A — split layouts → stacked, content-sized rows */
+  .page-cover,
+  .page-problem,
+  .page-audience,
+  .page-origin,
+  .page-launch,
+  .page-tech {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    min-height: 100%;
+  }
+
+  /* Pattern B — 2x2 quadrants → 1 column, content-sized rows */
+  .features-grid,
+  .competition-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto);
+  }
+
+  /* Pattern C — 4-column pipeline → vertical stack */
+  .solution-stages {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto);
+  }
+  .stage {
+    border-right: none;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .stage:last-child { border-bottom: none; }
+
+  /* Cells: side borders → bottom borders for vertical stack */
+  .feature-cell {
+    border-right: none;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .comp-cell {
+    border-right: none;
+  }
+
+  /* Inner padding — explicit pixels, not vw/vh */
+  .cover-left, .cover-right,
+  .problem-left, .problem-right,
+  .audience-left, .audience-right,
+  .origin-left, .origin-right,
+  .launch-left, .launch-right,
+  .tech-left, .tech-right,
+  .solution-header,
+  .features-header,
+  .competition-header,
+  .stage,
+  .feature-cell,
+  .comp-cell,
+  .back-content {
+    padding: 24px 20px;
+  }
+
+  /* Typography floors */
+  .cover-title { font-size: clamp(40px, 11vw, 68px); }
+  .back-title { font-size: clamp(40px, 11vw, 68px); }
+
+  /* Nav UI shrinks */
+  .page-counter {
+    top: 16px; right: 16px;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+  .nav-dots {
+    bottom: 16px;
+    gap: 8px;
+    padding: 8px 14px;
+  }
+  .nav-dot { width: 9px; height: 9px; }
+  .swipe-hint { display: none; }
+
+  /* Back cover glow shrinks */
+  .page-back::before {
+    width: 90vw;
+    height: 90vw;
+  }
+}
 </style>
 </head>
 <body>
@@ -1143,6 +1238,13 @@ html, body {
   let isAnimating = false;
   const ANIM_DURATION = 650;
 
+  // --vh fallback for browsers without 100dvh (older iOS Safari, etc.)
+  function setVH() {
+    document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+  }
+  setVH();
+  window.addEventListener('orientationchange', setVH);
+
   // Create nav dots
   for (let i = 0; i < totalPages; i++) {
     const dot = document.createElement('button');
@@ -1194,19 +1296,32 @@ html, body {
     }
   }, { passive: false });
 
-  // Touch / swipe navigation
+  // Touch / swipe navigation — horizontal navigates, vertical passes through to native page scroll
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchMoved = false;
+  let swipeAxis = null;
   document.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
     touchMoved = false;
+    swipeAxis = null;
   }, { passive: true });
   document.addEventListener('touchmove', (e) => {
     touchMoved = true;
-    e.preventDefault();
+    if (swipeAxis === null) {
+      const dx = Math.abs(e.touches[0].clientX - touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      if (dx + dy > 10) {
+        swipeAxis = (dx > dy) ? 'x' : 'y';
+      }
+    }
+    if (swipeAxis === 'x') {
+      e.preventDefault();
+    }
   }, { passive: false });
   document.addEventListener('touchend', (e) => {
-    if (!touchMoved) return;
+    if (!touchMoved || swipeAxis !== 'x') return;
     const dx = e.changedTouches[0].clientX - touchStartX;
     if (Math.abs(dx) > 50) {
       if (dx < 0) goToPage(currentPage + 1);
@@ -1216,6 +1331,7 @@ html, body {
 
   // Handle resize
   window.addEventListener('resize', () => {
+    setVH();
     magazine.style.transition = 'none';
     magazine.style.transform = 'translateX(-' + (currentPage * 100) + 'vw)';
     requestAnimationFrame(() => {

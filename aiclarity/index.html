@@ -731,6 +731,13 @@ html, body {
 
 /* ---- mobile responsive ---- */
 @media (max-width: 768px) {
+  /* Pages become vertically scrollable when content exceeds viewport */
+  .page {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .page-cover,
   .page-problem,
   .page-audience,
@@ -738,18 +745,19 @@ html, body {
   .page-impact,
   .page-tech {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: auto auto;
+    min-height: 100%;
   }
 
   .features-grid,
   .paths-grid {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(4, auto);
   }
 
   .solution-columns {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(4, auto);
   }
   .solution-col {
     border-right: none;
@@ -1182,15 +1190,30 @@ html, body {
   }, { passive: false });
 
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchMoved = false;
+  let swipeAxis = null;
   document.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX; touchMoved = false;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoved = false;
+    swipeAxis = null;
   }, { passive: true });
   document.addEventListener('touchmove', (e) => {
-    touchMoved = true; e.preventDefault();
+    touchMoved = true;
+    if (swipeAxis === null) {
+      const dx = Math.abs(e.touches[0].clientX - touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      if (dx + dy > 10) {
+        swipeAxis = (dx > dy) ? 'x' : 'y';
+      }
+    }
+    if (swipeAxis === 'x') {
+      e.preventDefault();
+    }
   }, { passive: false });
   document.addEventListener('touchend', (e) => {
-    if (!touchMoved) return;
+    if (!touchMoved || swipeAxis !== 'x') return;
     const dx = e.changedTouches[0].clientX - touchStartX;
     if (Math.abs(dx) > 50) {
       if (dx < 0) goToPage(currentPage + 1);
