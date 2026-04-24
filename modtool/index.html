@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MODIT Editorial</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand: #C84B2F;
+  --brand-light: #e8644a;
+  --dark: #141414;
+  --dark-warm: #1c1917;
+  --cream: #faf7f2;
+  --warm-gray: #f0ebe4;
+  --stone: #e7e0d6;
+  --slate: #2d2926;
+  --muted: #8a8178;
+  --heading: 'DM Serif Display', Georgia, serif;
+  --body: 'Inter', system-ui, sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  overflow: hidden;
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.magazine {
+  display: flex;
+  width: 800vw;
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
+  transition: transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: transform;
+}
+
+.page {
+  flex: 0 0 100vw;
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Shared Components ────────────────────────── */
+
+.section-num {
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 20px;
+}
+
+.page-heading {
+  font-family: var(--heading);
+  font-size: clamp(34px, 4vw, 58px);
+  line-height: 1.08;
+  margin-bottom: 20px;
+}
+
+.page-body {
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.7;
+}
+
+.big-stat {
+  font-family: var(--heading);
+  font-size: clamp(100px, 12vw, 160px);
+  line-height: 0.85;
+  color: var(--brand);
+}
+
+.big-stat-label {
+  font-size: 15px;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.trait-list { list-style: none; margin-top: 16px; }
+.trait-list li {
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.6;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  padding-left: 22px;
+  position: relative;
+}
+.trait-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 17px;
+  width: 8px; height: 8px;
+  background: var(--brand);
+  border-radius: 2px;
+}
+
+.icon-box {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.verdict {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: rgba(200,75,47,0.1);
+  color: var(--brand);
+}
+
+/* ── PAGE 1: COVER ────────────────────────────── */
+
+.page-cover {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  background: var(--dark);
+}
+
+.cover-left {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+  background: var(--dark);
+}
+
+.cover-left::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 6px; height: 100%;
+  background: var(--brand);
+}
+
+.cover-company {
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 36px;
+}
+
+.cover-title {
+  font-family: var(--heading);
+  font-size: clamp(44px, 5.5vw, 80px);
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.cover-full-name {
+  font-family: var(--heading);
+  font-size: clamp(16px, 1.5vw, 22px);
+  color: rgba(255,255,255,0.45);
+  font-style: italic;
+  margin-bottom: 24px;
+}
+
+.cover-subtitle {
+  font-size: clamp(14px, 1.1vw, 16px);
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+  max-width: 380px;
+}
+
+.cover-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 6vh 5vw;
+  background: var(--slate);
+  border-left: 1px solid rgba(255,255,255,0.05);
+}
+
+.cover-stat-label {
+  font-size: 15px;
+  color: rgba(255,255,255,0.45);
+  margin-top: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.cover-tagline {
+  font-family: var(--heading);
+  font-style: italic;
+  font-size: clamp(18px, 2vw, 28px);
+  color: rgba(255,255,255,0.6);
+  margin-top: 48px;
+  line-height: 1.4;
+  max-width: 400px;
+}
+
+/* ── PAGE 2: PROBLEM ──────────────────────────── */
+
+.page-problem {
+  display: grid;
+  grid-template-columns: 38% 62%;
+  background: var(--cream);
+}
+
+.problem-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 4vw;
+  background: #1e2028;
+  color: #fff;
+}
+
+.problem-left .big-stat-label {
+  color: rgba(255,255,255,0.45);
+}
+
+.problem-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+}
+
+.problem-right .page-heading { color: var(--dark); }
+.problem-right .page-body { color: var(--muted); margin-bottom: 8px; }
+.problem-right .trait-list li { color: var(--slate); }
+
+/* ── PAGE 3: AUDIENCE ─────────────────────────── */
+
+.page-audience {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  background: var(--warm-gray);
+}
+
+.audience-left {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+  background: var(--brand);
+  color: #fff;
+  overflow: hidden;
+}
+
+.audience-left::before {
+  content: '';
+  position: absolute;
+  top: -20%; right: -20%;
+  width: 80%; height: 80%;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.1);
+}
+
+.audience-left .big-stat {
+  color: rgba(255,255,255,0.95);
+  position: relative;
+  z-index: 1;
+}
+
+.audience-left .big-stat-label {
+  color: rgba(255,255,255,0.7);
+  position: relative;
+  z-index: 1;
+}
+
+.audience-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+}
+
+.audience-right .page-heading { color: var(--dark); }
+
+.audience-sector {
+  margin-bottom: 28px;
+}
+.audience-sector:last-child { margin-bottom: 0; }
+
+.audience-sector-label {
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 6px;
+}
+
+.audience-sector-desc {
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.7;
+  color: var(--slate);
+}
+
+/* ── PAGE 4: CAPABILITIES (dark 2x2) ─────────── */
+
+.page-capabilities {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--dark-warm);
+}
+
+.capabilities-header {
+  padding: 5vh 5vw 2vh;
+}
+
+.capabilities-header .page-heading { color: #fff; }
+
+.capabilities-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0;
+}
+
+.cap-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5vh 4vw;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.3s ease;
+}
+.cap-cell:hover { background: rgba(200,75,47,0.04); }
+.cap-cell:nth-child(2n) { border-right: none; }
+.cap-cell:nth-child(n+3) { border-bottom: none; }
+
+.cap-title {
+  font-family: var(--heading);
+  font-size: clamp(18px, 1.8vw, 24px);
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.cap-desc {
+  font-size: clamp(13px, 1vw, 15px);
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+}
+
+/* ── PAGE 5: PIPELINE STAGES 1-4 (light 2x2) ─── */
+
+.page-pipeline1 {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--stone);
+}
+
+.pipeline-header {
+  padding: 5vh 5vw 2vh;
+}
+
+.pipeline-header .page-heading { margin-bottom: 6px; }
+
+.pipeline-subtitle {
+  font-size: clamp(13px, 1vw, 15px);
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.pipeline-subtitle--light {
+  color: rgba(255,255,255,0.4);
+}
+
+.pipeline1-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0;
+}
+
+.stage-cell {
+  display: flex;
+  flex-direction: column;
+  padding: 3.5vh 3.5vw;
+  border-right: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  transition: background 0.3s ease;
+}
+.stage-cell:hover { background: rgba(200,75,47,0.04); }
+.stage-cell:nth-child(2n) { border-right: none; }
+.stage-cell:nth-child(n+3) { border-bottom: none; }
+
+.stage-num {
+  font-family: var(--heading);
+  font-size: clamp(44px, 4.5vw, 64px);
+  color: rgba(0,0,0,0.06);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stage-name {
+  font-family: var(--heading);
+  font-size: clamp(17px, 1.5vw, 22px);
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.stage-desc {
+  font-size: clamp(12px, 0.9vw, 14px);
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 8px;
+}
+
+.stage-details {
+  list-style: none;
+  margin-top: 4px;
+}
+.stage-details li {
+  font-size: clamp(11px, 0.85vw, 13px);
+  line-height: 1.5;
+  color: var(--muted);
+  padding: 2px 0;
+  padding-left: 14px;
+  position: relative;
+}
+.stage-details li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px;
+  width: 5px; height: 5px;
+  background: var(--brand);
+  border-radius: 1px;
+}
+
+/* ── PAGE 6: PIPELINE STAGES 5-8 (dark 2x2) ──── */
+
+.page-pipeline2 {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--slate);
+}
+
+.page-pipeline2 .pipeline-header .page-heading { color: #fff; }
+
+.pipeline2-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0;
+}
+
+.stage-cell--dark {
+  border-right-color: rgba(255,255,255,0.05);
+  border-bottom-color: rgba(255,255,255,0.05);
+}
+.stage-cell--dark:hover { background: rgba(200,75,47,0.05); }
+.stage-cell--dark .stage-num { color: rgba(255,255,255,0.06); }
+.stage-cell--dark .stage-name { color: #fff; }
+.stage-cell--dark .stage-desc { color: rgba(255,255,255,0.45); }
+.stage-cell--dark .stage-details li { color: rgba(255,255,255,0.4); }
+
+/* ── PAGE 7: RESULTS (split + stat rows) ──────── */
+
+.page-results {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  background: #f4ede6;
+}
+
+.results-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+}
+
+.results-left .page-heading { color: var(--dark); }
+.results-left .page-body { color: var(--muted); }
+
+.results-right {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  background: #fefcfa;
+  border-left: 1px solid rgba(0,0,0,0.05);
+}
+
+.result-row {
+  display: flex;
+  align-items: center;
+  gap: 3vw;
+  padding: 0 4vw;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  transition: background 0.3s ease;
+}
+.result-row:last-child { border-bottom: none; }
+.result-row:hover { background: rgba(200,75,47,0.03); }
+
+.result-stat {
+  font-family: var(--heading);
+  font-size: clamp(52px, 5vw, 80px);
+  line-height: 1;
+  color: var(--brand);
+  flex-shrink: 0;
+}
+
+.result-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.result-title {
+  font-family: var(--heading);
+  font-size: clamp(16px, 1.4vw, 20px);
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+.result-desc {
+  font-size: clamp(12px, 0.9vw, 14px);
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── PAGE 8: BACK COVER ──────────────────────── */
+
+.page-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #111;
+}
+
+.page-back::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 55vw; height: 55vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,75,47,0.07) 0%, transparent 70%);
+}
+
+.back-content {
+  position: relative;
+  z-index: 1;
+}
+
+.back-title {
+  font-family: var(--heading);
+  font-size: clamp(44px, 5.5vw, 80px);
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.back-full-name {
+  font-family: var(--heading);
+  font-size: clamp(14px, 1.2vw, 18px);
+  color: rgba(255,255,255,0.35);
+  font-style: italic;
+  margin-bottom: 36px;
+}
+
+.back-cta {
+  display: inline-block;
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fff;
+  border: 2px solid var(--brand);
+  padding: 14px 40px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background: transparent;
+  margin-bottom: 36px;
+}
+.back-cta:hover {
+  background: var(--brand);
+  color: #fff;
+}
+
+.back-company {
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+}
+
+/* ── Navigation UI ────────────────────────────── */
+
+.nav-dots {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 10px 20px;
+  border-radius: 40px;
+}
+
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  outline: none;
+}
+.nav-dot.active {
+  background: var(--brand);
+  transform: scale(1.35);
+}
+.nav-dot:hover { background: rgba(255,255,255,0.6); }
+
+.page-counter {
+  position: fixed;
+  top: 28px;
+  right: 36px;
+  z-index: 1000;
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.5);
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+@keyframes swipeHint {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50% { transform: translateX(-12px); opacity: 1; }
+}
+
+.swipe-hint {
+  position: fixed;
+  bottom: 80px;
+  right: 36px;
+  z-index: 1000;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.5s ease;
+}
+.swipe-hint.hidden { opacity: 0; pointer-events: none; }
+.swipe-hint-arrow { animation: swipeHint 1.8s ease-in-out infinite; font-size: 18px; }
+
+/* ── Mobile Responsive ────────────────────────── */
+
+@media (max-width: 768px) {
+  .page {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .page-cover,
+  .page-problem,
+  .page-audience,
+  .page-results {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    min-height: 100%;
+  }
+
+  .capabilities-grid,
+  .pipeline1-grid,
+  .pipeline2-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto);
+  }
+
+  .results-right {
+    grid-template-rows: repeat(3, auto);
+  }
+
+  .result-row {
+    padding: 24px 20px;
+  }
+
+  .page > *,
+  .cover-left,
+  .cover-right,
+  .problem-left,
+  .problem-right,
+  .audience-left,
+  .audience-right,
+  .results-left,
+  .cap-cell,
+  .stage-cell {
+    padding: 24px 20px;
+  }
+
+  .capabilities-header,
+  .pipeline-header {
+    padding: 24px 20px 16px;
+  }
+
+  h1, h2, .page-heading {
+    font-size: clamp(28px, 7vw, 44px);
+  }
+
+  .cover-title {
+    font-size: clamp(36px, 10vw, 56px);
+  }
+
+  .big-stat {
+    font-size: clamp(56px, 18vw, 96px);
+  }
+
+  .audience-left .big-stat {
+    font-size: clamp(56px, 18vw, 96px);
+  }
+
+  .stage-num {
+    font-size: clamp(36px, 10vw, 52px);
+  }
+
+  .result-stat {
+    font-size: clamp(40px, 12vw, 60px);
+  }
+
+  .trait-list li { font-size: 14px; }
+
+  .page-counter {
+    top: 16px;
+    right: 16px;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  .nav-dots {
+    bottom: 16px;
+    gap: 8px;
+    padding: 8px 14px;
+  }
+
+  .nav-dot { width: 9px; height: 9px; }
+
+  .swipe-hint { display: none; }
+
+  .page-back::before {
+    width: 90vw;
+    height: 90vw;
+  }
+
+  .cover-left::before { width: 4px; }
+}
+</style>
+</head>
+<body>
+
+<div class="magazine" id="magazine">
+
+  <!-- PAGE 1: COVER -->
+  <section class="page page-cover">
+    <div class="cover-left">
+      <div class="cover-company">Lone Rock Point</div>
+      <h1 class="cover-title">MODIT</h1>
+      <div class="cover-full-name">Modernization Assessment Tool</div>
+      <p class="cover-subtitle">AI-powered website compliance evaluation against M-23-22 federal standards. From crawl to scorecard in hours, not weeks.</p>
+    </div>
+    <div class="cover-right">
+      <div class="big-stat">8</div>
+      <div class="cover-stat-label">Stage Assessment Pipeline</div>
+      <div class="cover-tagline">Automated compliance. Objective scoring. Actionable results.</div>
+    </div>
+  </section>
+
+  <!-- PAGE 2: PROBLEM -->
+  <section class="page page-problem">
+    <div class="problem-left">
+      <div class="section-num">01 / The Challenge</div>
+      <div class="big-stat">Weeks</div>
+      <div class="big-stat-label">Typical manual assessment timeline</div>
+    </div>
+    <div class="problem-right">
+      <h2 class="page-heading">Manual Assessment Is Broken</h2>
+      <p class="page-body">Evaluating websites against M-23-22 requirements has been a slow, subjective process with no standardized methodology and no way to track progress over time.</p>
+      <ul class="trait-list">
+        <li>Time-intensive: weeks per site, repeated for every assessment cycle</li>
+        <li>Inconsistent scoring across evaluators and engagements</li>
+        <li>No automated detection of stale content or duplicate pages</li>
+        <li>Readability and language coverage checked manually, if at all</li>
+        <li>Governance and transparency gaps discovered late in the process</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PAGE 3: AUDIENCE -->
+  <section class="page page-audience">
+    <div class="audience-left">
+      <div class="section-num" style="color: rgba(255,255,255,0.7);">02 / Who It Serves</div>
+      <div class="big-stat">Hrs</div>
+      <div class="big-stat-label">AI-powered assessment time</div>
+    </div>
+    <div class="audience-right">
+      <h2 class="page-heading" style="color: var(--dark);">Built for Federal and Private Sector</h2>
+      <div class="audience-sector">
+        <div class="audience-sector-label">Federal Agencies</div>
+        <p class="audience-sector-desc">Automated compliance checking against M-23-22 requirements with detailed gap analysis. Surface exactly where your web presence falls short of federal mandates.</p>
+      </div>
+      <div class="audience-sector">
+        <div class="audience-sector-label">Private Sector</div>
+        <p class="audience-sector-desc">Best-practice website assessment using federal standards as a quality benchmark. The same rigor applied to commercial sites seeking measurable improvement.</p>
+      </div>
+      <div class="audience-sector">
+        <div class="audience-sector-label">Universal</div>
+        <p class="audience-sector-desc">Reduced assessment time from weeks to hours with consistent, objective scoring. No evaluator bias, no methodology drift.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 4: CAPABILITIES -->
+  <section class="page page-capabilities">
+    <div class="capabilities-header">
+      <div>
+        <div class="section-num">03 / Platform</div>
+        <h2 class="page-heading">Core Capabilities</h2>
+      </div>
+    </div>
+    <div class="capabilities-grid">
+      <div class="cap-cell">
+        <div class="icon-box">&#x25CE;</div>
+        <div class="cap-title">Single Website Assessment</div>
+        <p class="cap-desc">Evaluate any individual website against the full M-23-22 criteria set. Complete analysis from one URL to final scorecard.</p>
+      </div>
+      <div class="cap-cell">
+        <div class="icon-box">&#x21C4;</div>
+        <div class="cap-title">Federal / Private Toggle</div>
+        <p class="cap-desc">Adjust criteria weighting based on client type. Government assessments enforce M-23-22 compliance; private sector uses federal standards as a quality benchmark.</p>
+      </div>
+      <div class="cap-cell">
+        <div class="icon-box">&#x2B13;</div>
+        <div class="cap-title">PDF Report Generation</div>
+        <p class="cap-desc">Professional deliverable with scores, category breakdowns, and prioritized recommendations. Ready for stakeholder review.</p>
+      </div>
+      <div class="cap-cell">
+        <div class="icon-box">&#x25A3;</div>
+        <div class="cap-title">Interactive Dashboard</div>
+        <p class="cap-desc">Real-time monitoring and historical tracking. Watch scores improve across assessment cycles and drill into category-level detail.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 5: PIPELINE STAGES 1-4 -->
+  <section class="page page-pipeline1">
+    <div class="pipeline-header">
+      <div>
+        <div class="section-num">04 / How It Works</div>
+        <h2 class="page-heading" style="color: var(--dark);">Assessment Pipeline</h2>
+        <div class="pipeline-subtitle">Stages 1 through 4: Collect and prepare</div>
+      </div>
+    </div>
+    <div class="pipeline1-grid">
+      <div class="stage-cell">
+        <div class="stage-num">01</div>
+        <div class="stage-name">Crawl &amp; Inventory</div>
+        <div class="stage-desc">Spider target sites to build a complete page inventory with metadata.</div>
+        <ul class="stage-details">
+          <li>Follows robots.txt and sitemap.xml directives</li>
+          <li>Records HTTP status codes, redirects, response times</li>
+          <li>Builds page hierarchy and internal link graph</li>
+        </ul>
+      </div>
+      <div class="stage-cell">
+        <div class="stage-num">02</div>
+        <div class="stage-name">Extract &amp; Clean</div>
+        <div class="stage-desc">Parse HTML to extract meaningful text, stripping boilerplate and navigation.</div>
+        <ul class="stage-details">
+          <li>Removes headers, footers, navs, and sidebars</li>
+          <li>Extracts main content body and metadata</li>
+          <li>Identifies content blocks vs. chrome</li>
+        </ul>
+      </div>
+      <div class="stage-cell">
+        <div class="stage-num">03</div>
+        <div class="stage-name">Freshness Checks</div>
+        <div class="stage-desc">Assess content currency and identify stale or misconfigured redirects.</div>
+        <ul class="stage-details">
+          <li>Checks last-modified dates and published timestamps</li>
+          <li>Flags pages older than configurable threshold</li>
+          <li>Validates redirect chains (301/302)</li>
+        </ul>
+      </div>
+      <div class="stage-cell">
+        <div class="stage-num">04</div>
+        <div class="stage-name">Duplicate Detection</div>
+        <div class="stage-desc">Find redundant content using fingerprinting and similarity analysis.</div>
+        <ul class="stage-details">
+          <li>Generates content fingerprints via SimHash / MinHash</li>
+          <li>Clusters near-duplicate pages by similarity score</li>
+          <li>Identifies canonical vs. duplicate candidates</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 6: PIPELINE STAGES 5-8 -->
+  <section class="page page-pipeline2">
+    <div class="pipeline-header">
+      <div>
+        <div class="section-num">04 / How It Works</div>
+        <h2 class="page-heading" style="color: #fff;">Assessment Pipeline</h2>
+        <div class="pipeline-subtitle pipeline-subtitle--light">Stages 5 through 8: Analyze and report</div>
+      </div>
+    </div>
+    <div class="pipeline2-grid">
+      <div class="stage-cell stage-cell--dark">
+        <div class="stage-num">05</div>
+        <div class="stage-name">Readability Scoring</div>
+        <div class="stage-desc">Score content for readability using established indices and plain language criteria.</div>
+        <ul class="stage-details">
+          <li>Flesch-Kincaid, Gunning Fog, Dale-Chall, SMOG</li>
+          <li>Flags jargon, passive voice, complex sentences</li>
+          <li>Benchmarks against target reading level</li>
+        </ul>
+      </div>
+      <div class="stage-cell stage-cell--dark">
+        <div class="stage-num">06</div>
+        <div class="stage-name">LEP / Language Coverage</div>
+        <div class="stage-desc">Detect language availability and assess coverage gaps for LEP audiences.</div>
+        <ul class="stage-details">
+          <li>Identifies available language versions per page</li>
+          <li>Maps coverage gaps against target languages</li>
+          <li>Checks translation quality signals</li>
+        </ul>
+      </div>
+      <div class="stage-cell stage-cell--dark">
+        <div class="stage-num">07</div>
+        <div class="stage-name">Governance &amp; Transparency</div>
+        <div class="stage-desc">Verify compliance with governance requirements and transparency standards.</div>
+        <ul class="stage-details">
+          <li>Checks for required disclosures and disclaimers</li>
+          <li>Validates privacy and accessibility statements</li>
+          <li>Assesses metadata completeness</li>
+        </ul>
+      </div>
+      <div class="stage-cell stage-cell--dark">
+        <div class="stage-num">08</div>
+        <div class="stage-name">Score &amp; Report</div>
+        <div class="stage-desc">Aggregate findings into maturity scores and generate actionable reports.</div>
+        <ul class="stage-details">
+          <li>Calculates overall and category maturity scores (1 to 5)</li>
+          <li>Prioritises findings by impact and effort</li>
+          <li>Generates exportable report with recommendations</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 7: RESULTS -->
+  <section class="page page-results">
+    <div class="results-left">
+      <div class="section-num">05 / The Output</div>
+      <h2 class="page-heading">Actionable Intelligence</h2>
+      <p class="page-body">Every assessment produces a comprehensive scorecard with category-level maturity ratings, prioritized findings, and clear next steps. The output is designed for stakeholders who need decisions, not data dumps.</p>
+    </div>
+    <div class="results-right">
+      <div class="result-row">
+        <div class="result-stat">1-5</div>
+        <div class="result-info">
+          <div class="result-title">Maturity Scoring</div>
+          <div class="result-desc">Overall and category-level maturity scores on a standardized scale. Track improvement across assessment cycles.</div>
+        </div>
+      </div>
+      <div class="result-row">
+        <div class="result-stat">8</div>
+        <div class="result-info">
+          <div class="result-title">Assessment Dimensions</div>
+          <div class="result-desc">From crawl and inventory through governance and final scoring. Every dimension of web compliance analyzed automatically.</div>
+        </div>
+      </div>
+      <div class="result-row">
+        <div class="result-stat">4</div>
+        <div class="result-info">
+          <div class="result-title">Readability Indices</div>
+          <div class="result-desc">Flesch-Kincaid, Gunning Fog, Dale-Chall, and SMOG. Plain language compliance benchmarked against target reading levels.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 8: BACK COVER -->
+  <section class="page page-back">
+    <div class="back-content">
+      <h2 class="back-title">MODIT</h2>
+      <div class="back-full-name">Modernization Assessment Tool</div>
+      <button class="back-cta">Start Your Assessment</button>
+      <br><br>
+      <div class="back-company">lonerockpoint.com</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Navigation UI -->
+<div class="nav-dots" id="navDots"></div>
+<div class="page-counter" id="pageCounter">01 / 08</div>
+<div class="swipe-hint" id="swipeHint">
+  <span class="swipe-hint-arrow">&#x2190;</span> Scroll or use arrow keys
+</div>
+
+<script>
+(function() {
+  var magazine = document.getElementById('magazine');
+  var navDotsContainer = document.getElementById('navDots');
+  var pageCounter = document.getElementById('pageCounter');
+  var swipeHint = document.getElementById('swipeHint');
+  var totalPages = 8;
+  var currentPage = 0;
+  var isAnimating = false;
+  var ANIM_DURATION = 650;
+
+  function setVH() {
+    document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+  }
+  setVH();
+  window.addEventListener('orientationchange', setVH);
+
+  for (var i = 0; i < totalPages; i++) {
+    var dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to page ' + (i + 1));
+    (function(idx) {
+      dot.addEventListener('click', function() { goToPage(idx); });
+    })(i);
+    navDotsContainer.appendChild(dot);
+  }
+
+  function goToPage(index) {
+    if (index < 0 || index >= totalPages || index === currentPage || isAnimating) return;
+    isAnimating = true;
+    currentPage = index;
+    magazine.style.transform = 'translateX(-' + (currentPage * 100) + 'vw)';
+    updateUI();
+    setTimeout(function() { isAnimating = false; }, ANIM_DURATION);
+  }
+
+  function updateUI() {
+    var dots = navDotsContainer.querySelectorAll('.nav-dot');
+    for (var i = 0; i < dots.length; i++) {
+      if (i === currentPage) dots[i].classList.add('active');
+      else dots[i].classList.remove('active');
+    }
+    pageCounter.textContent = String(currentPage + 1).padStart(2, '0') + ' / ' + String(totalPages).padStart(2, '0');
+    if (currentPage > 0) swipeHint.classList.add('hidden');
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault(); goToPage(currentPage + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault(); goToPage(currentPage - 1);
+    }
+  });
+
+  var wheelAccumulator = 0;
+  var wheelTimer = null;
+  document.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    wheelAccumulator += (Math.abs(e.deltaX) > Math.abs(e.deltaY)) ? e.deltaX : e.deltaY;
+    if (wheelTimer) clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(function() { wheelAccumulator = 0; }, 200);
+    if (Math.abs(wheelAccumulator) > 50) {
+      if (wheelAccumulator > 0) goToPage(currentPage + 1);
+      else goToPage(currentPage - 1);
+      wheelAccumulator = 0;
+    }
+  }, { passive: false });
+
+  var touchStartX = 0;
+  var touchStartY = 0;
+  var touchMoved = false;
+  var swipeAxis = null;
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoved = false;
+    swipeAxis = null;
+  }, { passive: true });
+  document.addEventListener('touchmove', function(e) {
+    touchMoved = true;
+    if (swipeAxis === null) {
+      var dx = Math.abs(e.touches[0].clientX - touchStartX);
+      var dy = Math.abs(e.touches[0].clientY - touchStartY);
+      if (dx + dy > 10) {
+        swipeAxis = (dx > dy) ? 'x' : 'y';
+      }
+    }
+    if (swipeAxis === 'x') {
+      e.preventDefault();
+    }
+  }, { passive: false });
+  document.addEventListener('touchend', function(e) {
+    if (!touchMoved || swipeAxis !== 'x') return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) goToPage(currentPage + 1);
+      else goToPage(currentPage - 1);
+    }
+  });
+
+  window.addEventListener('resize', function() {
+    setVH();
+    magazine.style.transition = 'none';
+    magazine.style.transform = 'translateX(-' + (currentPage * 100) + 'vw)';
+    requestAnimationFrame(function() { magazine.style.transition = ''; });
+  });
+
+  setTimeout(function() { swipeHint.classList.add('hidden'); }, 6000);
+})();
+</script>
+</body>
+</html>
