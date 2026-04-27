@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>City of Irving ROM Estimate · Lone Rock Point</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --brand: #C84B2F;
+  --brand-light: #e8644a;
+  --brand-deep: #9d3a23;
+  --dark: #141414;
+  --dark-warm: #1c1917;
+  --cream: #faf7f2;
+  --warm-gray: #f0ebe4;
+  --stone: #e7e0d6;
+  --slate: #2d2926;
+  --paper: #f5efe6;
+  --sand: #ece4d6;
+  --muted: #8a8178;
+  --heading: 'DM Serif Display', Georgia, serif;
+  --body: 'Inter', system-ui, sans-serif;
+}
+
+html, body {
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  overflow: hidden;
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+  background: var(--dark);
+}
+
+.magazine {
+  display: flex;
+  width: 1100vw;
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
+  transition: transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: transform;
+}
+
+.page {
+  flex: 0 0 100vw;
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shared components */
+.section-num {
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 24px;
+}
+.page-heading {
+  font-family: var(--heading);
+  font-weight: 400;
+  font-size: clamp(34px, 4vw, 58px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.page-body {
+  font-family: var(--body);
+  font-size: clamp(14px, 1.05vw, 16px);
+  line-height: 1.65;
+  font-weight: 400;
+}
+.big-stat {
+  font-family: var(--heading);
+  font-size: clamp(100px, 12vw, 170px);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+}
+.big-stat-label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 14px;
+}
+
+/* ------------------ PAGE 1 · COVER ------------------ */
+.page-cover {
+  display: grid;
+  grid-template-columns: 46% 54%;
+  background: var(--dark);
+  color: #fff;
+}
+.cover-left {
+  background: var(--dark-warm);
+  padding: 7vh 5vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.cover-left::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 6px; height: 100%;
+  background: var(--brand);
+}
+.cover-wordmark {
+  font-family: var(--heading);
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.85);
+}
+.cover-wordmark .dot { color: var(--brand); }
+.cover-title {
+  font-family: var(--heading);
+  font-size: clamp(48px, 5.4vw, 84px);
+  line-height: 0.98;
+  letter-spacing: -0.015em;
+  color: #fff;
+  margin-bottom: 24px;
+}
+.cover-subtitle {
+  font-size: clamp(15px, 1.2vw, 18px);
+  font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.55;
+  max-width: 28ch;
+}
+.cover-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  font-weight: 500;
+}
+.cover-right {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-deep) 100%);
+  padding: 7vh 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.cover-right::before {
+  content: '';
+  position: absolute;
+  top: -30%; right: -30%;
+  width: 90%; height: 90%;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+}
+.cover-right::after {
+  content: '';
+  position: absolute;
+  bottom: -25%; left: -10%;
+  width: 60%; height: 60%;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.12);
+}
+.cover-stat-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
+}
+.cover-stat {
+  font-family: var(--heading);
+  font-size: clamp(120px, 16vw, 240px);
+  line-height: 0.82;
+  letter-spacing: -0.03em;
+  color: #fff;
+  position: relative;
+  z-index: 2;
+}
+.cover-stat-caption {
+  margin-top: 28px;
+  font-size: clamp(15px, 1.2vw, 19px);
+  color: rgba(255,255,255,0.85);
+  font-weight: 400;
+  line-height: 1.5;
+  max-width: 30ch;
+  position: relative;
+  z-index: 2;
+}
+
+/* ------------------ PAGE 2 · WHY YOU ARE HERE ------------------ */
+.page-problem {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  background: var(--cream);
+}
+.problem-left {
+  background: var(--slate);
+  color: #fff;
+  padding: 7vh 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.problem-left .section-num { color: var(--brand-light); }
+.problem-stat {
+  font-family: var(--heading);
+  font-size: clamp(80px, 9.5vw, 140px);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 18px;
+}
+.problem-stat-label {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  font-weight: 500;
+}
+.problem-right {
+  padding: 7vh 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--dark);
+}
+.problem-right .page-heading {
+  margin-bottom: 28px;
+}
+.problem-right .lead {
+  font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.65;
+  color: var(--slate);
+  max-width: 52ch;
+  margin-bottom: 32px;
+}
+.trait-list { list-style: none; }
+.trait-list li {
+  font-size: clamp(13px, 1.05vw, 15px);
+  line-height: 1.6;
+  padding: 13px 0;
+  padding-left: 26px;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  position: relative;
+  color: var(--slate);
+}
+.trait-list li:last-child { border-bottom: none; }
+.trait-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 19px;
+  width: 8px; height: 8px;
+  background: var(--brand);
+  border-radius: 2px;
+}
+
+/* ------------------ PAGE 3 · GOALS ------------------ */
+.page-goals {
+  display: grid;
+  grid-template-columns: 38% 62%;
+  background: var(--paper);
+}
+.goals-left {
+  background: var(--brand);
+  color: #fff;
+  padding: 7vh 4.5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.goals-left::before {
+  content: '';
+  position: absolute;
+  bottom: -25%; right: -30%;
+  width: 70%; height: 70%;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+}
+.goals-left .section-num { color: rgba(255,255,255,0.7); }
+.goals-left .page-heading { color: #fff; position: relative; z-index: 2; }
+.goals-left .page-body {
+  color: rgba(255,255,255,0.78);
+  margin-top: 24px;
+  max-width: 30ch;
+  position: relative;
+  z-index: 2;
+}
+.goals-right {
+  padding: 7vh 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.goals-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 28px;
+}
+.goals-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.goals-list li {
+  padding: 22px 24px 22px 0;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  font-size: clamp(13px, 1.05vw, 15px);
+  line-height: 1.5;
+  color: var(--slate);
+  font-weight: 500;
+  position: relative;
+}
+.goals-list li:nth-child(even) { padding-left: 24px; padding-right: 0; }
+.goals-list li:nth-last-child(-n+2) { border-bottom: 1px solid rgba(0,0,0,0.08); }
+.goal-num {
+  display: block;
+  font-family: var(--heading);
+  font-size: 28px;
+  color: var(--brand);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+/* ------------------ PAGE 4 · CIVICPRESS ------------------ */
+.page-civicpress {
+  background: var(--warm-gray);
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.civic-header {
+  padding: 6vh 5vw 3vh;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+.civic-header .page-heading {
+  margin-top: 8px;
+  max-width: 22ch;
+}
+.civic-header .lead {
+  margin-top: 22px;
+  max-width: 70ch;
+  color: var(--slate);
+  font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.65;
+}
+.civic-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.civic-cell {
+  padding: 5vh 2.4vw;
+  border-right: 1px solid rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  transition: background 0.3s ease;
+}
+.civic-cell:last-child { border-right: none; }
+.civic-cell:hover { background: rgba(200,75,47,0.05); }
+.civic-num {
+  font-family: var(--heading);
+  font-size: clamp(48px, 5.5vw, 84px);
+  color: rgba(0,0,0,0.12);
+  line-height: 1;
+  margin-bottom: 24px;
+}
+.civic-title {
+  font-family: var(--heading);
+  font-size: clamp(20px, 1.6vw, 26px);
+  line-height: 1.15;
+  color: var(--dark);
+  margin-bottom: 14px;
+}
+.civic-body {
+  font-size: clamp(13px, 1vw, 14.5px);
+  line-height: 1.55;
+  color: var(--slate);
+  margin-top: auto;
+}
+
+/* ------------------ PAGE 5 · ANDY / MIGRATION ------------------ */
+.page-migration {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  background: var(--cream);
+}
+.migration-left {
+  background: var(--dark);
+  color: #fff;
+  padding: 7vh 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.migration-left::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%; height: 90%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,75,47,0.18) 0%, transparent 65%);
+}
+.migration-left .section-num { color: var(--brand-light); }
+.migration-stack {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.migration-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.migration-stat:last-child { border-bottom: none; }
+.migration-stat-num {
+  font-family: var(--heading);
+  font-size: clamp(54px, 6.2vw, 88px);
+  line-height: 0.9;
+  color: var(--brand-light);
+  letter-spacing: -0.02em;
+}
+.migration-stat-label {
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  font-weight: 500;
+}
+.migration-right {
+  padding: 7vh 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.migration-right .lead {
+  margin-top: 22px;
+  margin-bottom: 28px;
+  font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.65;
+  color: var(--slate);
+  max-width: 52ch;
+}
+.migration-steps {
+  list-style: none;
+  counter-reset: step;
+}
+.migration-steps li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  align-items: baseline;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  font-size: clamp(13px, 1.02vw, 15px);
+  line-height: 1.5;
+  color: var(--slate);
+}
+.migration-steps li:last-child { border-bottom: 1px solid rgba(0,0,0,0.08); }
+.migration-steps li::before {
+  content: counter(step, decimal-leading-zero);
+  font-family: var(--heading);
+  font-size: 22px;
+  color: var(--brand);
+  line-height: 1;
+}
+.migration-steps strong {
+  font-weight: 600;
+  color: var(--dark);
+}
+
+/* ------------------ PAGE 6 · FEATURES (2x2) ------------------ */
+.page-features {
+  background: var(--dark-warm);
+  color: #fff;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.features-header {
+  padding: 5.5vh 5vw 2.5vh;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.features-header .page-heading { color: #fff; max-width: 26ch; margin-top: 6px; }
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0;
+}
+.feature-cell {
+  padding: 4.5vh 3vw;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  flex-direction: column;
+  transition: background 0.3s ease;
+}
+.feature-cell:nth-child(2), .feature-cell:nth-child(4) { border-right: none; }
+.feature-cell:nth-child(3), .feature-cell:nth-child(4) { border-bottom: none; }
+.feature-cell:hover { background: rgba(200,75,47,0.06); }
+.icon-box {
+  width: 48px; height: 48px;
+  border-radius: 10px;
+  background: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #fff;
+  margin-bottom: 22px;
+}
+.feature-title {
+  font-family: var(--heading);
+  font-size: clamp(22px, 2vw, 32px);
+  line-height: 1.1;
+  margin-bottom: 14px;
+  color: #fff;
+}
+.feature-body {
+  font-size: clamp(13px, 1vw, 14.5px);
+  line-height: 1.6;
+  color: rgba(255,255,255,0.62);
+  margin-bottom: 14px;
+}
+.feature-tag {
+  margin-top: auto;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brand-light);
+}
+
+/* ------------------ PAGE 7 · HOSTING OPTIONS ------------------ */
+.page-hosting {
+  background: var(--sand);
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.hosting-header {
+  padding: 6vh 5vw 3vh;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+.hosting-header .lead {
+  margin-top: 18px;
+  max-width: 62ch;
+  font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.6;
+  color: var(--slate);
+}
+.hosting-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.hosting-col {
+  padding: 5vh 3vw;
+  border-right: 1px solid rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  transition: background 0.3s ease;
+}
+.hosting-col:last-child { border-right: none; }
+.hosting-col.recommended { background: rgba(200,75,47,0.06); }
+.hosting-col:hover { background: rgba(200,75,47,0.04); }
+.hosting-col.recommended:hover { background: rgba(200,75,47,0.09); }
+.verdict {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(200,75,47,0.12);
+  color: var(--brand);
+  align-self: flex-start;
+  margin-bottom: 18px;
+}
+.verdict.alt {
+  background: rgba(45,41,38,0.1);
+  color: var(--slate);
+}
+.hosting-tier {
+  font-family: var(--heading);
+  font-size: clamp(28px, 2.4vw, 38px);
+  line-height: 1.1;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+.hosting-sub {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 26px;
+}
+.hosting-price {
+  font-family: var(--heading);
+  font-size: clamp(56px, 6vw, 88px);
+  line-height: 0.9;
+  color: var(--brand);
+  letter-spacing: -0.02em;
+}
+.hosting-price-label {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 24px;
+}
+.hosting-feats {
+  list-style: none;
+  margin-top: auto;
+}
+.hosting-feats li {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--slate);
+  padding: 9px 0;
+  border-top: 1px solid rgba(0,0,0,0.07);
+}
+.hosting-feats li:first-child { border-top: none; }
+
+/* ------------------ PAGE 8 · INVESTMENT ------------------ */
+.page-investment {
+  background: var(--cream);
+  display: grid;
+  grid-template-columns: 38% 62%;
+}
+.invest-left {
+  background: var(--dark);
+  color: #fff;
+  padding: 7vh 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.invest-left .section-num { color: var(--brand-light); }
+.invest-left .page-heading { color: #fff; }
+.invest-left .page-body {
+  color: rgba(255,255,255,0.65);
+  margin-top: 24px;
+  max-width: 32ch;
+}
+.invest-fineprint {
+  margin-top: 36px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  font-weight: 500;
+}
+.invest-right {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+}
+.invest-row {
+  padding: 0 4vw;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  gap: 24px;
+}
+.invest-row:last-child { border-bottom: none; }
+.invest-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.invest-row-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+.invest-row-title {
+  font-family: var(--heading);
+  font-size: clamp(20px, 1.7vw, 28px);
+  line-height: 1.15;
+  color: var(--dark);
+}
+.invest-row-desc {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 55ch;
+}
+.invest-row-num {
+  font-family: var(--heading);
+  font-size: clamp(48px, 5.4vw, 80px);
+  line-height: 0.9;
+  color: var(--brand);
+  letter-spacing: -0.02em;
+  text-align: right;
+}
+.invest-row-cadence {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: right;
+  margin-top: 6px;
+}
+
+/* ------------------ PAGE 9 · TIMELINE ------------------ */
+.page-timeline {
+  background: var(--stone);
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.timeline-header {
+  padding: 6vh 5vw 3vh;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+.timeline-header .lead {
+  margin-top: 18px;
+  max-width: 60ch;
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.6;
+  color: var(--slate);
+}
+.timeline-cols {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  --pipeline-count: 6;
+}
+.timeline-col {
+  padding: 5vh 1.7vw;
+  border-right: 1px solid rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: background 0.3s ease;
+}
+.timeline-col:last-child { border-right: none; }
+.timeline-col:hover { background: rgba(200,75,47,0.05); }
+.timeline-col.go-live { background: rgba(200,75,47,0.08); }
+.tl-num {
+  font-family: var(--heading);
+  font-size: clamp(56px, 6.5vw, 96px);
+  line-height: 1;
+  color: rgba(0,0,0,0.13);
+  margin-bottom: 28px;
+}
+.tl-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--brand);
+  margin-bottom: 10px;
+}
+.tl-title {
+  font-family: var(--heading);
+  font-size: clamp(18px, 1.5vw, 24px);
+  line-height: 1.15;
+  color: var(--dark);
+  margin-bottom: 14px;
+}
+.tl-meta {
+  font-size: 12.5px;
+  color: var(--slate);
+  line-height: 1.5;
+  margin-top: auto;
+}
+.tl-meta strong { display: block; color: var(--dark); margin-bottom: 4px; }
+
+/* ------------------ PAGE 10 · WHY LRP ------------------ */
+.page-origin {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  background: var(--dark);
+  color: #fff;
+}
+.origin-left {
+  background: var(--dark-warm);
+  padding: 7vh 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+.origin-left .section-num { color: var(--brand-light); }
+.origin-left .page-heading { color: #fff; max-width: 18ch; margin-bottom: 32px; }
+.pull-quote {
+  font-family: var(--heading);
+  font-style: italic;
+  font-size: clamp(20px, 2.1vw, 30px);
+  line-height: 1.35;
+  color: rgba(255,255,255,0.88);
+  padding-left: 28px;
+  border-left: 3px solid var(--brand);
+  margin-bottom: 28px;
+}
+.origin-attribution {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  font-weight: 600;
+}
+.origin-right {
+  background: var(--slate);
+  padding: 7vh 4.5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.origin-callout {
+  padding: 28px 30px;
+  background: rgba(200,75,47,0.1);
+  border-radius: 4px;
+  border-left: 3px solid var(--brand);
+  margin-bottom: 28px;
+}
+.origin-callout-title {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brand-light);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.origin-callout-text {
+  font-family: var(--heading);
+  font-size: clamp(20px, 1.7vw, 26px);
+  line-height: 1.25;
+  color: #fff;
+}
+.origin-creds {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 24px;
+}
+.cred {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cred-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(255,255,255,0.45);
+}
+.cred-value {
+  font-family: var(--heading);
+  font-size: clamp(16px, 1.3vw, 20px);
+  line-height: 1.2;
+  color: #fff;
+}
+
+/* ------------------ PAGE 11 · BACK COVER ------------------ */
+.page-back {
+  background: var(--dark);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-back::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw; height: 60vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,75,47,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.back-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 5vw;
+  max-width: 980px;
+}
+.back-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--brand-light);
+  margin-bottom: 28px;
+}
+.back-title {
+  font-family: var(--heading);
+  font-size: clamp(48px, 6vw, 96px);
+  line-height: 1;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
+}
+.back-sub {
+  font-size: clamp(16px, 1.3vw, 20px);
+  line-height: 1.55;
+  color: rgba(255,255,255,0.7);
+  max-width: 56ch;
+  margin: 0 auto 44px;
+}
+.back-contact {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  width: 100%;
+  max-width: 720px;
+  padding: 32px 0;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  margin-bottom: 32px;
+}
+.back-contact-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+.back-contact-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  font-weight: 600;
+}
+.back-contact-value {
+  font-family: var(--heading);
+  font-size: clamp(15px, 1.25vw, 19px);
+  line-height: 1.3;
+  color: #fff;
+  word-break: break-word;
+}
+.back-procurement {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+  line-height: 1.8;
+}
+.back-procurement strong {
+  color: var(--brand-light);
+  font-weight: 700;
+}
+.back-wordmark {
+  margin-top: 36px;
+  font-family: var(--heading);
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.7);
+}
+.back-wordmark .dot { color: var(--brand); }
+
+/* ------------------ NAV UI ------------------ */
+.nav-dots {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 10px 20px;
+  border-radius: 40px;
+}
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+.nav-dot.active {
+  background: var(--brand);
+  transform: scale(1.35);
+}
+.nav-dot:hover { background: rgba(255,255,255,0.6); }
+.nav-dot.active:hover { background: var(--brand); }
+
+.page-counter {
+  position: fixed;
+  top: 28px;
+  right: 36px;
+  z-index: 1000;
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.55);
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+@keyframes swipeHint {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50% { transform: translateX(-12px); opacity: 1; }
+}
+.swipe-hint {
+  position: fixed;
+  bottom: 80px;
+  right: 36px;
+  z-index: 1000;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.5s ease;
+}
+.swipe-hint.hidden { opacity: 0; pointer-events: none; }
+.swipe-hint-arrow { animation: swipeHint 1.8s ease-in-out infinite; font-size: 18px; }
+
+/* ------------------ MOBILE ------------------ */
+@media (max-width: 768px) {
+  .page {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .page-cover,
+  .page-problem,
+  .page-goals,
+  .page-migration,
+  .page-investment,
+  .page-origin {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    min-height: 100%;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto);
+  }
+  .feature-cell {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .feature-cell:nth-child(4) { border-bottom: none; }
+
+  .civic-grid,
+  .hosting-grid,
+  .timeline-cols {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(var(--pipeline-count, 5), auto);
+  }
+  .civic-cell,
+  .hosting-col,
+  .timeline-col {
+    border-right: none;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .civic-cell:last-child,
+  .hosting-col:last-child,
+  .timeline-col:last-child { border-bottom: none; }
+
+  .invest-right {
+    grid-template-rows: repeat(4, auto);
+  }
+  .invest-row {
+    grid-template-columns: 1fr;
+    padding: 24px 20px;
+    gap: 12px;
+  }
+  .invest-row-num,
+  .invest-row-cadence {
+    text-align: left;
+  }
+
+  .goals-list {
+    grid-template-columns: 1fr;
+  }
+  .goals-list li:nth-child(even) { padding-left: 0; }
+  .goals-list li:nth-last-child(-n+2) { border-bottom: none; }
+  .goals-list li:last-child { border-bottom: 1px solid rgba(0,0,0,0.08); }
+
+  .back-contact {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  /* Inner padding */
+  .cover-left, .cover-right,
+  .problem-left, .problem-right,
+  .goals-left, .goals-right,
+  .civic-header, .civic-cell,
+  .migration-left, .migration-right,
+  .features-header, .feature-cell,
+  .hosting-header, .hosting-col,
+  .invest-left,
+  .timeline-header, .timeline-col,
+  .origin-left, .origin-right,
+  .back-inner {
+    padding: 32px 22px;
+  }
+
+  /* Typography floors */
+  .page-heading {
+    font-size: clamp(28px, 7vw, 44px);
+  }
+  .cover-title { font-size: clamp(36px, 9vw, 56px); }
+  .cover-stat { font-size: clamp(72px, 22vw, 140px); }
+  .big-stat { font-size: clamp(56px, 16vw, 96px); }
+  .problem-stat,
+  .migration-stat-num { font-size: clamp(56px, 16vw, 96px); }
+  .hosting-price,
+  .invest-row-num { font-size: clamp(48px, 14vw, 80px); }
+  .pull-quote {
+    font-size: clamp(18px, 4.8vw, 26px);
+    padding-left: 18px;
+  }
+  .back-title { font-size: clamp(36px, 10vw, 64px); }
+
+  .trait-list li { font-size: 14px; }
+
+  /* Nav UI */
+  .page-counter {
+    top: 16px;
+    right: 16px;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+  .nav-dots {
+    bottom: 16px;
+    gap: 8px;
+    padding: 8px 14px;
+  }
+  .nav-dot { width: 9px; height: 9px; }
+  .swipe-hint { display: none; }
+
+  .page-back::before {
+    width: 90vw;
+    height: 90vw;
+  }
+  .cover-left::before { width: 4px; }
+}
+</style>
+<!-- Fathom - beautiful, simple website analytics -->
+<script src="https://cdn.usefathom.com/script.js" data-site="EUGBFSXR" defer></script>
+<!-- / Fathom -->
+</head>
+<body>
+<div class="magazine" id="magazine">
+
+  <!-- PAGE 1 · COVER -->
+  <section class="page page-cover">
+    <div class="cover-left">
+      <div class="cover-wordmark">Lone Rock Point<span class="dot">.</span></div>
+      <div>
+        <div class="section-num" style="color: var(--brand-light);">Rough Order of Magnitude</div>
+        <h1 class="cover-title">City of Irving</h1>
+        <p class="cover-subtitle">Web site replatforming and modernization. A foundation built for compliance, accessibility, and the residents Irving serves.</p>
+      </div>
+      <div class="cover-meta">
+        <span>Submitted April 27, 2026</span>
+        <span>Prepared for Angie Chabot</span>
+      </div>
+    </div>
+    <div class="cover-right">
+      <div class="cover-stat-eyebrow">Replatform Investment (ROM)</div>
+      <div class="cover-stat">$80K</div>
+      <div class="cover-stat-caption">One-time platform build. 16 weeks. Kickoff October 2026, go-live January 2027.</div>
+    </div>
+  </section>
+
+  <!-- PAGE 2 · WHY YOU ARE HERE -->
+  <section class="page page-problem">
+    <div class="problem-left">
+      <div class="section-num">01 · Why You Are Here</div>
+      <div class="problem-stat">Apr 2026</div>
+      <div class="problem-stat-label">DOJ WCAG 2.1 AA in Effect for State &amp; Local Public Sector</div>
+    </div>
+    <div class="problem-right">
+      <h2 class="page-heading">Today, the site is a liability rather than an asset.</h2>
+      <p class="lead">irvingtx.gov and the employee intranet need replatforming because of editing platform performance issues and vendor reliability. The City has already invested in cleaning up content and refining UX. None of that work should be lost in the move.</p>
+      <ul class="trait-list">
+        <li>Recurring bugs in the current editing platform slow content teams down.</li>
+        <li>Vendor support is unreliable, leaving issues open and risk on the City.</li>
+        <li>The platform must move quickly without disrupting residents or staff.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PAGE 3 · WHERE YOU WANT TO BE -->
+  <section class="page page-goals">
+    <div class="goals-left">
+      <div class="section-num">02 · Where You Want To Be</div>
+      <h2 class="page-heading">A modern foundation. Without losing what is working.</h2>
+      <p class="page-body">Goals captured directly from the April 20 meeting. The new platform looks and behaves like today's site, on a foundation that meets the law, scales for traffic, and supports every employee.</p>
+    </div>
+    <div class="goals-right">
+      <div class="goals-eyebrow">Seven outcomes from the April 20 meeting</div>
+      <ol class="goals-list">
+        <li><span class="goal-num">01</span>Public site and intranet that look and behave like today, on a modern, supportable platform.</li>
+        <li><span class="goal-num">02</span>WCAG 2.1 Level AA compliance that holds up to legal scrutiny.</li>
+        <li><span class="goal-num">03</span>Multilingual support so residents access services in the language they prefer.</li>
+        <li><span class="goal-num">04</span>Mobile-first responsive architecture across both sites.</li>
+        <li><span class="goal-num">05</span>Secure hosting with optional FedRAMP authorization and 99.9% uptime.</li>
+        <li><span class="goal-num">06</span>An intranet accessible to every employee, not only on-network staff.</li>
+        <li><span class="goal-num">07</span>Cooperative procurement paths already available to Texas municipalities.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PAGE 4 · CIVICPRESS -->
+  <section class="page page-civicpress">
+    <div class="civic-header">
+      <div class="section-num">03 · The Foundation</div>
+      <h2 class="page-heading">CivicPress. WordPress, purpose-built for government.</h2>
+      <p class="lead">Lone Rock Point's WordPress framework integrates the U.S. Web Design System (USWDS) into WordPress. Born from our work modernizing NASA.gov to meet the 21st Century IDEA Act and OMB M-23-22. CivicPress is open. The City retains full ownership of its content, with no proprietary lock-in.</p>
+    </div>
+    <div class="civic-grid">
+      <div class="civic-cell">
+        <div class="civic-num">01</div>
+        <div class="civic-title">USWDS Components</div>
+        <p class="civic-body">The same research-backed design system as federal sites. Usability tested with thousands of real users, including users with disabilities. Irving inherits that investment.</p>
+      </div>
+      <div class="civic-cell">
+        <div class="civic-num">02</div>
+        <div class="civic-title">Mobile-First Responsive</div>
+        <p class="civic-body">Every component is responsive out of the box. Residents on a phone get the same quality experience as those on a desktop.</p>
+      </div>
+      <div class="civic-cell">
+        <div class="civic-num">03</div>
+        <div class="civic-title">Accessibility Baseline</div>
+        <p class="civic-body">Independent WCAG 2.2 audit. Real-time accessibility checker inside the WordPress dashboard. VPAT delivered with launch.</p>
+      </div>
+      <div class="civic-cell">
+        <div class="civic-num">04</div>
+        <div class="civic-title">SEO &amp; Semantic HTML</div>
+        <p class="civic-body">Clean structure, fast load, structured data built in. Real-time SEO analysis appears inside the editor as staff write.</p>
+      </div>
+      <div class="civic-cell">
+        <div class="civic-num">05</div>
+        <div class="civic-title">No-Code Page Building</div>
+        <p class="civic-body">Staff design pages, build forms, and update layouts with WordPress blocks and pre-built USWDS patterns. No developer required for routine work.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 5 · MIGRATION / ANDY -->
+  <section class="page page-migration">
+    <div class="migration-left">
+      <div class="section-num">04 · Content Migration</div>
+      <div class="migration-stack">
+        <div class="migration-stat">
+          <div class="migration-stat-num">865</div>
+          <div class="migration-stat-label">Public Pages</div>
+        </div>
+        <div class="migration-stat">
+          <div class="migration-stat-num">11K</div>
+          <div class="migration-stat-label">Public Documents</div>
+        </div>
+        <div class="migration-stat">
+          <div class="migration-stat-num">200</div>
+          <div class="migration-stat-label">Intranet Pages</div>
+        </div>
+        <div class="migration-stat">
+          <div class="migration-stat-num">7.3K</div>
+          <div class="migration-stat-label">Intranet Documents</div>
+        </div>
+      </div>
+    </div>
+    <div class="migration-right">
+      <div class="section-num">Meet Andy</div>
+      <h2 class="page-heading">AI-leveraged migration. Months of work, condensed and quality-controlled.</h2>
+      <p class="lead">Andy is our in-house tool that combines automated content extraction, structured mapping, and AI-assisted review. It dramatically reduces manual effort on large migrations while preserving content fidelity, URL structure, and metadata.</p>
+      <ol class="migration-steps">
+        <li><span><strong>Audit and inventory.</strong> Every page, document, and asset cataloged with current URL, owner, and disposition.</span></li>
+        <li><span><strong>Automated migration with AI assist.</strong> Andy handles bulk transfer into the new CivicPress structure.</span></li>
+        <li><span><strong>Manual QA and staff review.</strong> City content owners verify formatting, accuracy, and accessibility before go-live.</span></li>
+        <li><span><strong>URL preservation and 301 redirects.</strong> Existing URLs preserved where possible.</span></li>
+        <li><span><strong>Tested rollback protocol.</strong> Backup and restore procedures ensure a zero-data-loss launch.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PAGE 6 · FEATURES -->
+  <section class="page page-features">
+    <div class="features-header">
+      <div class="section-num">05 · Built In, Not Bolted On</div>
+      <h2 class="page-heading">Compliance, security, search, performance.</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-cell">
+        <div class="icon-box">&#x2713;</div>
+        <div class="feature-title">Accessibility</div>
+        <p class="feature-body">Three layers: code (independent WCAG 2.2 audit, ACR delivered), DevOps (automated scans in CI, manual screen-reader testing at every milestone), and content (Accessibility Checker Pro flags issues as staff write).</p>
+        <div class="feature-tag">Written certification at launch</div>
+      </div>
+      <div class="feature-cell">
+        <div class="icon-box">&#x2692;</div>
+        <div class="feature-title">Security</div>
+        <p class="feature-body">FedRAMP Moderate / TX-RAMP Level 2 option. Application hardening, role-based access, 24/7 monitoring, monthly patches, 24-hour response on critical CVEs, encrypted nightly backups, annual independent review.</p>
+        <div class="feature-tag">Defense in depth</div>
+      </div>
+      <div class="feature-cell">
+        <div class="icon-box">&#x25CE;</div>
+        <div class="feature-title">Site Search</div>
+        <p class="feature-body">Elasticsearch-class engine integrated with WordPress. Fast relevance-ranked results across pages and documents. Faceted filtering by department, content type, date. Document-level search inside indexed PDFs.</p>
+        <div class="feature-tag">Faceted, filtered, fast</div>
+      </div>
+      <div class="feature-cell">
+        <div class="icon-box">&#x26A1;</div>
+        <div class="feature-title">Performance</div>
+        <p class="feature-body">Server and application caching, global CDN, optimized images, minified bundles, real-time monitoring with alerting. WordPress VIP serves 100K+ requests per second for sites like TIME during peak events. 99.9% uptime SLA.</p>
+        <div class="feature-tag">Built for traffic spikes</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 7 · HOSTING OPTIONS -->
+  <section class="page page-hosting">
+    <div class="hosting-header">
+      <div class="section-num">06 · Hosting Options</div>
+      <h2 class="page-heading">Two paths. One managed cloud.</h2>
+      <p class="lead">Both options run on WordPress VIP, the enterprise platform behind WhiteHouse.gov, NASA, and the VA. Pick the compliance posture that fits Irving's risk profile. Procurement runs through Texas DIR Contract DIR-CPO-5327 via Vertosoft, term through May 2030.</p>
+    </div>
+    <div class="hosting-grid">
+      <div class="hosting-col recommended">
+        <span class="verdict">Best Fit for Now</span>
+        <div class="hosting-tier">VIP Standard</div>
+        <div class="hosting-sub">Enterprise WordPress, SOC 2 attested.</div>
+        <div class="hosting-price">$44K</div>
+        <div class="hosting-price-label">Year 1 / annual</div>
+        <ul class="hosting-feats">
+          <li>123,000 monthly unique visitors covered</li>
+          <li>Encrypted in transit and at rest</li>
+          <li>24/7 monitoring, standard support tier</li>
+        </ul>
+      </div>
+      <div class="hosting-col">
+        <span class="verdict alt">Maximum Compliance</span>
+        <div class="hosting-tier">VIP FedRAMP</div>
+        <div class="hosting-sub">FedRAMP Moderate &amp; TX-RAMP Level 2.</div>
+        <div class="hosting-price">$61.6K</div>
+        <div class="hosting-price-label">Year 1 / annual</div>
+        <ul class="hosting-feats">
+          <li>Federal Authority to Operate (April 2025)</li>
+          <li>TX-RAMP Level 2 certified (Sept 2025)</li>
+          <li>Hundreds of security controls audited</li>
+          <li>For confidential and regulated data</li>
+          <li>Used by NASA, WhiteHouse.gov, VA</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 8 · INVESTMENT -->
+  <section class="page page-investment">
+    <div class="invest-left">
+      <div class="section-num">07 · Estimated Investment</div>
+      <h2 class="page-heading">Rough Order of Magnitude.</h2>
+      <p class="page-body">Ranges based on what we know today. Refined during a two-week Discovery sprint. Hosting is a separate annual line item, see prior page.</p>
+      <div class="invest-fineprint">Excludes WordPress VIP hosting</div>
+    </div>
+    <div class="invest-right">
+      <div class="invest-row">
+        <div class="invest-row-text">
+          <div class="invest-row-eyebrow">One-Time Build</div>
+          <div class="invest-row-title">Replatforming, Migration &amp; CMS Modernization</div>
+          <p class="invest-row-desc">CivicPress build, Andy-driven content migration of 1,065 pages and 18,300 documents, accessibility certification, integration setup.</p>
+        </div>
+        <div>
+          <div class="invest-row-num">$80K</div>
+          <div class="invest-row-cadence">One-time</div>
+        </div>
+      </div>
+      <div class="invest-row">
+        <div class="invest-row-text">
+          <div class="invest-row-eyebrow">Train-the-Trainer</div>
+          <div class="invest-row-title">Training (5 staff)</div>
+          <p class="invest-row-desc">Live sessions in a sandbox, role-specific paths, written guides, recorded video library, post-launch office hours. Materials owned by the City.</p>
+        </div>
+        <div>
+          <div class="invest-row-num">$6K</div>
+          <div class="invest-row-cadence">One-time</div>
+        </div>
+      </div>
+      <div class="invest-row">
+        <div class="invest-row-text">
+          <div class="invest-row-eyebrow">Recommended Annual</div>
+          <div class="invest-row-title">Maintenance &amp; Support</div>
+          <p class="invest-row-desc">Monthly patches, 24-hour critical CVE response, nightly encrypted backups, core/theme/plugin updates, accessibility monitoring, quarterly reports, ticketed support.</p>
+        </div>
+        <div>
+          <div class="invest-row-num">$48K</div>
+          <div class="invest-row-cadence">Per year</div>
+        </div>
+      </div>
+      <div class="invest-row">
+        <div class="invest-row-text">
+          <div class="invest-row-eyebrow">Annual License Pool</div>
+          <div class="invest-row-title">Premium Plugin Budget</div>
+          <p class="invest-row-desc">Gravity Forms, Yoast Premium, Accessibility Checker Pro, Safe Redirect Manager, and others identified during Discovery.</p>
+        </div>
+        <div>
+          <div class="invest-row-num">$3K</div>
+          <div class="invest-row-cadence">Per year</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 9 · TIMELINE -->
+  <section class="page page-timeline">
+    <div class="timeline-header">
+      <div class="section-num">08 · Estimated Schedule</div>
+      <h2 class="page-heading">Sixteen weeks. Kickoff to launch.</h2>
+      <p class="lead">Funding available October 1, 2026 per the April 20 meeting. Project kickoff October 5. Go-live end of Week 16. Followed by four weeks of hypercare.</p>
+    </div>
+    <div class="timeline-cols">
+      <div class="timeline-col">
+        <div class="tl-num">01</div>
+        <div class="tl-label">Weeks 1 / 2</div>
+        <div class="tl-title">Discovery &amp; Strategy</div>
+        <div class="tl-meta"><strong>Oct 5 to Oct 16, 2026</strong>Integration mapping, IA, intranet auth approach, content disposition.</div>
+      </div>
+      <div class="timeline-col">
+        <div class="tl-num">02</div>
+        <div class="tl-label">Weeks 3 / 12</div>
+        <div class="tl-title">CivicPress Build</div>
+        <div class="tl-meta"><strong>Oct 19 to Dec 25, 2026</strong>Theme, blocks, USWDS patterns, accessibility CI, integrations.</div>
+      </div>
+      <div class="timeline-col">
+        <div class="tl-num">03</div>
+        <div class="tl-label">Weeks 4 / 11</div>
+        <div class="tl-title">Migration (Parallel)</div>
+        <div class="tl-meta"><strong>Oct 26 to Dec 18, 2026</strong>Andy runs in parallel with the build. Staff QA in scheduled batches.</div>
+      </div>
+      <div class="timeline-col">
+        <div class="tl-num">04</div>
+        <div class="tl-label">Weeks 13 / 15</div>
+        <div class="tl-title">QA, UAT &amp; A11Y Audit</div>
+        <div class="tl-meta"><strong>Jan 4 to Jan 22, 2027</strong>End-to-end QA, user acceptance testing, independent accessibility audit.</div>
+      </div>
+      <div class="timeline-col">
+        <div class="tl-num">05</div>
+        <div class="tl-label">Weeks 15 / 16</div>
+        <div class="tl-title">Training &amp; Launch Prep</div>
+        <div class="tl-meta"><strong>Jan 18 to Jan 29, 2027</strong>Train-the-trainer sessions in sandbox. Launch playbook rehearsal.</div>
+      </div>
+      <div class="timeline-col go-live">
+        <div class="tl-num">06</div>
+        <div class="tl-label">End Week 16</div>
+        <div class="tl-title">Go-Live + Hypercare</div>
+        <div class="tl-meta"><strong>~ Jan 29, 2027</strong>Launch, then four weeks of dedicated hypercare. Then steady-state.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 10 · WHY LRP -->
+  <section class="page page-origin">
+    <div class="origin-left">
+      <div class="section-num">09 · Who We Are</div>
+      <h2 class="page-heading">Government-focused. Nine years deep.</h2>
+      <div class="pull-quote">"Knowledge is meant to be shared, and stories are meant to be told. We build storytelling systems for the public sector."</div>
+      <div class="origin-attribution">Lone Rock Point · Founded 2016</div>
+    </div>
+    <div class="origin-right">
+      <div class="origin-callout">
+        <div class="origin-callout-title">Flagship Reference</div>
+        <div class="origin-callout-text">We led the modernization of NASA.gov. Drupal to WordPress, 100K+ pages migrated with 20 hours of content freeze, zero downtime, 550 CMS users onboarded. Webby Award, 2024.</div>
+      </div>
+      <div class="origin-creds">
+        <div class="cred">
+          <div class="cred-label">Partner Tier</div>
+          <div class="cred-value">WordPress VIP Gold</div>
+        </div>
+        <div class="cred">
+          <div class="cred-label">2023</div>
+          <div class="cred-value">VIP Partner of the Year</div>
+        </div>
+        <div class="cred">
+          <div class="cred-label">SBA Status</div>
+          <div class="cred-value">8(a) Certified</div>
+        </div>
+        <div class="cred">
+          <div class="cred-label">SAM.gov UEI</div>
+          <div class="cred-value">Z1AEY4ZWKV27</div>
+        </div>
+        <div class="cred">
+          <div class="cred-label">Selected Clients</div>
+          <div class="cred-value">NASA, DOE / SRNS, VPIRG</div>
+        </div>
+        <div class="cred">
+          <div class="cred-label">Team Size</div>
+          <div class="cred-value">8 full time, U.S. distributed</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 11 · BACK COVER -->
+  <section class="page page-back">
+    <div class="back-inner">
+      <div class="back-eyebrow">Next Step</div>
+      <h2 class="back-title">Let's modernize Irving.</h2>
+      <p class="back-sub">We're ready to start October 5, 2026, with funding aligned to the City's fiscal year.</p>
+      <div class="back-contact">
+        <div class="back-contact-cell">
+          <div class="back-contact-label">Point of Contact</div>
+          <div class="back-contact-value">J.J. Toothman<br>President</div>
+        </div>
+        <div class="back-contact-cell">
+          <div class="back-contact-label">Email</div>
+          <div class="back-contact-value">jjt@lonerockpoint.com</div>
+        </div>
+        <div class="back-contact-cell">
+          <div class="back-contact-label">Phone</div>
+          <div class="back-contact-value">415.235.6914</div>
+        </div>
+      </div>
+      <div class="back-procurement">
+        Procurement Paths: <strong>TIPS</strong> · <strong>OMNIA / NCPA</strong> · <strong>Texas DIR (Vertosoft)</strong>
+      </div>
+      <div class="back-wordmark">Lone Rock Point<span class="dot">.</span> · lonerockpoint.com</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-dots" id="navDots"></div>
+<div class="page-counter" id="pageCounter">01 / 11</div>
+<div class="swipe-hint" id="swipeHint">
+  <span class="swipe-hint-arrow">&#x2190;</span> Scroll or use arrow keys
+</div>
+
+<script>
+(function() {
+  const magazine = document.getElementById('magazine');
+  const navDotsContainer = document.getElementById('navDots');
+  const pageCounter = document.getElementById('pageCounter');
+  const swipeHint = document.getElementById('swipeHint');
+  const totalPages = 11;
+  let currentPage = 0;
+  let isAnimating = false;
+  const ANIM_DURATION = 650;
+
+  function setVH() {
+    document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+  }
+  setVH();
+  window.addEventListener('orientationchange', setVH);
+
+  for (let i = 0; i < totalPages; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to page ' + (i + 1));
+    dot.addEventListener('click', () => goToPage(i));
+    navDotsContainer.appendChild(dot);
+  }
+
+  function goToPage(index) {
+    if (index < 0 || index >= totalPages || index === currentPage || isAnimating) return;
+    isAnimating = true;
+    currentPage = index;
+    magazine.style.transform = 'translateX(-' + (currentPage * 100) + 'vw)';
+    updateUI();
+    setTimeout(() => { isAnimating = false; }, ANIM_DURATION);
+  }
+
+  function updateUI() {
+    const dots = navDotsContainer.querySelectorAll('.nav-dot');
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentPage));
+    pageCounter.textContent = String(currentPage + 1).padStart(2, '0') + ' / ' + String(totalPages).padStart(2, '0');
+    if (currentPage > 0) swipeHint.classList.add('hidden');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault(); goToPage(currentPage + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault(); goToPage(currentPage - 1);
+    }
+  });
+
+  let wheelAccumulator = 0;
+  let wheelTimer = null;
+  document.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    wheelAccumulator += (Math.abs(e.deltaX) > Math.abs(e.deltaY)) ? e.deltaX : e.deltaY;
+    if (wheelTimer) clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => { wheelAccumulator = 0; }, 200);
+    if (Math.abs(wheelAccumulator) > 50) {
+      if (wheelAccumulator > 0) goToPage(currentPage + 1);
+      else goToPage(currentPage - 1);
+      wheelAccumulator = 0;
+    }
+  }, { passive: false });
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchMoved = false;
+  let swipeAxis = null;
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoved = false;
+    swipeAxis = null;
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    touchMoved = true;
+    if (swipeAxis === null) {
+      const dx = Math.abs(e.touches[0].clientX - touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      if (dx + dy > 10) {
+        swipeAxis = (dx > dy) ? 'x' : 'y';
+      }
+    }
+    if (swipeAxis === 'x') {
+      e.preventDefault();
+    }
+  }, { passive: false });
+  document.addEventListener('touchend', (e) => {
+    if (!touchMoved || swipeAxis !== 'x') return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) goToPage(currentPage + 1);
+      else goToPage(currentPage - 1);
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    setVH();
+    magazine.style.transition = 'none';
+    magazine.style.transform = 'translateX(-' + (currentPage * 100) + 'vw)';
+    requestAnimationFrame(() => { magazine.style.transition = ''; });
+  });
+
+  setTimeout(() => swipeHint.classList.add('hidden'), 6000);
+})();
+</script>
+</body>
+</html>
