@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CivicPress — Editorial Briefing</title>
+<title>CivicPress · Editorial Briefing</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,7 +33,7 @@ html, body {
 
 .magazine {
   display: flex;
-  width: 1000vw;
+  width: 1100vw;
   height: 100dvh;
   height: calc(var(--vh, 1vh) * 100);
   transition: transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -731,7 +731,102 @@ html, body {
 }
 
 /* ════════════════════════════════════════
-   PAGE 10: BACK COVER — Dark
+   PAGE 10: LIBRARY
+   ════════════════════════════════════════ */
+.page-library {
+  background: #ede4d3;
+  color: var(--dark);
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.library-header {
+  padding: 4.5vh 5vw 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 4vw;
+}
+.library-header-left { flex: 1; min-width: 0; }
+.library-header h2 {
+  font-family: var(--heading);
+  font-size: clamp(34px, 3.8vw, 54px);
+  line-height: 1.05;
+  margin-top: 12px;
+}
+.library-header h2 em { color: var(--brand); font-style: italic; }
+.library-intro {
+  max-width: 360px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+  text-align: right;
+}
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 3vh;
+}
+.lib-cell {
+  padding: 3.5vh 2.2vw 4vh;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(0,0,0,0.07);
+  transition: background 0.3s ease;
+}
+.lib-cell:last-child { border-right: none; }
+.lib-cell:hover { background: rgba(200,75,47,0.04); }
+.lib-num {
+  font-family: var(--heading);
+  font-size: clamp(40px, 4vw, 60px);
+  color: rgba(200,75,47,0.22);
+  line-height: 1;
+  margin-bottom: 2.5vh;
+}
+.lib-label {
+  font-family: var(--body);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 6px;
+}
+.lib-title {
+  font-family: var(--heading);
+  font-size: clamp(18px, 1.9vw, 26px);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.lib-desc {
+  font-size: clamp(12px, 1vw, 14px);
+  line-height: 1.6;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.lib-list {
+  list-style: none;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+.lib-list li {
+  font-size: clamp(12px, 0.95vw, 14px);
+  line-height: 1.5;
+  padding: 5px 0 5px 14px;
+  color: #4a453e;
+  position: relative;
+}
+.lib-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 12px;
+  width: 5px; height: 5px;
+  background: var(--brand);
+  border-radius: 50%;
+}
+
+/* ════════════════════════════════════════
+   PAGE 11: BACK COVER — Dark
    ════════════════════════════════════════ */
 .page-back {
   background: var(--dark);
@@ -819,7 +914,8 @@ html, body {
   .page-audience,
   .page-origin,
   .page-launch,
-  .page-tech {
+  .page-tech,
+  .page-library {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
     min-height: 100%;
@@ -833,15 +929,26 @@ html, body {
   }
 
   /* Pattern C — 4-column pipeline → vertical stack */
-  .solution-stages {
+  .solution-stages,
+  .library-grid {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(4, auto);
   }
-  .stage {
+  .stage,
+  .lib-cell {
     border-right: none;
     border-bottom: 1px solid rgba(0,0,0,0.06);
   }
-  .stage:last-child { border-bottom: none; }
+  .stage:last-child,
+  .lib-cell:last-child { border-bottom: none; }
+
+  /* Library header stacks on mobile */
+  .library-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .library-intro { text-align: left; max-width: none; }
 
   /* Cells: side borders → bottom borders for vertical stack */
   .feature-cell {
@@ -862,9 +969,11 @@ html, body {
   .solution-header,
   .features-header,
   .competition-header,
+  .library-header,
   .stage,
   .feature-cell,
   .comp-cell,
+  .lib-cell,
   .back-content {
     padding: 24px 20px;
   }
@@ -907,8 +1016,8 @@ html, body {
     <div class="cover-left">
       <div class="cover-eyebrow">Lone Rock Point</div>
       <h1 class="cover-title"><em>Civic</em>Press</h1>
-      <p class="cover-subtitle">A WordPress theme that brings the U.S. Web Design System to government websites &mdash; compliance, accessibility, and modernization out of the box.</p>
-      <div class="cover-meta">civicpress.us &mdash; 2026</div>
+      <p class="cover-subtitle">A WordPress theme that brings the U.S. Web Design System to government websites. Compliance, accessibility, and modernization out of the box.</p>
+      <div class="cover-meta">civicpress.us · 2026</div>
     </div>
     <div class="cover-right">
       <div class="cover-stat">USWDS</div>
@@ -919,18 +1028,17 @@ html, body {
   <!-- PAGE 2: PROBLEM -->
   <section class="page page-problem" data-page="1">
     <div class="problem-left">
-      <div class="section-num">01 &mdash; The Problem</div>
+      <div class="section-num">01 · The Problem</div>
       <h2>Government Websites Are <em>Stuck</em></h2>
       <div class="problem-big-stat">26K+</div>
-      <div class="problem-big-stat-label">federal .gov domains &mdash; most non-compliant</div>
+      <div class="problem-big-stat-label">federal .gov domains, most non-compliant</div>
     </div>
     <div class="problem-right">
       <p>Federal agencies, state governments, and municipalities operate thousands of websites built on aging platforms with inconsistent designs, poor accessibility, and no path to the standards Congress and OMB now require.</p>
-      <p>The U.S. Web Design System (USWDS) exists to solve this &mdash; but implementing it from scratch is expensive, slow, and requires specialized front-end expertise most agencies don&rsquo;t have.</p>
+      <p>The U.S. Web Design System (USWDS) exists to solve this, but implementing it from scratch is expensive, slow, and requires specialized front-end expertise most agencies don&rsquo;t have.</p>
       <ul class="pain-points">
         <li>Section 508 and WCAG 2.1 AA compliance gaps create legal exposure</li>
         <li>21st Century IDEA Act mandates modern, accessible digital experiences</li>
-        <li>Custom USWDS implementations cost $200K+ and take 12&ndash;18 months</li>
         <li>Agencies lose institutional knowledge when contractors rotate off</li>
         <li>Content editors forced into developer-dependent workflows</li>
         <li>Inconsistent citizen experience erodes public trust</li>
@@ -942,7 +1050,7 @@ html, body {
   <section class="page page-solution" data-page="2">
     <div class="solution-header">
       <div>
-        <div class="section-num">02 &mdash; The Solution</div>
+        <div class="section-num">02 · The Solution</div>
         <h2>WordPress Meets USWDS</h2>
       </div>
       <div class="solution-intro">CivicPress bridges the gap between the world&rsquo;s most popular CMS and the federal government&rsquo;s design standard.</div>
@@ -966,14 +1074,14 @@ html, body {
         <div class="stage-num">03</div>
         <div class="stage-content">
           <div class="stage-title">Build with Blocks</div>
-          <div class="stage-desc">Content editors use native WordPress blocks that automatically render as USWDS components &mdash; accordions, alerts, cards, step indicators, and more.</div>
+          <div class="stage-desc">Content editors use native WordPress blocks that automatically render as USWDS components. Accordions, alerts, cards, step indicators, and more.</div>
         </div>
       </div>
       <div class="stage">
         <div class="stage-num">04</div>
         <div class="stage-content">
           <div class="stage-title">Ship Compliant</div>
-          <div class="stage-desc">Every page published through CivicPress meets USWDS standards, Section 508 requirements, and WCAG 2.1 AA &mdash; validated automatically.</div>
+          <div class="stage-desc">Every page published through CivicPress meets USWDS standards, Section 508 requirements, and WCAG 2.1 AA, validated automatically.</div>
         </div>
       </div>
     </div>
@@ -982,7 +1090,7 @@ html, body {
   <!-- PAGE 4: FEATURES -->
   <section class="page page-features" data-page="3">
     <div class="features-header">
-      <div class="section-num">03 &mdash; Key Capabilities</div>
+      <div class="section-num">03 · Key Capabilities</div>
       <h2>Compliance in a Box</h2>
     </div>
     <div class="features-grid">
@@ -1020,7 +1128,7 @@ html, body {
   <!-- PAGE 5: AUDIENCE -->
   <section class="page page-audience" data-page="4">
     <div class="audience-left">
-      <div class="section-num">04 &mdash; Who It&rsquo;s For</div>
+      <div class="section-num">04 · Who It&rsquo;s For</div>
       <h2>Built for Public Sector Web Teams</h2>
       <ul class="audience-traits">
         <li>Mandated to meet USWDS and 508 compliance</li>
@@ -1040,12 +1148,7 @@ html, body {
       <div class="audience-segment">
         <div class="segment-label">Secondary</div>
         <div class="segment-title">State &amp; Local Government</div>
-        <div class="segment-desc">State agencies and municipalities adopting USWDS voluntarily for consistency, accessibility, and citizen trust &mdash; without the federal procurement overhead.</div>
-      </div>
-      <div class="audience-segment">
-        <div class="segment-label">Channel</div>
-        <div class="segment-title">Government Contractors</div>
-        <div class="segment-desc">Digital agencies and systems integrators delivering web modernization to government clients. CivicPress accelerates delivery and reduces compliance risk on every engagement.</div>
+        <div class="segment-desc">State agencies and municipalities adopting USWDS voluntarily for consistency, accessibility, and citizen trust, without the federal procurement overhead.</div>
       </div>
     </div>
   </section>
@@ -1054,10 +1157,10 @@ html, body {
   <section class="page page-competition" data-page="5">
     <div class="competition-header">
       <div>
-        <div class="section-num">05 &mdash; Competitive Landscape</div>
+        <div class="section-num">05 · Competitive Landscape</div>
         <h2>Why Not Just Build It?</h2>
       </div>
-      <p>CivicPress delivers what custom builds promise &mdash; at a fraction of the cost, timeline, and ongoing maintenance burden.</p>
+      <p>CivicPress delivers what custom builds promise, at a fraction of the cost, timeline, and ongoing maintenance burden.</p>
     </div>
     <div class="competition-grid">
       <div class="comp-cell">
@@ -1098,10 +1201,10 @@ html, body {
   <!-- PAGE 7: ORIGIN -->
   <section class="page page-origin" data-page="6">
     <div class="origin-left">
-      <div class="section-num">06 &mdash; Origin</div>
+      <div class="section-num">06 · Origin</div>
       <h2>Born from <em>Federal</em> Engagements</h2>
-      <p>CivicPress grew directly from Lone Rock Point&rsquo;s work with federal agencies on web modernization &mdash; including large-scale projects with NASA where USWDS compliance was required across complex, multi-section web properties.</p>
-      <p>The recurring pattern was clear: every agency needed the same USWDS foundation, but each was paying to build it from scratch. The compliance layer, the accessible components, the design tokens &mdash; all identical work, repeated on every contract.</p>
+      <p>CivicPress grew directly from Lone Rock Point&rsquo;s work with federal agencies on web modernization, including large-scale projects with NASA where USWDS compliance was required across complex, multi-section web properties.</p>
+      <p>The recurring pattern was clear: every agency needed the same USWDS foundation, but each was paying to build it from scratch. The compliance layer, the accessible components, the design tokens. All identical work, repeated on every contract.</p>
       <p>CivicPress exists to make that foundation a starting point, not a deliverable.</p>
     </div>
     <div class="origin-right">
@@ -1116,9 +1219,9 @@ html, body {
   <!-- PAGE 8: IMPACT -->
   <section class="page page-launch" data-page="7">
     <div class="launch-left">
-      <div class="section-num">07 &mdash; Impact</div>
+      <div class="section-num">07 · Impact</div>
       <h2>Faster to Compliant</h2>
-      <p>CivicPress compresses the path from project kickoff to a fully USWDS-compliant, accessible, production-ready website &mdash; giving agencies back the months they would otherwise spend on foundation work.</p>
+      <p>CivicPress compresses the path from project kickoff to a fully USWDS-compliant, accessible, production-ready website, giving agencies back the months they would otherwise spend on foundation work.</p>
       <p>Content editors publish independently from day one. Developers focus on agency-specific functionality instead of re-implementing federal standards.</p>
     </div>
     <div class="launch-right">
@@ -1127,8 +1230,8 @@ html, body {
         <div class="launch-stat-label">reduction in time to USWDS compliance</div>
       </div>
       <div class="launch-stat-row">
-        <div class="launch-stat-num">$0</div>
-        <div class="launch-stat-label">custom front-end development for compliance</div>
+        <div class="launch-stat-num">ACR</div>
+        <div class="launch-stat-label">independently audited, accessibility conformance report on file</div>
       </div>
       <div class="launch-stat-row">
         <div class="launch-stat-num">Day 1</div>
@@ -1140,9 +1243,9 @@ html, body {
   <!-- PAGE 9: TECH -->
   <section class="page page-tech" data-page="8">
     <div class="tech-left">
-      <div class="section-num">08 &mdash; Architecture</div>
+      <div class="section-num">08 · Architecture</div>
       <h2>WordPress + USWDS, Natively</h2>
-      <p>CivicPress isn&rsquo;t a wrapper around USWDS &mdash; it&rsquo;s a native WordPress theme that implements the design system at the block level. Every component respects both WordPress patterns and federal standards.</p>
+      <p>CivicPress isn&rsquo;t a wrapper around USWDS. It&rsquo;s a native WordPress theme that implements the design system at the block level. Every component respects both WordPress patterns and federal standards.</p>
       <p>Built on Full Site Editing and the block editor. No page builders, no shortcodes, no legacy dependencies. Pure WordPress, pure USWDS.</p>
     </div>
     <div class="tech-right">
@@ -1164,7 +1267,7 @@ html, body {
         <div class="tech-layer-num">03</div>
         <div>
           <div class="tech-layer-title">Accessibility Layer</div>
-          <div class="tech-layer-desc">Semantic HTML, ARIA attributes, focus management, and keyboard navigation built into the theme &mdash; not a plugin dependency.</div>
+          <div class="tech-layer-desc">Semantic HTML, ARIA attributes, focus management, and keyboard navigation built into the theme, not a plugin dependency.</div>
         </div>
       </div>
       <div class="tech-layer">
@@ -1184,22 +1287,83 @@ html, body {
     </div>
   </section>
 
-  <!-- PAGE 10: BACK COVER -->
-  <section class="page page-back" data-page="9">
+  <!-- PAGE 10: LIBRARY -->
+  <section class="page page-library" data-page="9">
+    <div class="library-header">
+      <div class="library-header-left">
+        <div class="section-num">09 · The Library</div>
+        <h2>Everything&rsquo;s <em>Already</em> Built</h2>
+      </div>
+      <p class="library-intro">CivicPress ships with the full USWDS vocabulary already wired into WordPress. Tokens, patterns, blocks, and templates are configured and ready to publish from day one.</p>
+    </div>
+    <div class="library-grid">
+      <div class="lib-cell">
+        <div class="lib-num">01</div>
+        <div class="lib-label">Tokens</div>
+        <div class="lib-title">Design Tokens</div>
+        <div class="lib-desc">USWDS color palette, spacing scale, and typography mapped to WordPress theme.json. Override per-agency without touching code.</div>
+        <ul class="lib-list">
+          <li>Color palette</li>
+          <li>Spacing scale</li>
+          <li>Typography ramp</li>
+          <li>Shadow + radius</li>
+        </ul>
+      </div>
+      <div class="lib-cell">
+        <div class="lib-num">02</div>
+        <div class="lib-label">Patterns</div>
+        <div class="lib-title">UI Patterns</div>
+        <div class="lib-desc">Every USWDS element and page section pre-styled, accessible, and ready to drop in.</div>
+        <ul class="lib-list">
+          <li>Alerts + banners</li>
+          <li>Hero sections</li>
+          <li>Cards + accordions</li>
+          <li>Forms + identifiers</li>
+        </ul>
+      </div>
+      <div class="lib-cell">
+        <div class="lib-num">03</div>
+        <div class="lib-label">Blocks</div>
+        <div class="lib-title">Editor Blocks</div>
+        <div class="lib-desc">USWDS patterns surfaced as native Gutenberg blocks. Editors compose pages without touching code.</div>
+        <ul class="lib-list">
+          <li>USWDS hero block</li>
+          <li>Step indicators</li>
+          <li>Process lists</li>
+          <li>Document collections</li>
+        </ul>
+      </div>
+      <div class="lib-cell">
+        <div class="lib-num">04</div>
+        <div class="lib-label">Templates</div>
+        <div class="lib-title">Page Templates</div>
+        <div class="lib-desc">Full page layouts and reusable parts built with Full Site Editing. Configure once, deploy network-wide.</div>
+        <ul class="lib-list">
+          <li>Landing + service pages</li>
+          <li>Agency headers + footers</li>
+          <li>News + documents</li>
+          <li>Search + contact</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 11: BACK COVER -->
+  <section class="page page-back" data-page="10">
     <div class="back-content">
       <div class="back-eyebrow">Lone Rock Point</div>
       <h2 class="back-title">Go <em>Compliant</em></h2>
-      <p class="back-subtitle">USWDS compliance, Section 508 accessibility, and modern content editing &mdash; all from a single WordPress theme.</p>
+      <p class="back-subtitle">USWDS compliance, Section 508 accessibility, and modern content editing, all from a single WordPress theme.</p>
       <a href="https://civicpress.us" class="back-url" target="_blank">civicpress.us</a>
     </div>
-    <div class="back-brand">CivicPress &mdash; &copy; 2026 Lone Rock Point</div>
+    <div class="back-brand">CivicPress · &copy; 2026 Lone Rock Point</div>
   </section>
 
 </div>
 
 <!-- NAV DOTS -->
 <div class="nav-dots" id="navDots"></div>
-<div class="page-counter" id="pageCounter">01 / 10</div>
+<div class="page-counter" id="pageCounter">01 / 11</div>
 <div class="swipe-hint" id="swipeHint">
   <span class="swipe-hint-arrow">&#x2190;</span> Scroll or use arrow keys
 </div>
@@ -1210,7 +1374,7 @@ html, body {
   const navDotsContainer = document.getElementById('navDots');
   const pageCounter = document.getElementById('pageCounter');
   const swipeHint = document.getElementById('swipeHint');
-  const totalPages = 10;
+  const totalPages = 11;
   let currentPage = 0;
   let isAnimating = false;
   const ANIM_DURATION = 650;
