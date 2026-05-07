@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryoTrak x Lone Rock Point</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #C84B2F;
+    --brand-light: #e8644a;
+    --dark: #141414;
+    --dark-warm: #1c1917;
+    --slate: #2d2926;
+    --cream: #faf7f2;
+    --warm-gray: #f0ebe4;
+    --stone: #e7e0d6;
+    --muted: #8a8178;
+    --heading: 'DM Serif Display', Georgia, serif;
+    --body: 'Inter', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100dvh;
+    height: calc(var(--vh, 1vh) * 100);
+    width: 100vw;
+    overflow: hidden;
+    font-family: var(--body);
+    -webkit-font-smoothing: antialiased;
+    color: var(--dark);
+  }
+
+  .magazine {
+    display: flex;
+    width: 1200vw;
+    height: 100dvh;
+    height: calc(var(--vh, 1vh) * 100);
+    transition: transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: transform;
+  }
+
+  .page {
+    flex: 0 0 100vw;
+    height: 100dvh;
+    height: calc(var(--vh, 1vh) * 100);
+    width: 100vw;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Shared components */
+  .section-num {
+    font-family: var(--body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 24px;
+  }
+  .page-heading {
+    font-family: var(--heading);
+    font-size: clamp(34px, 4vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 22px;
+  }
+  .page-body {
+    font-family: var(--body);
+    font-size: clamp(14px, 1.05vw, 16px);
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 38ch;
+  }
+  .big-stat {
+    font-family: var(--heading);
+    font-size: clamp(100px, 12vw, 160px);
+    line-height: 0.85;
+    color: var(--brand);
+    letter-spacing: -0.02em;
+  }
+  .big-stat-label {
+    font-family: var(--body);
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-top: 14px;
+    font-weight: 500;
+  }
+  .big-stat-label.on-light { color: var(--muted); }
+
+  /* ============ PAGE 1: COVER ============ */
+  .page-cover {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    background: var(--dark);
+    color: #fff;
+  }
+  .cover-left {
+    position: relative;
+    background: var(--dark);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cover-left::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 6px; height: 100%;
+    background: var(--brand);
+  }
+  .cover-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--brand);
+  }
+  .cover-title {
+    font-family: var(--heading);
+    font-size: clamp(44px, 5.6vw, 86px);
+    line-height: 1;
+    letter-spacing: -0.015em;
+    color: #fff;
+  }
+  .cover-title .x {
+    font-style: italic;
+    color: var(--brand);
+    font-size: 0.7em;
+    padding: 0 0.18em;
+  }
+  .cover-tagline {
+    font-family: var(--heading);
+    font-style: italic;
+    font-size: clamp(20px, 1.8vw, 26px);
+    color: rgba(255,255,255,0.78);
+    margin-top: 20px;
+    max-width: 22ch;
+    line-height: 1.3;
+  }
+  .cover-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .cover-meta strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+  }
+  .cover-right {
+    background: var(--slate);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .cover-right::after {
+    content: '';
+    position: absolute;
+    top: -25%; right: -25%;
+    width: 60%; height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,75,47,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover-stat-block {
+    position: relative;
+    z-index: 1;
+  }
+  .cover-stat-caption {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 16px;
+  }
+  .cover-stat-detail {
+    margin-top: 28px;
+    color: rgba(255,255,255,0.62);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 36ch;
+  }
+
+  /* ============ PAGE 2: BRAND FOUNDATIONS ============ */
+  .page-brand {
+    display: grid;
+    grid-template-columns: 45% 55%;
+    background: var(--warm-gray);
+  }
+  .brand-left {
+    background: var(--cream);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .brand-stat {
+    font-family: var(--heading);
+    font-size: clamp(110px, 14vw, 200px);
+    line-height: 0.85;
+    color: var(--brand);
+    letter-spacing: -0.03em;
+  }
+  .brand-stat-label {
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 16px;
+    font-weight: 600;
+  }
+  .brand-stat-detail {
+    margin-top: 26px;
+    color: var(--muted);
+    line-height: 1.65;
+    font-size: 15px;
+    max-width: 32ch;
+  }
+  .brand-right {
+    background: var(--warm-gray);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .brand-routes {
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: 28px;
+    margin-top: 28px;
+  }
+  .brand-route {
+    border-left: 3px solid var(--brand);
+    padding: 6px 0 6px 22px;
+  }
+  .brand-route-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 8px;
+  }
+  .brand-route-title {
+    font-family: var(--heading);
+    font-size: clamp(22px, 2vw, 28px);
+    line-height: 1.15;
+    margin-bottom: 8px;
+    color: var(--dark);
+  }
+  .brand-route-body {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 44ch;
+  }
+  .brand-callout {
+    margin-top: 32px;
+    padding: 18px 22px;
+    background: rgba(200,75,47,0.07);
+    border-radius: 4px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--slate);
+    max-width: 50ch;
+  }
+
+  /* ============ PAGE 3: DESIGN SYSTEM PIPELINE ============ */
+  .page-system {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: var(--dark-warm);
+    color: #fff;
+  }
+  .system-header {
+    padding: 6vh 5vw 3vh;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .system-header h2 {
+    font-family: var(--heading);
+    font-size: clamp(34px, 4vw, 58px);
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  .system-header p {
+    color: rgba(255,255,255,0.55);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+  .solution-columns {
+    --pipeline-count: 5;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+  }
+  .system-stage {
+    padding: 4vh 2.4vw;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s ease;
+  }
+  .system-stage:last-child { border-right: none; }
+  .system-stage:hover { background: rgba(200,75,47,0.05); }
+  .system-stage-num {
+    font-family: var(--heading);
+    font-size: clamp(72px, 9vw, 120px);
+    line-height: 0.85;
+    color: rgba(255,255,255,0.12);
+    letter-spacing: -0.02em;
+  }
+  .system-stage-content {
+    margin-top: auto;
+  }
+  .system-stage-name {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 12px;
+  }
+  .system-stage-title {
+    font-family: var(--heading);
+    font-size: clamp(20px, 1.7vw, 26px);
+    color: #fff;
+    margin-bottom: 12px;
+    line-height: 1.15;
+  }
+  .system-stage-body {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* ============ PAGE 4: APPLICATION (split) ============ */
+  .page-application {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    background: var(--stone);
+  }
+  .application-left {
+    background: var(--stone);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .application-quote {
+    font-family: var(--heading);
+    font-style: italic;
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1.25;
+    color: var(--dark);
+    padding-left: 28px;
+    border-left: 3px solid var(--brand);
+    margin-top: 24px;
+    max-width: 18ch;
+  }
+  .application-right {
+    background: var(--cream);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .application-list {
+    display: grid;
+    grid-template-rows: repeat(4, auto);
+    gap: 0;
+    margin-top: 18px;
+  }
+  .application-row {
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(20,20,20,0.08);
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    align-items: baseline;
+    gap: 18px;
+  }
+  .application-row:last-child { border-bottom: none; }
+  .application-num {
+    font-family: var(--heading);
+    font-size: 28px;
+    color: var(--brand);
+    line-height: 1;
+  }
+  .application-title {
+    font-family: var(--heading);
+    font-size: clamp(20px, 1.6vw, 24px);
+    color: var(--dark);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .application-body {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.55;
+    max-width: 50ch;
+  }
+
+  /* ============ PAGE 5: WEB MODERNIZATION (2x2) ============ */
+  .page-webmod {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: var(--dark);
+    color: #fff;
+  }
+  .webmod-header {
+    padding: 6vh 5vw 3vh;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .webmod-header h2 {
+    font-family: var(--heading);
+    font-size: clamp(34px, 4vw, 58px);
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  .webmod-header p {
+    color: rgba(255,255,255,0.55);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 70ch;
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0;
+  }
+  .feature-cell {
+    padding: 5vh 4vw;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s ease;
+  }
+  .feature-cell:nth-child(2n) { border-right: none; }
+  .feature-cell:nth-child(n+3) { border-bottom: none; }
+  .feature-cell:hover { background: rgba(200,75,47,0.05); }
+  .icon-box {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: var(--brand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 22px;
+  }
+  .feature-title {
+    font-family: var(--heading);
+    font-size: clamp(22px, 1.9vw, 28px);
+    color: #fff;
+    margin-bottom: 14px;
+    line-height: 1.15;
+  }
+  .feature-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.6);
+    max-width: 44ch;
+  }
+
+  /* ============ PAGE 6: WORKSHOPS (stat rows) ============ */
+  .page-workshops {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: var(--cream);
+  }
+  .workshops-header {
+    padding: 6vh 5vw 3vh;
+    border-bottom: 1px solid rgba(20,20,20,0.06);
+  }
+  .workshops-header h2 {
+    font-family: var(--heading);
+    font-size: clamp(34px, 4vw, 56px);
+    line-height: 1.05;
+    color: var(--dark);
+    margin-bottom: 14px;
+    max-width: 22ch;
+  }
+  .workshops-header p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 68ch;
+  }
+  .workshops-list {
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+  }
+  .workshop-row {
+    display: grid;
+    grid-template-columns: 90px 220px 1fr;
+    align-items: center;
+    padding: 0 5vw;
+    border-bottom: 1px solid rgba(20,20,20,0.06);
+    gap: 24px;
+    transition: background 0.3s ease;
+  }
+  .workshop-row:last-child { border-bottom: none; }
+  .workshop-row:hover { background: rgba(200,75,47,0.04); }
+  .workshop-num {
+    font-family: var(--heading);
+    font-size: clamp(36px, 3.6vw, 52px);
+    color: var(--brand);
+    line-height: 1;
+  }
+  .workshop-title {
+    font-family: var(--heading);
+    font-size: clamp(20px, 1.6vw, 24px);
+    color: var(--dark);
+    line-height: 1.15;
+  }
+  .workshop-body {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 68ch;
+  }
+
+  /* ============ PAGE 7: ABOVE THE LOOP (split) ============ */
+  .page-loop {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    background: var(--warm-gray);
+  }
+  .loop-left {
+    background: var(--cream);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .loop-quote {
+    font-family: var(--heading);
+    font-style: italic;
+    font-size: clamp(22px, 2.2vw, 32px);
+    line-height: 1.3;
+    color: var(--dark);
+    padding-left: 26px;
+    border-left: 3px solid var(--brand);
+    margin-top: 32px;
+    max-width: 24ch;
+  }
+  .loop-right {
+    background: var(--warm-gray);
+    padding: 6vh 4vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+  }
+  .loop-card {
+    background: var(--cream);
+    padding: 28px 30px;
+    border-radius: 4px;
+    border-left: 3px solid transparent;
+  }
+  .loop-card.legacy {
+    border-left-color: rgba(20,20,20,0.25);
+  }
+  .loop-card.emerging {
+    border-left-color: var(--brand);
+    background: rgba(200,75,47,0.06);
+  }
+  .loop-card-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .loop-card.legacy .loop-card-tag {
+    background: rgba(20,20,20,0.08);
+    color: var(--slate);
+  }
+  .loop-card.emerging .loop-card-tag {
+    background: rgba(200,75,47,0.12);
+    color: var(--brand);
+  }
+  .loop-card h3 {
+    font-family: var(--heading);
+    font-size: clamp(22px, 2vw, 28px);
+    color: var(--dark);
+    margin-bottom: 10px;
+    line-height: 1.15;
+  }
+  .loop-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ============ PAGE 8: AGENT TEAMS (2x2) ============ */
+  .page-agents {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background: var(--slate);
+    color: #fff;
+  }
+  .agents-header {
+    padding: 6vh 5vw 3vh;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .agents-header h2 {
+    font-family: var(--heading);
+    font-size: clamp(34px, 4vw, 58px);
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  .agents-header p {
+    color: rgba(255,255,255,0.6);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 68ch;
+  }
+  .competition-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0;
+  }
+  .agent-cell {
+    padding: 5vh 4vw;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s ease;
+  }
+  .agent-cell:nth-child(2n) { border-right: none; }
+  .agent-cell:nth-child(n+3) { border-bottom: none; }
+  .agent-cell:hover { background: rgba(200,75,47,0.05); }
+  .verdict {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: rgba(200,75,47,0.14);
+    color: var(--brand-light);
+    align-self: flex-start;
+    margin-bottom: 18px;
+  }
+  .agent-title {
+    font-family: var(--heading);
+    font-size: clamp(22px, 1.9vw, 28px);
+    color: #fff;
+    margin-bottom: 14px;
+    line-height: 1.15;
+  }
+  .agent-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.6);
+    max-width: 44ch;
+  }
+  .agents-footer {
+    padding: 22px 5vw;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 12.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .agents-footer strong {
+    color: var(--brand-light);
+    font-weight: 600;
+  }
+
+  /* ============ PAGE 9: CLARITY AUDIT (split) ============ */
+  .page-audit {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    background: var(--cream);
+  }
+  .audit-left {
+    background: var(--brand);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .audit-left::before {
+    content: '';
+    position: absolute;
+    top: -30%; right: -30%;
+    width: 80%; height: 80%;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.08);
+    pointer-events: none;
+  }
+  .audit-section-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .audit-stat {
+    font-family: var(--heading);
+    font-size: clamp(110px, 16vw, 220px);
+    line-height: 0.85;
+    color: #fff;
+    letter-spacing: -0.03em;
+    position: relative;
+  }
+  .audit-stat-label {
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    margin-top: 18px;
+    position: relative;
+  }
+  .audit-stat-detail {
+    margin-top: 24px;
+    color: rgba(255,255,255,0.85);
+    font-size: 14.5px;
+    line-height: 1.65;
+    max-width: 30ch;
+    position: relative;
+  }
+  .audit-right {
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .audit-sessions {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    gap: 20px;
+    margin-top: 28px;
+  }
+  .audit-session {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 18px;
+    align-items: baseline;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(20,20,20,0.08);
+  }
+  .audit-session:last-child { border-bottom: none; }
+  .audit-session-num {
+    font-family: var(--heading);
+    font-size: 34px;
+    color: var(--brand);
+    line-height: 1;
+  }
+  .audit-session-title {
+    font-family: var(--heading);
+    font-size: clamp(20px, 1.5vw, 24px);
+    color: var(--dark);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .audit-session-body {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 52ch;
+  }
+
+  /* ============ PAGE 10: BLUEPRINT (dark, grid) ============ */
+  .page-blueprint {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: var(--dark);
+    color: #fff;
+  }
+  .blueprint-header {
+    padding: 6vh 5vw 3vh;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .blueprint-header h2 {
+    font-family: var(--heading);
+    font-size: clamp(34px, 4vw, 58px);
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  .blueprint-header p {
+    color: rgba(255,255,255,0.55);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 62ch;
+  }
+  .blueprint-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 0;
+  }
+  .blueprint-cell {
+    padding: 3.4vh 3vw;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s ease;
+  }
+  .blueprint-cell:nth-child(2n) { border-right: none; }
+  .blueprint-cell:nth-last-child(-n+2) { border-bottom: none; }
+  .blueprint-cell:hover { background: rgba(200,75,47,0.05); }
+  .blueprint-num {
+    font-family: var(--heading);
+    font-size: clamp(34px, 3vw, 44px);
+    color: rgba(200,75,47,0.85);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .blueprint-cell-title {
+    font-family: var(--heading);
+    font-size: clamp(18px, 1.45vw, 22px);
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .blueprint-cell-body {
+    font-size: 13px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.55);
+    max-width: 42ch;
+  }
+  .blueprint-cell.cta {
+    background: rgba(200,75,47,0.1);
+    justify-content: center;
+  }
+  .blueprint-cell.cta .blueprint-cell-title {
+    color: var(--brand-light);
+    font-style: italic;
+  }
+  .blueprint-cell.cta .blueprint-cell-body {
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* ============ PAGE 11: BACK COVER ============ */
+  .page-back {
+    background: var(--dark);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-back::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 55vw; height: 55vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,75,47,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .back-content {
+    position: relative;
+    z-index: 1;
+    max-width: 660px;
+    padding: 0 24px;
+  }
+  .back-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 28px;
+  }
+  .back-title {
+    font-family: var(--heading);
+    font-size: clamp(56px, 8vw, 120px);
+    line-height: 0.95;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  .back-sub {
+    font-family: var(--heading);
+    font-style: italic;
+    font-size: clamp(18px, 1.7vw, 24px);
+    color: rgba(255,255,255,0.65);
+    line-height: 1.4;
+    max-width: 30ch;
+    margin: 0 auto 44px;
+  }
+  .back-cta {
+    display: inline-block;
+    font-family: var(--body);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 18px 36px;
+    border: 2px solid var(--brand);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .back-cta:hover {
+    background: var(--brand);
+  }
+  .back-meta {
+    margin-top: 60px;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .back-meta strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+  }
+
+  /* Light variant of .page-webmod, used for Agentic AI slide */
+  .page-webmod.light { background: var(--cream); color: var(--dark); }
+  .page-webmod.light .webmod-header { border-bottom: 1px solid rgba(20,20,20,0.06); }
+  .page-webmod.light .webmod-header h2 { color: var(--dark); }
+  .page-webmod.light .webmod-header p { color: var(--muted); }
+  .page-webmod.light .feature-cell {
+    border-right-color: rgba(20,20,20,0.06);
+    border-bottom-color: rgba(20,20,20,0.06);
+  }
+  .page-webmod.light .feature-cell:hover { background: rgba(200,75,47,0.04); }
+  .page-webmod.light .feature-title { color: var(--dark); }
+  .page-webmod.light .feature-body { color: var(--muted); }
+
+  /* ============ PAGE 9 (NEW): UNKNOWNS / WHY THE AUDIT ============ */
+  .page-unknowns {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    background: var(--dark-warm);
+    color: #fff;
+  }
+  .unknowns-left {
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .unknowns-questions {
+    display: grid;
+    gap: 14px;
+    margin-top: 10px;
+  }
+  .unknowns-question {
+    font-family: var(--heading);
+    font-style: italic;
+    font-size: clamp(22px, 2.4vw, 32px);
+    line-height: 1.25;
+    padding-left: 22px;
+    border-left: 2px solid rgba(200,75,47,0.7);
+    color: rgba(255,255,255,0.88);
+  }
+  .unknowns-question:nth-of-type(2) { color: rgba(255,255,255,0.62); }
+  .unknowns-question:nth-of-type(3) { color: rgba(255,255,255,0.42); }
+  .unknowns-right {
+    background: var(--brand);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .unknowns-right::before {
+    content: '';
+    position: absolute;
+    top: -30%; right: -30%;
+    width: 80%; height: 80%;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.08);
+    pointer-events: none;
+  }
+  .unknowns-right > * { position: relative; }
+  .unknowns-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 22px;
+  }
+  .unknowns-resolution {
+    font-family: var(--heading);
+    font-size: clamp(32px, 3.4vw, 48px);
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 22px;
+    letter-spacing: -0.01em;
+    max-width: 16ch;
+  }
+  .unknowns-detail {
+    font-size: 15px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.92);
+    max-width: 34ch;
+  }
+
+  /* ============ NAVIGATION UI ============ */
+  .nav-dots {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 10px 20px;
+    border-radius: 40px;
+  }
+  .nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+    padding: 0;
+  }
+  .nav-dot.active {
+    background: var(--brand);
+    transform: scale(1.35);
+  }
+  .nav-dot:hover { background: rgba(255,255,255,0.6); }
+  .page-counter {
+    position: fixed;
+    top: 28px;
+    right: 36px;
+    z-index: 1000;
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.55);
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 8px 16px;
+    border-radius: 20px;
+  }
+  @keyframes swipeHint {
+    0%, 100% { transform: translateX(0); opacity: 0.6; }
+    50% { transform: translateX(-12px); opacity: 1; }
+  }
+  .swipe-hint {
+    position: fixed;
+    bottom: 80px;
+    right: 36px;
+    z-index: 1000;
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.5s ease;
+  }
+  .swipe-hint.hidden { opacity: 0; pointer-events: none; }
+  .swipe-hint-arrow { animation: swipeHint 1.8s ease-in-out infinite; font-size: 18px; }
+
+  /* ============ MOBILE RESPONSIVE ============ */
+  @media (max-width: 768px) {
+    .page {
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Restack splits */
+    .page-cover,
+    .page-brand,
+    .page-application,
+    .page-loop,
+    .page-audit,
+    .page-unknowns {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+      min-height: 100%;
+    }
+
+    /* Restack 2x2 grids */
+    .features-grid,
+    .competition-grid,
+    .blueprint-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(8, auto);
+    }
+    .blueprint-grid { grid-template-rows: repeat(8, auto); }
+
+    /* Restack pipeline */
+    .solution-columns {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(var(--pipeline-count, 5), auto);
+    }
+    .system-stage {
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .system-stage:last-child { border-bottom: none; }
+
+    /* Workshops list */
+    .workshops-list {
+      grid-template-rows: repeat(6, auto);
+    }
+    .workshop-row {
+      grid-template-columns: 60px 1fr;
+      grid-template-rows: auto auto;
+      padding: 18px 20px;
+      gap: 8px 16px;
+    }
+    .workshop-num { grid-row: 1 / 3; }
+    .workshop-body { grid-column: 2; }
+
+    /* Audit sessions */
+    .audit-session {
+      grid-template-columns: 50px 1fr;
+      gap: 14px;
+    }
+
+    /* Inner padding */
+    .cover-left, .cover-right,
+    .brand-left, .brand-right,
+    .application-left, .application-right,
+    .system-header, .system-stage,
+    .webmod-header, .feature-cell,
+    .workshops-header, .agents-header, .agent-cell,
+    .loop-left, .loop-right,
+    .unknowns-left, .unknowns-right,
+    .audit-left, .audit-right,
+    .blueprint-header, .blueprint-cell,
+    .agents-footer {
+      padding: 28px 22px;
+    }
+
+    /* Typography floors */
+    h1, h2, .page-heading,
+    .system-header h2, .webmod-header h2,
+    .workshops-header h2, .agents-header h2,
+    .blueprint-header h2 {
+      font-size: clamp(28px, 7vw, 44px);
+    }
+    .cover-title { font-size: clamp(38px, 9vw, 60px); }
+    .back-title { font-size: clamp(46px, 12vw, 80px); }
+    .big-stat,
+    .brand-stat,
+    .audit-stat,
+    .system-stage-num {
+      font-size: clamp(56px, 18vw, 96px);
+    }
+    .application-quote, .loop-quote {
+      font-size: clamp(20px, 5vw, 28px);
+      padding-left: 18px;
+    }
+
+    /* Nav UI */
+    .page-counter {
+      top: 16px;
+      right: 16px;
+      font-size: 11px;
+      padding: 6px 12px;
+    }
+    .nav-dots {
+      bottom: 16px;
+      gap: 8px;
+      padding: 8px 14px;
+    }
+    .nav-dot { width: 9px; height: 9px; }
+    .swipe-hint { display: none; }
+
+    /* Back cover glow */
+    .page-back::before {
+      width: 90vw;
+      height: 90vw;
+    }
+
+    /* Cover stripe */
+    .cover-left::before { width: 4px; }
+
+    /* Audit decorative circle on mobile */
+    .audit-left::before {
+      top: -10%; right: -40%;
+      width: 100%; height: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="magazine" id="magazine">
+
+  <!-- ============ PAGE 1: COVER ============ -->
+  <section class="page page-cover">
+    <div class="cover-left">
+      <div class="cover-eyebrow">Partner Briefing / 2026</div>
+      <div>
+        <h1 class="cover-title">CryoTrak <span class="x">×</span> Lone Rock Point</h1>
+        <p class="cover-tagline">From brand foundations to autonomous AI.</p>
+      </div>
+      <div class="cover-meta">
+        <strong>Lone Rock Point</strong>
+        <span>lonerockpoint.com</span>
+      </div>
+    </div>
+    <div class="cover-right">
+      <div class="cover-stat-block">
+        <div class="cover-stat-caption">How Lone Rock Point Helps</div>
+        <h2 style="font-family: var(--heading); font-size: clamp(34px, 4vw, 54px); line-height: 1.05; color: #fff; letter-spacing: -0.01em; margin-bottom: 26px; max-width: 16ch;">From the ground up, or any layer in between.</h2>
+        <div style="display: grid; gap: 6px;">
+          <div style="display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <span style="font-family: var(--heading); color: var(--brand); font-size: 18px; line-height:1;">01</span>
+            <span style="font-size: 14px; color: rgba(255,255,255,0.78); line-height:1.5;"><strong style="color:#fff; font-weight:600;">Brand foundations.</strong> Logo, color, typography, voice.</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <span style="font-family: var(--heading); color: var(--brand); font-size: 18px; line-height:1;">02</span>
+            <span style="font-size: 14px; color: rgba(255,255,255,0.78); line-height:1.5;"><strong style="color:#fff; font-weight:600;">Design systems.</strong> A scalable visual language for every surface.</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <span style="font-family: var(--heading); color: var(--brand); font-size: 18px; line-height:1;">03</span>
+            <span style="font-size: 14px; color: rgba(255,255,255,0.78); line-height:1.5;"><strong style="color:#fff; font-weight:600;">Web modernization.</strong> Discovery, design, and a blueprint to ship.</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <span style="font-family: var(--heading); color: var(--brand); font-size: 18px; line-height:1;">04</span>
+            <span style="font-size: 14px; color: rgba(255,255,255,0.78); line-height:1.5;"><strong style="color:#fff; font-weight:600;">Agentic AI teams.</strong> Standing up agent populations with proper guardrails.</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08);">
+            <span style="font-family: var(--heading); color: var(--brand); font-size: 18px; line-height:1;">05</span>
+            <span style="font-size: 14px; color: rgba(255,255,255,0.78); line-height:1.5;"><strong style="color:#fff; font-weight:600;">Design thinking workshops.</strong> Conversations that reshape how the company works.</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: baseline; padding: 10px 0;">
+            <span style="font-family: var(--heading); color: var(--brand); font-size: 18px; line-height:1;">06</span>
+            <span style="font-size: 14px; color: rgba(255,255,255,0.78); line-height:1.5;"><strong style="color:#fff; font-weight:600;">AI Clarity Audit.</strong> A scoped path forward when the unknowns outnumber the knowns.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 2: BRAND FOUNDATIONS ============ -->
+  <section class="page page-brand">
+    <div class="brand-left">
+      <div class="section-num">01 / Brand Foundations</div>
+      <div class="brand-stat">02</div>
+      <div class="brand-stat-label">Routes to a starting brand</div>
+      <p class="brand-stat-detail">When the brand is still forming, there are two practical paths to a working identity. Either gets CryoTrak moving fast, with foundation that scales.</p>
+    </div>
+    <div class="brand-right">
+      <h2 class="page-heading">Where to start when the brand is still forming.</h2>
+      <p class="page-body">Lone Rock Point is not your first call for ground-up corporate brand definition. We are your first call for getting started fast and building toward a system that scales.</p>
+      <div class="brand-routes">
+        <div class="brand-route">
+          <div class="brand-route-label">Route A / Logo</div>
+          <h3 class="brand-route-title">99designs Contest</h3>
+          <p class="brand-route-body">For $500 you'll get a flood of submissions to choose from. We help draft the creative brief, refine it with Claude or ChatGPT, and lock in a logo direction you can move on.</p>
+        </div>
+        <div class="brand-route">
+          <div class="brand-route-label">Route B / Atomic Elements</div>
+          <h3 class="brand-route-title">Color, Typography, Vibe</h3>
+          <p class="brand-route-body">We run structured exercises to lock in color, typography, and the general visual register. Those sub-atomic elements become the basis for the full design system.</p>
+        </div>
+      </div>
+      <div class="brand-callout">Two routes. One destination. Either path produces enough foundation to scale into a real visual language.</div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 3: DESIGN SYSTEM PIPELINE ============ -->
+  <section class="page page-system">
+    <div class="system-header">
+      <div class="section-num">02 / Design System</div>
+      <h2>A scalable visual language.</h2>
+      <p>Atomic design that grows with CryoTrak as the company and its digital surface area scale. A library of patterns rather than a handful of templates.</p>
+    </div>
+    <div class="solution-columns">
+      <div class="system-stage">
+        <div class="system-stage-num">01</div>
+        <div class="system-stage-content">
+          <div class="system-stage-name">Atoms</div>
+          <h3 class="system-stage-title">Inputs &amp; tokens</h3>
+          <p class="system-stage-body">Labels, base type, color tokens, spacing, shadows. The smallest reusable units.</p>
+        </div>
+      </div>
+      <div class="system-stage">
+        <div class="system-stage-num">02</div>
+        <div class="system-stage-content">
+          <div class="system-stage-name">Molecules</div>
+          <h3 class="system-stage-title">Form fields</h3>
+          <p class="system-stage-body">Atoms composed into functional groupings. Field plus label plus state.</p>
+        </div>
+      </div>
+      <div class="system-stage">
+        <div class="system-stage-num">03</div>
+        <div class="system-stage-content">
+          <div class="system-stage-name">Organisms</div>
+          <h3 class="system-stage-title">Composites</h3>
+          <p class="system-stage-body">Login flows, dashboards, sectioned panels. Self-contained UI regions.</p>
+        </div>
+      </div>
+      <div class="system-stage">
+        <div class="system-stage-num">04</div>
+        <div class="system-stage-content">
+          <div class="system-stage-name">Templates</div>
+          <h3 class="system-stage-title">Layout shells</h3>
+          <p class="system-stage-body">Repeatable page-level structures. The scaffolding that keeps surfaces consistent.</p>
+        </div>
+      </div>
+      <div class="system-stage">
+        <div class="system-stage-num">05</div>
+        <div class="system-stage-content">
+          <div class="system-stage-name">Pages</div>
+          <h3 class="system-stage-title">Final compositions</h3>
+          <p class="system-stage-body">The shipped artifact. Real content, real flows, ready to ship.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 4: APPLICATION (split) ============ -->
+  <section class="page page-application">
+    <div class="application-left">
+      <div class="section-num">03 / Application</div>
+      <h2 class="page-heading">One language. Many surfaces.</h2>
+      <div class="application-quote">"Built once. Spoken everywhere."</div>
+    </div>
+    <div class="application-right">
+      <p class="page-body">Once the system is live, every surface where CryoTrak shows up speaks the same vocabulary. Sales materials look like the product. The product looks like the website. The internal tools look like the company.</p>
+      <div class="application-list">
+        <div class="application-row">
+          <div class="application-num">01</div>
+          <div>
+            <h4 class="application-title">PowerPoint Presentations</h4>
+            <p class="application-body">Sales decks, board updates, investor materials.</p>
+          </div>
+        </div>
+        <div class="application-row">
+          <div class="application-num">02</div>
+          <div>
+            <h4 class="application-title">Corporate Web Site</h4>
+            <p class="application-body">Public-facing presence aligned with the brand foundations.</p>
+          </div>
+        </div>
+        <div class="application-row">
+          <div class="application-num">03</div>
+          <div>
+            <h4 class="application-title">Customer Web Application</h4>
+            <p class="application-body">In-product dashboards, onboarding, and core workflows.</p>
+          </div>
+        </div>
+        <div class="application-row">
+          <div class="application-num">04</div>
+          <div>
+            <h4 class="application-title">Custom Software</h4>
+            <p class="application-body">Internal tools and CryoTrak-specific applications.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 5: WEB MODERNIZATION (2x2) ============ -->
+  <section class="page page-webmod">
+    <div class="webmod-header">
+      <div class="section-num">04 / Web Modernization</div>
+      <h2>Lone Rock Point's bread and butter.</h2>
+      <p>Discovery and design that produces a solution blueprint any technical team can execute. Including ours, when the engineering fits.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-cell">
+        <div class="icon-box">&#x25CE;</div>
+        <h3 class="feature-title">Experience &amp; Identity</h3>
+        <p class="feature-body">UX design mapping visitor journeys from first impression through conversion. Information architecture built for how your audience actually looks for things. WCAG 2.2 AA accessibility built into the markup and the editorial workflow, not bolted on at the end.</p>
+      </div>
+      <div class="feature-cell">
+        <div class="icon-box">&#x21C4;</div>
+        <h3 class="feature-title">Content &amp; Discoverability</h3>
+        <p class="feature-body">Content migration and strategy: audit, rewrite, retire, redirect. Technical SEO with structured data and on-page optimization. AI and Generative Search Optimization for LLM and answer-engine results, not just classic SERPs.</p>
+      </div>
+      <div class="feature-cell">
+        <div class="icon-box">&#x26A1;</div>
+        <h3 class="feature-title">Performance &amp; Security</h3>
+        <p class="feature-body">Core Web Vitals as a baseline. Fast on the devices your audience actually uses. Hardened WordPress on a managed enterprise platform with documented patching and incident response.</p>
+      </div>
+      <div class="feature-cell">
+        <div class="icon-box">&#x2692;</div>
+        <h3 class="feature-title">Operations &amp; Editor Experience</h3>
+        <p class="feature-body">A dashboard your team can actually use, with editorial guardrails. Hands-on training for the people who run the site. Analytics configured to answer real questions. Clean integrations across CRM, email, search, and SSO.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 6: AGENTIC AI TEAMS SETUP (light 2x2) ============ -->
+  <section class="page page-webmod light">
+    <div class="webmod-header">
+      <div class="section-num">05 / Agentic AI</div>
+      <h2>How agent populations get built.</h2>
+      <p>Agentic AI is not a tool you install. It's a team you stand up. We design and operate the four building blocks that turn solo bots into supervised populations doing real work.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-cell">
+        <div class="icon-box">&#x25C9;</div>
+        <h3 class="feature-title">Orchestration &amp; Mission Control</h3>
+        <p class="feature-body">A control surface where humans direct, supervise, and intervene. Built on paperclip.ing or an equivalent panel. Visibility into what every agent is doing, and why.</p>
+      </div>
+      <div class="feature-cell">
+        <div class="icon-box">&#x2699;</div>
+        <h3 class="feature-title">Worker Agents</h3>
+        <p class="feature-body">Purpose-built agents wired into CryoTrak's tools, data, and processes. Scoped to specific jobs with measurable outputs. Replaceable, upgradeable, and auditable.</p>
+      </div>
+      <div class="feature-cell">
+        <div class="icon-box">&#x29C9;</div>
+        <h3 class="feature-title">Knowledge Infrastructure</h3>
+        <p class="feature-body">Memory, retrieval, and prompting patterns. The substrate agents reason on. Without it, agents are amnesiac. With it, they compound institutional knowledge.</p>
+      </div>
+      <div class="feature-cell">
+        <div class="icon-box">&#x2713;</div>
+        <h3 class="feature-title">Guardrails &amp; Governance</h3>
+        <p class="feature-body">Policy, oversight, escalation paths, and human checkpoints. Safety from day one, not bolted on later. CryoTrak stays above the loop on what matters.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 7: ABOVE THE LOOP (split) ============ -->
+  <section class="page page-loop">
+    <div class="loop-left">
+      <div class="section-num">06 / The Shift</div>
+      <h2 class="page-heading">From in the loop to above the loop.</h2>
+      <p class="page-body">A meaningful evolution in how humans relate to automated systems. The legacy model interleaves humans inside every process. The emerging model elevates them above it.</p>
+      <div class="loop-quote">"Agentic AI adds superhuman capabilities to teams, but only if daily workflows, rituals, and governance are redesigned around agent populations."</div>
+    </div>
+    <div class="loop-right">
+      <div class="loop-card legacy">
+        <span class="loop-card-tag">Legacy Model</span>
+        <h3>In the Loop</h3>
+        <p>Humans do pieces of a process interleaved with agents. Manual handoffs, context switching, and bottlenecks at every human touchpoint.</p>
+      </div>
+      <div class="loop-card emerging">
+        <span class="loop-card-tag">Emerging Model</span>
+        <h3>Above the Loop</h3>
+        <p>Agents handle most or all of the core process. The human role shifts to judgment, oversight, and exception handling.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 8: AGENT TEAMS (2x2) ============ -->
+  <section class="page page-agents">
+    <div class="agents-header">
+      <div class="section-num">07 / Agent Teams</div>
+      <h2>Agent populations, not single bots.</h2>
+      <p>We design and stand up agent teams that work autonomously, with human supervision and proper guardrails. Orchestration agents direct workers. Workers do the work.</p>
+    </div>
+    <div class="competition-grid">
+      <div class="agent-cell">
+        <div class="verdict">Revenue</div>
+        <h3 class="agent-title">Business Development &amp; Sales</h3>
+        <p class="agent-body">Pipeline qualification, outreach sequencing, deal research, CRM hygiene. Sellers stay above the loop on what matters.</p>
+      </div>
+      <div class="agent-cell">
+        <div class="verdict">Product</div>
+        <h3 class="agent-title">Application Development</h3>
+        <p class="agent-body">Spec drafting, code review, test scaffolding, iterative builds. Engineers focus on architecture and judgment calls.</p>
+      </div>
+      <div class="agent-cell">
+        <div class="verdict">Demand</div>
+        <h3 class="agent-title">Outreach &amp; Marketing</h3>
+        <p class="agent-body">Content production, channel orchestration, campaign analysis. Marketing operates at a cadence that used to require an army.</p>
+      </div>
+      <div class="agent-cell">
+        <div class="verdict">Operations</div>
+        <h3 class="agent-title">Back Office Operations</h3>
+        <p class="agent-body">Ops triage, document processing, internal Q&amp;A, routing. The administrative tax shrinks toward zero.</p>
+      </div>
+    </div>
+    <div class="agents-footer">
+      Mission control via <strong>paperclip.ing</strong> or an equivalent orchestration panel.
+    </div>
+  </section>
+
+  <!-- ============ PAGE 9 (NEW): UNKNOWNS / WHY THE AUDIT ============ -->
+  <section class="page page-unknowns">
+    <div class="unknowns-left">
+      <div class="section-num">08 / The Unknowns</div>
+      <h2 class="page-heading" style="color:#fff;">More questions than answers.</h2>
+      <p class="page-body" style="color:rgba(255,255,255,0.6); margin-bottom: 22px;">CryoTrak is at the start of this. The terrain hasn't been mapped. Picking the right first move requires getting honest about what we don't yet know.</p>
+      <div class="unknowns-questions">
+        <div class="unknowns-question">"Where does the team actually leak time?"</div>
+        <div class="unknowns-question">"What's worth automating? What isn't?"</div>
+        <div class="unknowns-question">"How will humans operate alongside the agents?"</div>
+      </div>
+    </div>
+    <div class="unknowns-right">
+      <div class="unknowns-eyebrow">The Path Forward</div>
+      <h2 class="unknowns-resolution">The AI Clarity Audit is built for exactly this.</h2>
+      <p class="unknowns-detail">A focused engagement designed to surface the unknowns, score the opportunities, and lock in a sequenced path. Three working sessions. One decision-ready blueprint.</p>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 10: CLARITY AUDIT (split) ============ -->
+  <section class="page page-audit">
+    <div class="audit-left">
+      <div class="audit-section-num">09 / The Clarity Audit</div>
+      <div class="audit-stat">2&ndash;3</div>
+      <div class="audit-stat-label">Weeks to a Blueprint</div>
+      <p class="audit-stat-detail">Three facilitated working sessions. One hour each. Each session builds on the last, moving from understanding to analysis to action.</p>
+    </div>
+    <div class="audit-right">
+      <div class="section-num">How it works</div>
+      <h2 class="page-heading">A focused engagement to find the work worth doing.</h2>
+      <p class="page-body">Worksheets, light documentation review, and three structured conversations. Outputs into a single decision-ready document: the AI Clarity Blueprint.</p>
+      <div class="audit-sessions">
+        <div class="audit-session">
+          <div class="audit-session-num">01</div>
+          <div>
+            <h4 class="audit-session-title">Understanding</h4>
+            <p class="audit-session-body">Map how work flows today. Where the friction lives. What the team relies on.</p>
+          </div>
+        </div>
+        <div class="audit-session">
+          <div class="audit-session-num">02</div>
+          <div>
+            <h4 class="audit-session-title">Analysis</h4>
+            <p class="audit-session-body">Score friction, opportunities, and AI readiness. Surface what's worth automating and what isn't.</p>
+          </div>
+        </div>
+        <div class="audit-session">
+          <div class="audit-session-num">03</div>
+          <div>
+            <h4 class="audit-session-title">Action</h4>
+            <p class="audit-session-body">Sequence the build plan. Pick the proof of concept. Lock the 90-day path.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 10: BLUEPRINT ============ -->
+  <section class="page page-blueprint">
+    <div class="blueprint-header">
+      <div class="section-num">10 / The Deliverable</div>
+      <h2>The AI Clarity Blueprint.</h2>
+      <p>The tangible output of the audit. Designed to be actionable, not shelved. Seven sections, every one of them load-bearing.</p>
+    </div>
+    <div class="blueprint-grid">
+      <div class="blueprint-cell">
+        <div class="blueprint-num">01</div>
+        <h3 class="blueprint-cell-title">Revenue &amp; Workflow Map</h3>
+        <p class="blueprint-cell-body">A clear view of how work flows through the organization and where friction accumulates.</p>
+      </div>
+      <div class="blueprint-cell">
+        <div class="blueprint-num">02</div>
+        <h3 class="blueprint-cell-title">Operational Friction Audit</h3>
+        <p class="blueprint-cell-body">Quantified time leakage and repetitive effort, scored by strategic importance.</p>
+      </div>
+      <div class="blueprint-cell">
+        <div class="blueprint-num">03</div>
+        <h3 class="blueprint-cell-title">Knowledge Infrastructure</h3>
+        <p class="blueprint-cell-body">An evaluation of AI readiness across the company, with maturity scoring.</p>
+      </div>
+      <div class="blueprint-cell">
+        <div class="blueprint-num">04</div>
+        <h3 class="blueprint-cell-title">Opportunity Scoring Matrix</h3>
+        <p class="blueprint-cell-body">Ranked opportunities scored on revenue, time savings, frequency, complexity, and risk.</p>
+      </div>
+      <div class="blueprint-cell">
+        <div class="blueprint-num">05</div>
+        <h3 class="blueprint-cell-title">Automation Roadmap</h3>
+        <p class="blueprint-cell-body">A sequenced plan showing what to automate first, second, and third. With reasoning.</p>
+      </div>
+      <div class="blueprint-cell">
+        <div class="blueprint-num">06</div>
+        <h3 class="blueprint-cell-title">Proof-of-Concept Design</h3>
+        <p class="blueprint-cell-body">Current workflow, required inputs, success criteria, and human-in-the-loop controls.</p>
+      </div>
+      <div class="blueprint-cell">
+        <div class="blueprint-num">07</div>
+        <h3 class="blueprint-cell-title">90-Day Implementation Plan</h3>
+        <p class="blueprint-cell-body">Milestones, knowledge structuring requirements, and concrete next steps.</p>
+      </div>
+      <div class="blueprint-cell cta">
+        <div class="blueprint-num">&#x2605;</div>
+        <h3 class="blueprint-cell-title">The Goal</h3>
+        <p class="blueprint-cell-body">Past Claude and ChatGPT. Toward agent populations operating autonomously, with supervision and proper guardrails.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 11: BACK COVER ============ -->
+  <section class="page page-back">
+    <div class="back-content">
+      <div class="back-eyebrow">Next</div>
+      <h2 class="back-title">Let's begin.</h2>
+      <p class="back-sub">Start with the AI Clarity Audit. Two to three weeks to a scoped, decision-ready path forward.</p>
+      <a class="back-cta" href="mailto:jjt@lonerockpoint.com">jjt@lonerockpoint.com</a>
+      <div class="back-meta">
+        <strong>Lone Rock Point</strong>
+        <span>lonerockpoint.com</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-dots" id="navDots"></div>
+<div class="page-counter" id="pageCounter">01 / 12</div>
+<div class="swipe-hint" id="swipeHint">
+  <span class="swipe-hint-arrow">&#x2190;</span> Scroll or use arrow keys
+</div>
+
+<script>
+(function() {
+  const magazine = document.getElementById('magazine');
+  const navDotsContainer = document.getElementById('navDots');
+  const pageCounter = document.getElementById('pageCounter');
+  const swipeHint = document.getElementById('swipeHint');
+  const totalPages = 12;
+  let currentPage = 0;
+  let isAnimating = false;
+  const ANIM_DURATION = 650;
+
+  function setVH() {
+    document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+  }
+  setVH();
+  window.addEventListener('orientationchange', setVH);
+
+  for (let i = 0; i < totalPages; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to page ' + (i + 1));
+    dot.addEventListener('click', () => goToPage(i));
+    navDotsContainer.appendChild(dot);
+  }
+
+  function goToPage(index) {
+    if (index < 0 || index >= totalPages || index === currentPage || isAnimating) return;
+    isAnimating = true;
+    currentPage = index;
+    magazine.style.transform = 'translateX(-' + (currentPage * 100) + 'vw)';
+    updateUI();
+    setTimeout(() => { isAnimating = false; }, ANIM_DURATION);
+  }
+
+  function updateUI() {
+    const dots = navDotsContainer.querySelectorAll('.nav-dot');
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentPage));
+    pageCounter.textContent = String(currentPage + 1).padStart(2, '0') + ' / ' + String(totalPages).padStart(2, '0');
+    if (currentPage > 0) swipeHint.classList.add('hidden');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault(); goToPage(currentPage + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault(); goToPage(currentPage - 1);
+    }
+  });
+
+  let wheelAccumulator = 0;
+  let wheelTimer = null;
+  document.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    wheelAccumulator += (Math.abs(e.deltaX) > Math.abs(e.deltaY)) ? e.deltaX : e.deltaY;
+    if (wheelTimer) clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => { wheelAccumulator = 0; }, 200);
+    if (Math.abs(wheelAccumulator) > 50) {
+      if (wheelAccumulator > 0) goToPage(currentPage + 1);
+      else goToPage(currentPage - 1);
+      wheelAccumulator = 0;
+    }
+  }, { passive: false });
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchMoved = false;
+  let swipeAxis = null;
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoved = false;
+    swipeAxis = null;
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    touchMoved = true;
+    if (swipeAxis === null) {
+      const dx = Math.abs(e.touches[0].clientX - touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      if (dx + dy > 10) {
+        swipeAxis = (dx > dy) ? 'x' : 'y';
+      }
+    }
+    if (swipeAxis === 'x') {
+      e.preventDefault();
+    }
+  }, { passive: false });
+  document.addEventListener('touchend', (e) => {
+    if (!touchMoved || swipeAxis !== 'x') return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) goToPage(currentPage + 1);
+      else goToPage(currentPage - 1);
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    setVH();
+    magazine.style.transition = 'none';
+    magazine.style.transform = 'translateX(-' + (currentPage * 100) + 'vw)';
+    requestAnimationFrame(() => { magazine.style.transition = ''; });
+  });
+
+  setTimeout(() => swipeHint.classList.add('hidden'), 6000);
+})();
+</script>
+</body>
+</html>
