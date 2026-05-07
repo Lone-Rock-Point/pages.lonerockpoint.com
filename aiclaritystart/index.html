@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to your AI Clarity Audit / Lone Rock Point</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #C84B2F;
+    --brand-light: #e8644a;
+    --dark: #141414;
+    --dark-warm: #1c1917;
+    --slate: #2d2926;
+    --cream: #faf7f2;
+    --warm-gray: #f0ebe4;
+    --stone: #e7e0d6;
+    --muted: #8a8178;
+    --heading: 'DM Serif Display', Georgia, serif;
+    --body: 'Inter', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100dvh;
+    height: calc(var(--vh, 1vh) * 100);
+    width: 100vw;
+    overflow: hidden;
+    font-family: var(--body);
+    -webkit-font-smoothing: antialiased;
+    color: var(--dark);
+  }
+
+  .magazine {
+    display: flex;
+    width: 1000vw;
+    height: 100dvh;
+    height: calc(var(--vh, 1vh) * 100);
+    transition: transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: transform;
+  }
+
+  .page {
+    flex: 0 0 100vw;
+    height: 100dvh;
+    height: calc(var(--vh, 1vh) * 100);
+    width: 100vw;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Shared components */
+  .section-num {
+    font-family: var(--body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 24px;
+  }
+  .page-heading {
+    font-family: var(--heading);
+    font-size: clamp(34px, 4vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 22px;
+  }
+  .page-body {
+    font-family: var(--body);
+    font-size: clamp(14px, 1.05vw, 16px);
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 38ch;
+  }
+  .big-stat {
+    font-family: var(--heading);
+    font-size: clamp(100px, 12vw, 160px);
+    line-height: 0.85;
+    color: var(--brand);
+    letter-spacing: -0.02em;
+  }
+  .big-stat-label {
+    font-family: var(--body);
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-top: 14px;
+    font-weight: 500;
+  }
+  .big-stat-label.on-light { color: var(--muted); }
+
+  /* ============ PAGE 1: COVER ============ */
+  .page-cover {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    background: var(--dark);
+    color: #fff;
+  }
+  .cover-left {
+    position: relative;
+    background: var(--dark);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cover-left::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 6px; height: 100%;
+    background: var(--brand);
+  }
+  .cover-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--brand);
+  }
+  .cover-title {
+    font-family: var(--heading);
+    font-size: clamp(44px, 5.6vw, 86px);
+    line-height: 1;
+    letter-spacing: -0.015em;
+    color: #fff;
+  }
+  .cover-tagline {
+    font-family: var(--heading);
+    font-style: italic;
+    font-size: clamp(20px, 1.8vw, 26px);
+    color: rgba(255,255,255,0.78);
+    margin-top: 20px;
+    max-width: 26ch;
+    line-height: 1.3;
+  }
+  .cover-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .cover-meta strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+  }
+  .cover-right {
+    background: var(--slate);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .cover-right::after {
+    content: '';
+    position: absolute;
+    top: -25%; right: -25%;
+    width: 60%; height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,75,47,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover-stat-block {
+    position: relative;
+    z-index: 1;
+  }
+  .cover-stat-caption {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 16px;
+  }
+  .cover-stat-detail {
+    margin-top: 28px;
+    color: rgba(255,255,255,0.62);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 36ch;
+  }
+
+  /* ============ PAGE 2 + 8: BRAND-STYLE SPLIT ============ */
+  .page-brand {
+    display: grid;
+    grid-template-columns: 45% 55%;
+    background: var(--warm-gray);
+  }
+  .brand-left {
+    background: var(--cream);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .brand-stat {
+    font-family: var(--heading);
+    font-size: clamp(110px, 14vw, 200px);
+    line-height: 0.85;
+    color: var(--brand);
+    letter-spacing: -0.03em;
+  }
+  .brand-stat.word {
+    font-size: clamp(80px, 10vw, 140px);
+  }
+  .brand-stat-label {
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 16px;
+    font-weight: 600;
+  }
+  .brand-stat-detail {
+    margin-top: 26px;
+    color: var(--muted);
+    line-height: 1.65;
+    font-size: 15px;
+    max-width: 32ch;
+  }
+  .brand-right {
+    background: var(--warm-gray);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .brand-routes {
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: 28px;
+    margin-top: 28px;
+  }
+  .brand-route {
+    border-left: 3px solid var(--brand);
+    padding: 6px 0 6px 22px;
+  }
+  .brand-route-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 8px;
+  }
+  .brand-route-title {
+    font-family: var(--heading);
+    font-size: clamp(22px, 2vw, 28px);
+    line-height: 1.15;
+    margin-bottom: 8px;
+    color: var(--dark);
+  }
+  .brand-route-body {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 44ch;
+  }
+  .brand-callout {
+    margin-top: 32px;
+    padding: 18px 22px;
+    background: rgba(200,75,47,0.07);
+    border-radius: 4px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--slate);
+    max-width: 50ch;
+  }
+
+  /* ============ PAGE 3: PIPELINE (3-col) ============ */
+  .page-system {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: var(--dark-warm);
+    color: #fff;
+  }
+  .system-header {
+    padding: 6vh 5vw 3vh;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .system-header h2 {
+    font-family: var(--heading);
+    font-size: clamp(34px, 4vw, 58px);
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  .system-header p {
+    color: rgba(255,255,255,0.55);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+  .solution-columns {
+    --pipeline-count: 3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .system-stage {
+    padding: 4vh 2.4vw;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s ease;
+  }
+  .system-stage:last-child { border-right: none; }
+  .system-stage:hover { background: rgba(200,75,47,0.05); }
+  .system-stage-num {
+    font-family: var(--heading);
+    font-size: clamp(72px, 9vw, 120px);
+    line-height: 0.85;
+    color: rgba(255,255,255,0.12);
+    letter-spacing: -0.02em;
+  }
+  .system-stage-content {
+    margin-top: auto;
+  }
+  .system-stage-name {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 12px;
+  }
+  .system-stage-title {
+    font-family: var(--heading);
+    font-size: clamp(22px, 2vw, 30px);
+    color: #fff;
+    margin-bottom: 12px;
+    line-height: 1.15;
+  }
+  .system-stage-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.6);
+    max-width: 38ch;
+  }
+
+  /* ============ PAGE 4: APPLICATION (split) ============ */
+  .page-application {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    background: var(--stone);
+  }
+  .application-left {
+    background: var(--stone);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .application-quote {
+    font-family: var(--heading);
+    font-style: italic;
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1.25;
+    color: var(--dark);
+    padding-left: 28px;
+    border-left: 3px solid var(--brand);
+    margin-top: 24px;
+    max-width: 18ch;
+  }
+  .application-right {
+    background: var(--cream);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .application-list {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    gap: 0;
+    margin-top: 18px;
+  }
+  .application-row {
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(20,20,20,0.08);
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    align-items: baseline;
+    gap: 18px;
+  }
+  .application-row:last-child { border-bottom: none; }
+  .application-num {
+    font-family: var(--heading);
+    font-size: 28px;
+    color: var(--brand);
+    line-height: 1;
+  }
+  .application-title {
+    font-family: var(--heading);
+    font-size: clamp(20px, 1.6vw, 24px);
+    color: var(--dark);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .application-body {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.55;
+    max-width: 50ch;
+  }
+
+  /* ============ PAGE 5: LOOP (cards) ============ */
+  .page-loop {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    background: var(--warm-gray);
+  }
+  .loop-left {
+    background: var(--cream);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .loop-quote {
+    font-family: var(--heading);
+    font-style: italic;
+    font-size: clamp(22px, 2.2vw, 32px);
+    line-height: 1.3;
+    color: var(--dark);
+    padding-left: 26px;
+    border-left: 3px solid var(--brand);
+    margin-top: 32px;
+    max-width: 26ch;
+  }
+  .loop-right {
+    background: var(--warm-gray);
+    padding: 6vh 4vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+  }
+  .loop-card {
+    background: var(--cream);
+    padding: 28px 30px;
+    border-radius: 4px;
+    border-left: 3px solid transparent;
+  }
+  .loop-card.legacy {
+    border-left-color: rgba(20,20,20,0.25);
+  }
+  .loop-card.emerging {
+    border-left-color: var(--brand);
+    background: rgba(200,75,47,0.06);
+  }
+  .loop-card-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .loop-card.legacy .loop-card-tag {
+    background: rgba(20,20,20,0.08);
+    color: var(--slate);
+  }
+  .loop-card.emerging .loop-card-tag {
+    background: rgba(200,75,47,0.12);
+    color: var(--brand);
+  }
+  .loop-card h3 {
+    font-family: var(--heading);
+    font-size: clamp(22px, 2vw, 28px);
+    color: var(--dark);
+    margin-bottom: 10px;
+    line-height: 1.15;
+  }
+  .loop-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ============ PAGE 6: AUDIT (90 days, split) ============ */
+  .page-audit {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    background: var(--cream);
+  }
+  .audit-left {
+    background: var(--brand);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .audit-left::before {
+    content: '';
+    position: absolute;
+    top: -30%; right: -30%;
+    width: 80%; height: 80%;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.08);
+    pointer-events: none;
+  }
+  .audit-section-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .audit-stat {
+    font-family: var(--heading);
+    font-size: clamp(110px, 16vw, 220px);
+    line-height: 0.85;
+    color: #fff;
+    letter-spacing: -0.03em;
+    position: relative;
+  }
+  .audit-stat-label {
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    margin-top: 18px;
+    position: relative;
+  }
+  .audit-stat-detail {
+    margin-top: 24px;
+    color: rgba(255,255,255,0.85);
+    font-size: 14.5px;
+    line-height: 1.65;
+    max-width: 30ch;
+    position: relative;
+  }
+  .audit-right {
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .audit-sessions {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    gap: 14px;
+    margin-top: 24px;
+  }
+  .audit-session {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 18px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(20,20,20,0.08);
+  }
+  .audit-session:last-child { border-bottom: none; }
+  .audit-session-num {
+    font-family: var(--heading);
+    font-size: 34px;
+    color: var(--brand);
+    line-height: 1;
+  }
+  .audit-session-title {
+    font-family: var(--heading);
+    font-size: clamp(20px, 1.5vw, 24px);
+    color: var(--dark);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .audit-session-body {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 52ch;
+  }
+
+  /* ============ PAGE 7: BLUEPRINT (dark grid) ============ */
+  .page-blueprint {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: var(--dark);
+    color: #fff;
+  }
+  .blueprint-header {
+    padding: 6vh 5vw 3vh;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .blueprint-header h2 {
+    font-family: var(--heading);
+    font-size: clamp(34px, 4vw, 58px);
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  .blueprint-header p {
+    color: rgba(255,255,255,0.55);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 62ch;
+  }
+  .blueprint-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 0;
+  }
+  .blueprint-cell {
+    padding: 3.4vh 3vw;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s ease;
+  }
+  .blueprint-cell:nth-child(2n) { border-right: none; }
+  .blueprint-cell:nth-last-child(-n+2) { border-bottom: none; }
+  .blueprint-cell:hover { background: rgba(200,75,47,0.05); }
+  .blueprint-num {
+    font-family: var(--heading);
+    font-size: clamp(34px, 3vw, 44px);
+    color: rgba(200,75,47,0.85);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .blueprint-cell-title {
+    font-family: var(--heading);
+    font-size: clamp(18px, 1.45vw, 22px);
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .blueprint-cell-body {
+    font-size: 13px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.55);
+    max-width: 42ch;
+  }
+  .blueprint-cell.cta {
+    background: rgba(200,75,47,0.1);
+    justify-content: center;
+  }
+  .blueprint-cell.cta .blueprint-cell-title {
+    color: var(--brand-light);
+    font-style: italic;
+  }
+  .blueprint-cell.cta .blueprint-cell-body {
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* ============ PAGE 9: KICKOFF (split) ============ */
+  .page-kickoff {
+    display: grid;
+    grid-template-columns: 58% 42%;
+    background: var(--dark-warm);
+    color: #fff;
+  }
+  .kickoff-left {
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .kickoff-intro {
+    color: rgba(255,255,255,0.6);
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 50ch;
+    margin-bottom: 28px;
+  }
+  .kickoff-times {
+    display: grid;
+    gap: 0;
+    margin-top: 4px;
+  }
+  .kickoff-time-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    align-items: baseline;
+  }
+  .kickoff-time-row:last-child { border-bottom: none; }
+  .kickoff-time-num {
+    font-family: var(--heading);
+    color: var(--brand);
+    font-size: 28px;
+    line-height: 1;
+  }
+  .kickoff-time-label {
+    color: rgba(255,255,255,0.85);
+    font-size: 16px;
+  }
+  .kickoff-reply {
+    margin-top: 26px;
+    color: rgba(255,255,255,0.55);
+    font-size: 13.5px;
+    line-height: 1.6;
+    font-style: italic;
+    max-width: 50ch;
+  }
+  .kickoff-right {
+    background: var(--slate);
+    padding: 6vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .kickoff-room-label {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 18px;
+  }
+  .kickoff-room-heading {
+    font-family: var(--heading);
+    font-size: clamp(28px, 2.8vw, 42px);
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 18px;
+    letter-spacing: -0.01em;
+  }
+  .kickoff-room-body {
+    color: rgba(255,255,255,0.7);
+    font-size: 14.5px;
+    line-height: 1.65;
+    margin-bottom: 22px;
+    max-width: 32ch;
+  }
+  .kickoff-room-note {
+    color: rgba(255,255,255,0.55);
+    font-size: 13px;
+    line-height: 1.6;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    max-width: 36ch;
+  }
+
+  /* ============ PAGE 10: BACK COVER ============ */
+  .page-back {
+    background: var(--dark);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-back::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 55vw; height: 55vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,75,47,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .back-content {
+    position: relative;
+    z-index: 1;
+    max-width: 660px;
+    padding: 0 24px;
+  }
+  .back-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 28px;
+  }
+  .back-title {
+    font-family: var(--heading);
+    font-size: clamp(56px, 8vw, 120px);
+    line-height: 0.95;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  .back-sub {
+    font-family: var(--heading);
+    font-style: italic;
+    font-size: clamp(18px, 1.7vw, 24px);
+    color: rgba(255,255,255,0.65);
+    line-height: 1.4;
+    max-width: 32ch;
+    margin: 0 auto 44px;
+  }
+  .back-cta {
+    display: inline-block;
+    font-family: var(--body);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 18px 36px;
+    border: 2px solid var(--brand);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .back-cta:hover {
+    background: var(--brand);
+  }
+  .back-meta {
+    margin-top: 60px;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .back-meta strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+  }
+
+  /* ============ NAVIGATION UI ============ */
+  .nav-dots {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 10px 20px;
+    border-radius: 40px;
+  }
+  .nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+    padding: 0;
+  }
+  .nav-dot.active {
+    background: var(--brand);
+    transform: scale(1.35);
+  }
+  .nav-dot:hover { background: rgba(255,255,255,0.6); }
+  .page-counter {
+    position: fixed;
+    top: 28px;
+    right: 36px;
+    z-index: 1000;
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.55);
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 8px 16px;
+    border-radius: 20px;
+  }
+  @keyframes swipeHint {
+    0%, 100% { transform: translateX(0); opacity: 0.6; }
+    50% { transform: translateX(-12px); opacity: 1; }
+  }
+  .swipe-hint {
+    position: fixed;
+    bottom: 80px;
+    right: 36px;
+    z-index: 1000;
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.5s ease;
+  }
+  .swipe-hint.hidden { opacity: 0; pointer-events: none; }
+  .swipe-hint-arrow { animation: swipeHint 1.8s ease-in-out infinite; font-size: 18px; }
+
+  /* ============ MOBILE RESPONSIVE ============ */
+  @media (max-width: 768px) {
+    .page {
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Restack splits */
+    .page-cover,
+    .page-brand,
+    .page-application,
+    .page-loop,
+    .page-audit,
+    .page-kickoff {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+      min-height: 100%;
+    }
+
+    /* Restack blueprint grid */
+    .blueprint-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(8, auto);
+    }
+
+    /* Restack pipeline */
+    .solution-columns {
+      grid-template-columns: 1fr !important;
+      grid-template-rows: repeat(var(--pipeline-count, 3), auto);
+    }
+    .system-stage {
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .system-stage:last-child { border-bottom: none; }
+
+    /* Audit sessions */
+    .audit-session {
+      grid-template-columns: 50px 1fr;
+      gap: 14px;
+    }
+
+    /* Inner padding */
+    .cover-left, .cover-right,
+    .brand-left, .brand-right,
+    .application-left, .application-right,
+    .system-header, .system-stage,
+    .loop-left, .loop-right,
+    .audit-left, .audit-right,
+    .blueprint-header, .blueprint-cell,
+    .kickoff-left, .kickoff-right {
+      padding: 28px 22px;
+    }
+
+    /* Typography floors */
+    h1, h2, .page-heading,
+    .system-header h2,
+    .blueprint-header h2,
+    .kickoff-room-heading {
+      font-size: clamp(28px, 7vw, 44px);
+    }
+    .cover-title { font-size: clamp(38px, 9vw, 60px); }
+    .back-title { font-size: clamp(46px, 12vw, 80px); }
+    .big-stat,
+    .brand-stat,
+    .audit-stat,
+    .system-stage-num {
+      font-size: clamp(56px, 18vw, 96px);
+    }
+    .brand-stat.word { font-size: clamp(48px, 14vw, 80px); }
+    .application-quote, .loop-quote {
+      font-size: clamp(20px, 5vw, 28px);
+      padding-left: 18px;
+    }
+
+    /* Nav UI */
+    .page-counter {
+      top: 16px;
+      right: 16px;
+      font-size: 11px;
+      padding: 6px 12px;
+    }
+    .nav-dots {
+      bottom: 16px;
+      gap: 8px;
+      padding: 8px 14px;
+    }
+    .nav-dot { width: 9px; height: 9px; }
+    .swipe-hint { display: none; }
+
+    /* Back cover glow */
+    .page-back::before {
+      width: 90vw;
+      height: 90vw;
+    }
+
+    /* Cover stripe */
+    .cover-left::before { width: 4px; }
+
+    /* Audit decorative circle on mobile */
+    .audit-left::before {
+      top: -10%; right: -40%;
+      width: 100%; height: 100%;
+    }
+
+    .kickoff-time-row {
+      grid-template-columns: 60px 1fr;
+      padding: 14px 0;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="magazine" id="magazine">
+
+  <!-- ============ PAGE 1: COVER ============ -->
+  <section class="page page-cover">
+    <div class="cover-left">
+      <div class="cover-eyebrow">AI Clarity Audit / Welcome</div>
+      <div>
+        <h1 class="cover-title">Welcome<br>aboard.</h1>
+        <p class="cover-tagline">What to expect from your audit, and a couple of small things to do before we kick off.</p>
+      </div>
+      <div class="cover-meta">
+        <strong>Lone Rock Point</strong>
+        <span>lonerockpoint.com</span>
+      </div>
+    </div>
+    <div class="cover-right">
+      <div class="cover-stat-block">
+        <div class="cover-stat-caption">The Engagement</div>
+        <div class="big-stat">03</div>
+        <div class="big-stat-label">Phases to a Blueprint</div>
+        <p class="cover-stat-detail">Assess. Identify. Blueprint. Three structured phases. One decision-ready plan you can act on, regardless of who you bring in to execute.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 2: THE PREMISE ============ -->
+  <section class="page page-brand">
+    <div class="brand-left">
+      <div class="section-num">01 / The Premise</div>
+      <div class="brand-stat word">Tools.</div>
+      <div class="brand-stat-label">Last, not first.</div>
+      <p class="brand-stat-detail">Most businesses don't fail at AI because the tools are wrong. They fail because nobody figured out where AI moves the needle for the business before they started buying tools and chasing pilots.</p>
+    </div>
+    <div class="brand-right">
+      <h2 class="page-heading">We start with your business, not the platform.</h2>
+      <p class="page-body">A platform decision is a downstream decision. Made first, it locks in assumptions about your work that haven't been tested. Made later, it answers a question you can actually frame.</p>
+      <div class="brand-routes">
+        <div class="brand-route">
+          <div class="brand-route-label">How it usually goes</div>
+          <h3 class="brand-route-title">Tools first, then problems.</h3>
+          <p class="brand-route-body">A platform gets picked. The team retrofits problems to it. Six months in, the pilot quietly stalls.</p>
+        </div>
+        <div class="brand-route">
+          <div class="brand-route-label">How this engagement goes</div>
+          <h3 class="brand-route-title">Problems first, then tools.</h3>
+          <p class="brand-route-body">We map where the leverage actually is. The tools come later, picked because the work demands them.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 3: THREE PHASES (pipeline) ============ -->
+  <section class="page page-system">
+    <div class="system-header">
+      <div class="section-num">02 / How It Runs</div>
+      <h2>Three phases. One blueprint.</h2>
+      <p>Each phase builds on the last. From understanding how the business actually works, to surfacing the handful of opportunities that matter, to a sequenced plan you can act on.</p>
+    </div>
+    <div class="solution-columns">
+      <div class="system-stage">
+        <div class="system-stage-num">01</div>
+        <div class="system-stage-content">
+          <div class="system-stage-name">Assess</div>
+          <h3 class="system-stage-title">How the business actually works.</h3>
+          <p class="system-stage-body">Not the org chart version. The real version. Where time goes, what's repetitive, what frustrates you, where the team is stretched, what "good" looks like to you.</p>
+        </div>
+      </div>
+      <div class="system-stage">
+        <div class="system-stage-num">02</div>
+        <div class="system-stage-content">
+          <div class="system-stage-name">Identify</div>
+          <h3 class="system-stage-title">The handful that matter.</h3>
+          <p class="system-stage-body">We surface the highest-impact opportunities for AI. Not 50 ideas. The handful that pay off, ranked by impact and feasibility.</p>
+        </div>
+      </div>
+      <div class="system-stage">
+        <div class="system-stage-num">03</div>
+        <div class="system-stage-content">
+          <div class="system-stage-name">Blueprint</div>
+          <h3 class="system-stage-title">A plan you can act on.</h3>
+          <p class="system-stage-body">A written plan. What to do, in what order, with what tools, and what it'll take to get there. Built to be implemented, not shelved.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 4: INDEPENDENCE ============ -->
+  <section class="page page-application">
+    <div class="application-left">
+      <div class="section-num">03 / Independence</div>
+      <h2 class="page-heading">The Blueprint stands on its own.</h2>
+      <div class="application-quote">"Vendor-neutral by design."</div>
+    </div>
+    <div class="application-right">
+      <p class="page-body">When we're done, you have a plan that can be executed by anyone. The audit isn't a sales pitch for what comes next. It's a deliverable you own.</p>
+      <div class="application-list">
+        <div class="application-row">
+          <div class="application-num">01</div>
+          <div>
+            <h4 class="application-title">Implement with us</h4>
+            <p class="application-body">If the work fits and we're the right partner, we can take it from blueprint to operating agents.</p>
+          </div>
+        </div>
+        <div class="application-row">
+          <div class="application-num">02</div>
+          <div>
+            <h4 class="application-title">Implement with someone else</h4>
+            <p class="application-body">Hand the Blueprint to another firm. Everything they need to execute is in there.</p>
+          </div>
+        </div>
+        <div class="application-row">
+          <div class="application-num">03</div>
+          <div>
+            <h4 class="application-title">Implement yourselves</h4>
+            <p class="application-body">If you have the right team in-house, the Blueprint hands them a sequenced plan they can run.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 5: WHERE THIS IS HEADED ============ -->
+  <section class="page page-loop">
+    <div class="loop-left">
+      <div class="section-num">04 / Where This Is Headed</div>
+      <h2 class="page-heading">Most AI conversations stop at chat. Ours don't.</h2>
+      <p class="page-body">A lot of consultants get off the bus at Claude and ChatGPT. Useful tools. Not the destination. We design every Blueprint with the next step already in view.</p>
+      <div class="loop-quote">"Where in the business is there a workflow that, with the right supervision, an agent could just run?"</div>
+    </div>
+    <div class="loop-right">
+      <div class="loop-card legacy">
+        <span class="loop-card-tag">Today</span>
+        <h3>Chat-shaped AI</h3>
+        <p>Claude. ChatGPT. Custom GPTs. Useful, and they're table stakes. The team types prompts and skims responses, faster than they used to but still in the loop on every keystroke.</p>
+      </div>
+      <div class="loop-card emerging">
+        <span class="loop-card-tag">Where this goes</span>
+        <h3>Agentic AI</h3>
+        <p>Agents doing real work autonomously. Your team supervising rather than driving. A different conversation, with different opportunities, and more durable ones.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 6: THE 90-DAY MARK ============ -->
+  <section class="page page-audit">
+    <div class="audit-left">
+      <div class="audit-section-num">05 / The 90-Day Mark</div>
+      <div class="audit-stat">90</div>
+      <div class="audit-stat-label">Days to your first agent</div>
+      <p class="audit-stat-detail">Every Blueprint includes a plan to put your first real agent into a real workflow within ninety days of finishing the audit. Not a demo. An operating agent.</p>
+    </div>
+    <div class="audit-right">
+      <div class="section-num">What makes it real</div>
+      <h2 class="page-heading">Not slideware. An operating agent.</h2>
+      <p class="page-body">The 90-day plan isn't a hypothetical. It picks a workflow, scopes it tight enough to ship, and wraps it in the supervision needed to trust it with the work.</p>
+      <div class="audit-sessions">
+        <div class="audit-session">
+          <div class="audit-session-num">01</div>
+          <div>
+            <h4 class="audit-session-title">Real workflow</h4>
+            <p class="audit-session-body">Picked from the opportunities scored in your audit. Scoped tight enough to ship inside the quarter.</p>
+          </div>
+        </div>
+        <div class="audit-session">
+          <div class="audit-session-num">02</div>
+          <div>
+            <h4 class="audit-session-title">Real supervision</h4>
+            <p class="audit-session-body">Human checkpoints, escalation paths, and oversight built into the design from the start.</p>
+          </div>
+        </div>
+        <div class="audit-session">
+          <div class="audit-session-num">03</div>
+          <div>
+            <h4 class="audit-session-title">Real guardrails</h4>
+            <p class="audit-session-body">Policy, safety, and audit trails from day one. Not bolted on after the agent ships.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 7: THE DELIVERABLE ============ -->
+  <section class="page page-blueprint">
+    <div class="blueprint-header">
+      <div class="section-num">06 / The Deliverable</div>
+      <h2>What's in your hands when we're done.</h2>
+      <p>A practical, prioritized, decision-ready picture of where AI fits in your business. Designed to be acted on, not shelved.</p>
+    </div>
+    <div class="blueprint-grid">
+      <div class="blueprint-cell">
+        <div class="blueprint-num">01</div>
+        <h3 class="blueprint-cell-title">AI Fit Map</h3>
+        <p class="blueprint-cell-body">A clear view of where AI fits in your business and, just as importantly, where it doesn't.</p>
+      </div>
+      <div class="blueprint-cell">
+        <div class="blueprint-num">02</div>
+        <h3 class="blueprint-cell-title">Ranked Opportunities</h3>
+        <p class="blueprint-cell-body">Specific opportunities scored on impact, effort, and risk. The few that matter, not the long list.</p>
+      </div>
+      <div class="blueprint-cell">
+        <div class="blueprint-num">03</div>
+        <h3 class="blueprint-cell-title">Recommended Sequence</h3>
+        <p class="blueprint-cell-body">What to tackle first, second, and third. With reasoning, so the order is auditable.</p>
+      </div>
+      <div class="blueprint-cell">
+        <div class="blueprint-num">04</div>
+        <h3 class="blueprint-cell-title">Quick Wins vs Groundwork</h3>
+        <p class="blueprint-cell-body">An honest read of what you can move on immediately and what needs more setup first.</p>
+      </div>
+      <div class="blueprint-cell">
+        <div class="blueprint-num">05</div>
+        <h3 class="blueprint-cell-title">90-Day Agent Plan</h3>
+        <p class="blueprint-cell-body">A plan to put your first agent into real work, with the supervision and guardrails to trust it.</p>
+      </div>
+      <div class="blueprint-cell">
+        <div class="blueprint-num">06</div>
+        <h3 class="blueprint-cell-title">Action-Ready Roadmap</h3>
+        <p class="blueprint-cell-body">A practical roadmap you can execute with us, with another partner, or yourselves.</p>
+      </div>
+      <div class="blueprint-cell">
+        <div class="blueprint-num">07</div>
+        <h3 class="blueprint-cell-title">No Tool Lock-In</h3>
+        <p class="blueprint-cell-body">The Blueprint reads the same whether we execute it or you do. Independence is built into the artifact.</p>
+      </div>
+      <div class="blueprint-cell cta">
+        <div class="blueprint-num">&#x2605;</div>
+        <h3 class="blueprint-cell-title">Yours to keep.</h3>
+        <p class="blueprint-cell-body">However you choose to act on it. The audit is independent of what comes after.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 8: YOUR PREP ============ -->
+  <section class="page page-brand">
+    <div class="brand-left">
+      <div class="section-num">07 / Your Prep</div>
+      <div class="brand-stat">02</div>
+      <div class="brand-stat-label">Things before we meet</div>
+      <p class="brand-stat-detail">A short intake first. A tailored task audit second. About thirty minutes of total effort, spread across you and your team.</p>
+    </div>
+    <div class="brand-right">
+      <h2 class="page-heading">Two small things, in this order.</h2>
+      <p class="page-body">I want our first call to be a conversation, not an interrogation. You don't need to walk in with a deck or a spreadsheet. These two items just help me show up prepared.</p>
+      <div class="brand-routes">
+        <div class="brand-route">
+          <div class="brand-route-label">Step 01 / Now</div>
+          <h3 class="brand-route-title">Intake form, about 15 minutes.</h3>
+          <p class="brand-route-body">Mostly qualitative. What your business does, how the team is organized, what's working, what isn't, and where you'd most want AI to help. Link below.</p>
+        </div>
+        <div class="brand-route">
+          <div class="brand-route-label">Step 02 / After your intake</div>
+          <h3 class="brand-route-title">Tailored task audit.</h3>
+          <p class="brand-route-body">Once your intake is back, I'll send a task audit pre-seeded with your actual departments and functions. Faster than a blank form, and the data is sharper.</p>
+        </div>
+      </div>
+      <div class="brand-callout">Please fill out the intake form as soon as you can. The link is in the email that came with this briefing. The sooner it's back, the sooner I can build your task audit spreadsheet and get it to you with enough time to complete it before Session 1.</div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 9: THE KICKOFF + ROOM ============ -->
+  <section class="page page-kickoff">
+    <div class="kickoff-left">
+      <div class="section-num" style="color: var(--brand-light);">08 / The Kickoff</div>
+      <h2 style="font-family: var(--heading); font-size: clamp(34px, 4vw, 58px); line-height: 1.05; color: #fff; letter-spacing: -0.01em; margin-bottom: 18px;">60 minutes to get going.</h2>
+      <p class="kickoff-intro">The Assess phase starts in this first session. We'll line up the next two before we hang up.</p>
+      <div class="kickoff-times">
+        <div class="kickoff-time-row">
+          <span class="kickoff-time-num">01</span>
+          <span class="kickoff-time-label"><strong style="color:#fff; font-weight:600;">Pick a time for Session 1.</strong> The options are in the email that came with this briefing.</span>
+        </div>
+        <div class="kickoff-time-row">
+          <span class="kickoff-time-num">02</span>
+          <span class="kickoff-time-label"><strong style="color:#fff; font-weight:600;">Reply to confirm.</strong> Or propose a couple of windows that work better and I'll grab one.</span>
+        </div>
+      </div>
+      <p class="kickoff-reply">Sessions 2 and 3 get scheduled live, at the end of Session 1.</p>
+    </div>
+    <div class="kickoff-right">
+      <div class="kickoff-room-label">Who's in the room</div>
+      <h3 class="kickoff-room-heading">Just you, for now.</h3>
+      <p class="kickoff-room-body">Plus any co-founder or business partner who'd weigh in on big decisions about how the company runs.</p>
+      <p class="kickoff-room-note">Department leads and team members loop in during the Assess phase, depending on which areas we go deep on.</p>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 10: BACK COVER ============ -->
+  <section class="page page-back">
+    <div class="back-content">
+      <div class="back-eyebrow">Next</div>
+      <h2 class="back-title">Reply with a slot.</h2>
+      <p class="back-sub">Send your intake when you have a few minutes. I'll have your task audit ready before we meet.</p>
+      <a class="back-cta" href="mailto:jjt@lonerockpoint.com">jjt@lonerockpoint.com</a>
+      <div class="back-meta">
+        <strong>Lone Rock Point</strong>
+        <span>lonerockpoint.com</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-dots" id="navDots"></div>
+<div class="page-counter" id="pageCounter">01 / 10</div>
+<div class="swipe-hint" id="swipeHint">
+  <span class="swipe-hint-arrow">&#x2190;</span> Scroll or use arrow keys
+</div>
+
+<script>
+(function() {
+  const magazine = document.getElementById('magazine');
+  const navDotsContainer = document.getElementById('navDots');
+  const pageCounter = document.getElementById('pageCounter');
+  const swipeHint = document.getElementById('swipeHint');
+  const totalPages = 10;
+  let currentPage = 0;
+  let isAnimating = false;
+  const ANIM_DURATION = 650;
+
+  function setVH() {
+    document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+  }
+  setVH();
+  window.addEventListener('orientationchange', setVH);
+
+  for (let i = 0; i < totalPages; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to page ' + (i + 1));
+    dot.addEventListener('click', () => goToPage(i));
+    navDotsContainer.appendChild(dot);
+  }
+
+  function goToPage(index) {
+    if (index < 0 || index >= totalPages || index === currentPage || isAnimating) return;
+    isAnimating = true;
+    currentPage = index;
+    magazine.style.transform = 'translateX(-' + (currentPage * 100) + 'vw)';
+    updateUI();
+    setTimeout(() => { isAnimating = false; }, ANIM_DURATION);
+  }
+
+  function updateUI() {
+    const dots = navDotsContainer.querySelectorAll('.nav-dot');
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentPage));
+    pageCounter.textContent = String(currentPage + 1).padStart(2, '0') + ' / ' + String(totalPages).padStart(2, '0');
+    if (currentPage > 0) swipeHint.classList.add('hidden');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault(); goToPage(currentPage + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault(); goToPage(currentPage - 1);
+    }
+  });
+
+  let wheelAccumulator = 0;
+  let wheelTimer = null;
+  document.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    wheelAccumulator += (Math.abs(e.deltaX) > Math.abs(e.deltaY)) ? e.deltaX : e.deltaY;
+    if (wheelTimer) clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => { wheelAccumulator = 0; }, 200);
+    if (Math.abs(wheelAccumulator) > 50) {
+      if (wheelAccumulator > 0) goToPage(currentPage + 1);
+      else goToPage(currentPage - 1);
+      wheelAccumulator = 0;
+    }
+  }, { passive: false });
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchMoved = false;
+  let swipeAxis = null;
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoved = false;
+    swipeAxis = null;
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    touchMoved = true;
+    if (swipeAxis === null) {
+      const dx = Math.abs(e.touches[0].clientX - touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      if (dx + dy > 10) {
+        swipeAxis = (dx > dy) ? 'x' : 'y';
+      }
+    }
+    if (swipeAxis === 'x') {
+      e.preventDefault();
+    }
+  }, { passive: false });
+  document.addEventListener('touchend', (e) => {
+    if (!touchMoved || swipeAxis !== 'x') return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) goToPage(currentPage + 1);
+      else goToPage(currentPage - 1);
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    setVH();
+    magazine.style.transition = 'none';
+    magazine.style.transform = 'translateX(-' + (currentPage * 100) + 'vw)';
+    requestAnimationFrame(() => { magazine.style.transition = ''; });
+  });
+
+  setTimeout(() => swipeHint.classList.add('hidden'), 6000);
+})();
+</script>
+</body>
+</html>
