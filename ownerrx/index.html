@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OwnerRX Offer — Lone Rock Point</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --brand: #C84B2F;
+  --brand-light: #e8644a;
+  --dark: #141414;
+  --dark-warm: #1c1917;
+  --cream: #faf7f2;
+  --warm-gray: #f0ebe4;
+  --stone: #e7e0d6;
+  --slate: #2d2926;
+  --muted: #8a8178;
+  --heading: 'DM Serif Display', Georgia, serif;
+  --body: 'Inter', system-ui, sans-serif;
+}
+
+html, body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.magazine {
+  display: flex;
+  width: 1100vw;
+  height: 100vh;
+  transition: transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: transform;
+}
+
+.page {
+  flex: 0 0 100vw;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---- NAVIGATION UI ---- */
+.nav-dots {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 10px 20px;
+  border-radius: 40px;
+}
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  outline: none;
+}
+.nav-dot.active {
+  background: var(--brand);
+  transform: scale(1.35);
+}
+.nav-dot:hover { background: rgba(255,255,255,0.6); }
+
+.page-counter {
+  position: fixed;
+  top: 28px;
+  right: 36px;
+  z-index: 1000;
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.5);
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+@keyframes swipeHint {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50% { transform: translateX(-12px); opacity: 1; }
+}
+.swipe-hint {
+  position: fixed;
+  bottom: 80px;
+  right: 36px;
+  z-index: 1000;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.5s ease;
+}
+.swipe-hint.hidden { opacity: 0; pointer-events: none; }
+.swipe-hint-arrow { animation: swipeHint 1.8s ease-in-out infinite; font-size: 18px; }
+
+/* ---- COMMON ---- */
+.section-num {
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-family: var(--heading);
+  font-size: clamp(34px, 4vw, 58px);
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.page-desc {
+  font-family: var(--body);
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.page-desc-light {
+  font-family: var(--body);
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.7;
+  color: rgba(255,255,255,0.55);
+}
+
+.trait-list { list-style: none; }
+.trait-list li {
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.6;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  padding-left: 22px;
+  position: relative;
+}
+.trait-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 17px;
+  width: 8px; height: 8px;
+  background: var(--brand);
+  border-radius: 2px;
+}
+.trait-list-dark li {
+  border-bottom-color: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.8);
+}
+
+.big-stat {
+  font-family: var(--heading);
+  font-size: clamp(100px, 12vw, 160px);
+  line-height: 0.85;
+  color: var(--brand);
+}
+.big-stat-label {
+  font-size: 15px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 8px;
+  font-weight: 500;
+}
+.big-stat-label-dark {
+  font-size: 15px;
+  color: var(--muted);
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.pull-quote {
+  font-family: var(--heading);
+  font-style: italic;
+  font-size: clamp(22px, 2.5vw, 36px);
+  line-height: 1.35;
+  color: rgba(255,255,255,0.85);
+  padding-left: 28px;
+  border-left: 3px solid var(--brand);
+}
+
+.callout {
+  padding: 24px 28px;
+  background: rgba(200,75,47,0.07);
+  border-radius: 4px;
+}
+
+.icon-box {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.verdict {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: rgba(200,75,47,0.1);
+  color: var(--brand);
+  align-self: flex-start;
+}
+
+/* ---- PAGE 1: COVER ---- */
+.page-cover {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  background: var(--dark);
+}
+.cover-left {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+  background: var(--dark);
+}
+.cover-left::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 6px; height: 100%;
+  background: var(--brand);
+}
+.cover-brand {
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 48px;
+}
+.cover-title {
+  font-family: var(--heading);
+  font-size: clamp(44px, 5vw, 72px);
+  line-height: 1.05;
+  color: #fff;
+  margin-bottom: 24px;
+}
+.cover-subtitle {
+  font-family: var(--body);
+  font-size: clamp(14px, 1.2vw, 17px);
+  line-height: 1.6;
+  color: rgba(255,255,255,0.5);
+  max-width: 380px;
+}
+.cover-right {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 6vh 5vw;
+  background: var(--slate);
+}
+.cover-right::before {
+  content: '';
+  position: absolute;
+  top: -20%; right: -20%;
+  width: 80%; height: 80%;
+  border-radius: 50%;
+  background: rgba(200,75,47,0.06);
+}
+.cover-tagline {
+  font-family: var(--heading);
+  font-size: clamp(36px, 4.5vw, 60px);
+  line-height: 1.15;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+.cover-tagline em {
+  color: var(--brand);
+  font-style: normal;
+}
+.cover-stat-label {
+  font-size: 16px;
+  color: rgba(255,255,255,0.45);
+  margin-top: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- PAGE 2: THE JOURNEY ---- */
+.page-journey {
+  display: grid;
+  grid-template-columns: 45% 55%;
+  background: var(--cream);
+}
+.journey-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+  background: var(--brand);
+  position: relative;
+  color: #fff;
+}
+.journey-left::before {
+  content: '';
+  position: absolute;
+  top: -20%; right: -20%;
+  width: 80%; height: 80%;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.1);
+}
+.journey-left .section-num { color: rgba(255,255,255,0.7); }
+.journey-left .page-title { color: #fff; position: relative; z-index: 1; }
+.journey-left .page-desc { color: rgba(255,255,255,0.75); position: relative; z-index: 1; }
+.journey-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+}
+.journey-step {
+  display: flex;
+  gap: 20px;
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  align-items: flex-start;
+}
+.journey-step:last-child { border-bottom: none; }
+.journey-num {
+  font-family: var(--heading);
+  font-size: clamp(36px, 4vw, 52px);
+  color: var(--brand);
+  line-height: 0.9;
+  min-width: 50px;
+  opacity: 0.3;
+}
+.journey-step-title {
+  font-family: var(--heading);
+  font-size: clamp(16px, 1.4vw, 20px);
+  margin-bottom: 6px;
+  color: var(--dark);
+}
+.journey-step-desc {
+  font-size: clamp(12px, 1vw, 14px);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ---- PAGE 3: THE BOTTLENECK ---- */
+.page-bottleneck {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  background: var(--dark-warm);
+}
+.bottleneck-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+}
+.bottleneck-left .page-title { color: #fff; }
+.bottleneck-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+  background: var(--dark);
+}
+.bottleneck-stat {
+  font-family: var(--heading);
+  font-size: clamp(80px, 10vw, 140px);
+  line-height: 0.85;
+  color: var(--brand);
+  margin-bottom: 12px;
+}
+.bottleneck-items {
+  list-style: none;
+  margin-top: 32px;
+}
+.bottleneck-items li {
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.6;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.7);
+  padding-left: 22px;
+  position: relative;
+}
+.bottleneck-items li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 20px;
+  width: 8px; height: 8px;
+  background: var(--brand);
+  border-radius: 2px;
+}
+.bottleneck-verdict {
+  margin-top: 28px;
+}
+
+/* ---- PAGE 4: THE DIFFERENCE ---- */
+.page-difference {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--warm-gray);
+}
+.difference-header {
+  padding: 5vh 5vw 3vh;
+}
+.difference-header .page-title { color: var(--dark); }
+.difference-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0;
+}
+.difference-cell {
+  padding: 4vh 3.5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  transition: background 0.3s ease;
+}
+.difference-cell:nth-child(odd) {
+  border-right: 1px solid rgba(0,0,0,0.06);
+}
+.difference-cell:hover {
+  background: rgba(200,75,47,0.04);
+}
+.difference-cell-label {
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.difference-cell-title {
+  font-family: var(--heading);
+  font-size: clamp(18px, 1.8vw, 26px);
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+.difference-cell-desc {
+  font-size: clamp(12px, 1vw, 14px);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ---- PAGE 5: THE PROCESS ---- */
+.page-process {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--cream);
+}
+.process-header {
+  padding: 5vh 5vw 2vh;
+}
+.process-header .page-title { color: var(--dark); }
+.process-columns {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.process-col {
+  display: flex;
+  flex-direction: column;
+  padding: 4vh 3vw;
+  border-right: 1px solid rgba(0,0,0,0.06);
+  transition: background 0.3s ease;
+}
+.process-col:last-child { border-right: none; }
+.process-col:hover { background: rgba(200,75,47,0.04); }
+.process-col-num {
+  font-family: var(--heading);
+  font-size: clamp(60px, 8vw, 120px);
+  color: rgba(0,0,0,0.04);
+  line-height: 1;
+  margin-bottom: auto;
+}
+.process-col-title {
+  font-family: var(--heading);
+  font-size: clamp(22px, 2.2vw, 32px);
+  color: var(--dark);
+  margin-bottom: 14px;
+}
+.process-col-desc {
+  font-size: clamp(12px, 1vw, 14px);
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ---- PAGE 6: THE BLUEPRINT ---- */
+.page-blueprint {
+  display: grid;
+  grid-template-columns: 38% 62%;
+  background: var(--slate);
+}
+.blueprint-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 4vw;
+}
+.blueprint-left .page-title { color: #fff; }
+.blueprint-left .page-desc-light { margin-bottom: 28px; }
+.blueprint-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4vh 4vw;
+  background: var(--dark);
+}
+.blueprint-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.blueprint-row:last-child { border-bottom: none; }
+.blueprint-row-num {
+  font-family: var(--heading);
+  font-size: 28px;
+  color: var(--brand);
+  min-width: 36px;
+  opacity: 0.5;
+}
+.blueprint-row-title {
+  font-family: var(--heading);
+  font-size: clamp(14px, 1.2vw, 17px);
+  color: #fff;
+  margin-bottom: 4px;
+}
+.blueprint-row-desc {
+  font-size: clamp(11px, 0.9vw, 13px);
+  color: rgba(255,255,255,0.45);
+  line-height: 1.5;
+}
+
+/* ---- PAGE 7: CREDENTIALS ---- */
+.page-credentials {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--dark);
+}
+.credentials-header {
+  padding: 5vh 5vw 2vh;
+}
+.credentials-header .page-title { color: #fff; }
+.credentials-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0;
+}
+.credentials-cell {
+  padding: 3.5vh 3.5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.3s ease;
+}
+.credentials-cell:nth-child(odd) {
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+.credentials-cell:hover {
+  background: rgba(200,75,47,0.04);
+}
+.credentials-cell .icon-box { margin-bottom: 16px; }
+.credentials-cell-title {
+  font-family: var(--heading);
+  font-size: clamp(15px, 1.4vw, 20px);
+  color: #fff;
+  margin-bottom: 8px;
+}
+.credentials-cell-desc {
+  font-size: clamp(11px, 0.9vw, 13px);
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+}
+
+/* ---- PAGE 8: LEADS ---- */
+.page-leads {
+  display: grid;
+  grid-template-columns: 45% 55%;
+  background: var(--stone);
+}
+.leads-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+  background: var(--brand);
+  position: relative;
+  color: #fff;
+}
+.leads-left::before {
+  content: '';
+  position: absolute;
+  bottom: -25%; right: -15%;
+  width: 70%; height: 70%;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.1);
+}
+.leads-left .section-num { color: rgba(255,255,255,0.7); }
+.leads-left .page-title { color: #fff; position: relative; z-index: 1; }
+.leads-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+}
+.leads-item {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  align-items: flex-start;
+}
+.leads-item:last-child { border-bottom: none; }
+.leads-item .icon-box { flex-shrink: 0; }
+.leads-item-title {
+  font-family: var(--heading);
+  font-size: clamp(16px, 1.4vw, 20px);
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+.leads-item-desc {
+  font-size: clamp(12px, 1vw, 14px);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ---- PAGE 9: TWO PATHS ---- */
+.page-paths {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--stone);
+}
+.path-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 5vw;
+  position: relative;
+}
+.path-panel-a {
+  background: var(--brand);
+  color: #fff;
+}
+.path-panel-a::before {
+  content: '';
+  position: absolute;
+  bottom: -30%; left: -20%;
+  width: 80%; height: 80%;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+}
+.path-panel-a .section-num { color: rgba(255,255,255,0.6); }
+.path-panel-a .page-title { color: #fff; position: relative; z-index: 1; }
+.path-panel-b {
+  background: var(--cream);
+}
+.path-panel-b .page-title { color: var(--dark); }
+.path-desc {
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+.path-desc-dark { color: rgba(255,255,255,0.75); }
+.path-desc-light { color: var(--muted); }
+.path-items {
+  list-style: none;
+  position: relative;
+  z-index: 1;
+}
+.path-items li {
+  font-size: clamp(12px, 1vw, 14px);
+  line-height: 1.6;
+  padding: 10px 0;
+  padding-left: 20px;
+  position: relative;
+}
+.path-items-dark li {
+  color: rgba(255,255,255,0.8);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.path-items-light li {
+  color: var(--dark);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.path-items li::before {
+  content: '\2713';
+  position: absolute;
+  left: 0; top: 10px;
+  color: var(--brand);
+  font-size: 12px;
+}
+.path-items-dark li::before { color: rgba(255,255,255,0.7); }
+
+/* ---- PAGE 9: PRICING ---- */
+.page-pricing {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  background: var(--cream);
+}
+.pricing-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 4vw;
+  background: var(--dark-warm);
+}
+.pricing-left .page-title { color: #fff; }
+.pricing-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4vh 4vw;
+}
+.pricing-tiers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.pricing-tier {
+  padding: 3vh 2.5vw;
+  border-right: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  transition: background 0.3s ease;
+}
+.pricing-tier:last-child { border-right: none; }
+.pricing-tier:hover { background: rgba(200,75,47,0.04); }
+.pricing-tier-featured {
+  background: rgba(200,75,47,0.04);
+  position: relative;
+}
+.pricing-tier-featured::before {
+  content: 'MOST POPULAR';
+  position: absolute;
+  top: 12px; right: 12px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--brand);
+  background: rgba(200,75,47,0.1);
+  padding: 4px 8px;
+  border-radius: 10px;
+}
+.pricing-tier-name {
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.pricing-tier-price {
+  font-family: var(--heading);
+  font-size: clamp(36px, 4vw, 52px);
+  color: var(--dark);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.pricing-tier-period {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.pricing-tier-detail {
+  font-size: clamp(12px, 0.95vw, 14px);
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.pricing-tier-feature {
+  font-size: 12px;
+  color: var(--dark);
+  padding: 8px 0;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+.pricing-footnote {
+  margin-top: 24px;
+  padding: 20px 2.5vw;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+.pricing-footnote-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+}
+.pricing-footnote-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.pricing-footnote-value {
+  font-family: var(--heading);
+  font-size: 18px;
+  color: var(--dark);
+}
+.pricing-note {
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* ---- PAGE 10: BACK COVER ---- */
+.page-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--dark);
+  position: relative;
+}
+.page-back::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 55vw; height: 55vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,75,47,0.07) 0%, transparent 70%);
+}
+.back-content {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+}
+.back-brand {
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 36px;
+}
+.back-title {
+  font-family: var(--heading);
+  font-size: clamp(36px, 4.5vw, 64px);
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+.back-desc {
+  font-size: clamp(14px, 1.2vw, 17px);
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+.back-cta {
+  display: inline-block;
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 16px 40px;
+  border: 2px solid var(--brand);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  background: transparent;
+  cursor: pointer;
+}
+.back-cta:hover {
+  background: var(--brand);
+}
+.back-url {
+  display: block;
+  margin-top: 24px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.1em;
+}
+</style>
+</head>
+<body>
+
+<div class="magazine" id="magazine">
+
+  <!-- PAGE 1: COVER -->
+  <section class="page page-cover">
+    <div class="cover-left">
+      <div class="cover-brand">Lone Rock Point</div>
+      <h1 class="cover-title">Your AI<br>Journey<br>Starts Now</h1>
+      <p class="cover-subtitle">You've completed OwnerRX. Here's how to turn your AI vision into operational reality.</p>
+    </div>
+    <div class="cover-right">
+      <div class="cover-tagline">Everyone could use an<br><em>&ldquo;AI Guy&rdquo;</em></div>
+      <div class="cover-stat-label">Lone Rock Point can be yours.</div>
+    </div>
+  </section>
+
+  <!-- PAGE 2: THE JOURNEY -->
+  <section class="page page-journey">
+    <div class="journey-left">
+      <div class="section-num">01 &mdash; The Journey</div>
+      <h2 class="page-title">Six Weeks of Breaking Barriers</h2>
+      <p class="page-desc">OwnerRX was designed to move you from curiosity to capability. Here's what you accomplished.</p>
+    </div>
+    <div class="journey-right">
+      <div class="journey-step">
+        <div class="journey-num">01</div>
+        <div>
+          <div class="journey-step-title">Exposure</div>
+          <div class="journey-step-desc">Explored the art of the possible with AI and Anthropic Claude &mdash; intelligent prompting, skills, agents, and the full platform ecosystem.</div>
+        </div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-num">02</div>
+        <div>
+          <div class="journey-step-title">Adoption</div>
+          <div class="journey-step-desc">Broke down barriers through hands-on exercises. Not theory &mdash; actual work getting done with AI tools in real scenarios.</div>
+        </div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-num">03</div>
+        <div>
+          <div class="journey-step-title">Inspiration</div>
+          <div class="journey-step-desc">Translated AI capabilities into a vision for your business &mdash; growth, efficiency, and competitive advantage powered by intelligent systems.</div>
+        </div>
+      </div>
+      <div class="journey-step" style="border-bottom: none; padding-top: 20px;">
+        <div class="journey-num" style="opacity: 0.6; color: var(--brand);">&#x2713;</div>
+        <div>
+          <div class="journey-step-title">Your Head Start</div>
+          <div class="journey-step-desc">FORGE assessment complete. Six weeks of learning done. You already have a clear picture of AI targets you'd like to hit in the next 90 days.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 3: THE BOTTLENECK -->
+  <section class="page page-bottleneck">
+    <div class="bottleneck-left">
+      <div class="section-num" style="color: var(--brand);">02 &mdash; The Reality</div>
+      <h2 class="page-title">The Bottleneck Isn't Ideas.<br>It's Implementation.</h2>
+      <p class="page-desc-light" style="margin-bottom: 24px;">Your next challenge won't be figuring out what AI can do. It will be making it actually work inside your business.</p>
+      <ul class="bottleneck-items">
+        <li>Ideas are no longer the constraint</li>
+        <li>AI model capability is not the limiting factor</li>
+        <li>The Claude ecosystem has the functionality you need</li>
+        <li>Implementation is where most organizations stall</li>
+        <li>Ongoing maintenance keeps systems running</li>
+      </ul>
+    </div>
+    <div class="bottleneck-right">
+      <div class="bottleneck-stat">6</div>
+      <div class="big-stat-label">Weeks of hands-on AI training &mdash; complete</div>
+      <div style="margin-top: 48px;">
+        <div class="pull-quote">"Skills and custom GPTs are table stakes. They're useful, and they're not the destination."</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 4: THE DIFFERENCE -->
+  <section class="page page-difference">
+    <div class="difference-header">
+      <div class="section-num">03 &mdash; The Difference</div>
+      <h2 class="page-title">Most Consultants Get Off the Bus at ChatGPT</h2>
+    </div>
+    <div class="difference-grid">
+      <div class="difference-cell">
+        <div class="icon-box">&#x25CE;</div>
+        <div class="difference-cell-label">What Others Ask</div>
+        <div class="difference-cell-title">"Where can AI help you write faster?"</div>
+        <div class="difference-cell-desc">The typical AI consultant conversation stops at prompt engineering, custom GPTs, and surface-level automation.</div>
+      </div>
+      <div class="difference-cell">
+        <div class="icon-box">&#x26A1;</div>
+        <div class="difference-cell-label">What We Ask</div>
+        <div class="difference-cell-title">"Where could an agent just run?"</div>
+        <div class="difference-cell-desc">We identify workflows that, with the right supervision, an autonomous AI agent could own end-to-end. Different question, more durable opportunities.</div>
+      </div>
+      <div class="difference-cell">
+        <div class="icon-box">&#x2692;</div>
+        <div class="difference-cell-label">Our Approach</div>
+        <div class="difference-cell-title">Agentic AI, Not Just Prompts</div>
+        <div class="difference-cell-desc">The future is AI agents working inside your business, doing real work autonomously, with your team supervising rather than driving every keystroke.</div>
+      </div>
+      <div class="difference-cell">
+        <div class="icon-box">&#x2713;</div>
+        <div class="difference-cell-label">Our Promise</div>
+        <div class="difference-cell-title">First Functional Agent in 90 Days</div>
+        <div class="difference-cell-desc">Our goal is a real agent running a real workflow inside your business within 90 days &mdash; with the change management, governance, and guardrails you need to trust it with the work.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 5: THE PROCESS -->
+  <section class="page page-process">
+    <div class="process-header">
+      <div class="section-num">04 &mdash; The Process</div>
+      <h2 class="page-title">Typical Lone Rock Point Process</h2>
+    </div>
+    <div class="process-columns">
+      <div class="process-col">
+        <div class="process-col-num">01</div>
+        <div>
+          <div class="process-col-title">Assess</div>
+          <div class="process-col-desc">We learn how your business actually works. Not the org chart version. The real version &mdash; where time goes, what's repetitive, what frustrates you, where your team is stretched, what "good" looks like to you.</div>
+        </div>
+      </div>
+      <div class="process-col">
+        <div class="process-col-num">02</div>
+        <div>
+          <div class="process-col-title">Identify</div>
+          <div class="process-col-desc">We surface the highest-impact opportunities for AI. Not 50 ideas. The handful that actually matter &mdash; ranked by impact and feasibility so you know exactly where to focus.</div>
+        </div>
+      </div>
+      <div class="process-col">
+        <div class="process-col-num">03</div>
+        <div>
+          <div class="process-col-title">Roadmap</div>
+          <div class="process-col-desc">The AI Clarity Blueprint. You walk away with a written plan: what to do, in what order, with what tools, and what it'll take to get there. Your 90-day action plan.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 6: THE BLUEPRINT -->
+  <section class="page page-blueprint">
+    <div class="blueprint-left">
+      <div class="section-num">05 &mdash; The Deliverable</div>
+      <h2 class="page-title">The AI Clarity Blueprint</h2>
+      <p class="page-desc-light" style="margin-bottom: 28px;">A practical, executable document &mdash; not a slide deck that gathers dust. Everything you need to move from vision to first operating agent.</p>
+      <div class="verdict" style="color: #fff; background: rgba(255,255,255,0.1);">7 Core Sections</div>
+    </div>
+    <div class="blueprint-right">
+      <div class="blueprint-row">
+        <div class="blueprint-row-num">01</div>
+        <div>
+          <div class="blueprint-row-title">Revenue &amp; Workflow Map</div>
+          <div class="blueprint-row-desc">How work flows through your organization and where friction accumulates.</div>
+        </div>
+      </div>
+      <div class="blueprint-row">
+        <div class="blueprint-row-num">02</div>
+        <div>
+          <div class="blueprint-row-title">Operational Friction Audit</div>
+          <div class="blueprint-row-desc">Time leakage and repetitive effort, quantified and scored by strategic importance.</div>
+        </div>
+      </div>
+      <div class="blueprint-row">
+        <div class="blueprint-row-num">03</div>
+        <div>
+          <div class="blueprint-row-title">Knowledge Infrastructure</div>
+          <div class="blueprint-row-desc">How prepared your organization is for AI enablement, with maturity scoring.</div>
+        </div>
+      </div>
+      <div class="blueprint-row">
+        <div class="blueprint-row-num">04</div>
+        <div>
+          <div class="blueprint-row-title">AI Opportunity Matrix</div>
+          <div class="blueprint-row-desc">Ranked by revenue impact, time savings, frequency, complexity, and risk.</div>
+        </div>
+      </div>
+      <div class="blueprint-row">
+        <div class="blueprint-row-num">05</div>
+        <div>
+          <div class="blueprint-row-title">Automation Roadmap</div>
+          <div class="blueprint-row-desc">What to automate first, second, and third &mdash; and why.</div>
+        </div>
+      </div>
+      <div class="blueprint-row">
+        <div class="blueprint-row-num">06</div>
+        <div>
+          <div class="blueprint-row-title">Proof-of-Concept Design</div>
+          <div class="blueprint-row-desc">Current workflow, inputs, success criteria, and human-in-the-loop controls.</div>
+        </div>
+      </div>
+      <div class="blueprint-row">
+        <div class="blueprint-row-num">07</div>
+        <div>
+          <div class="blueprint-row-title">90-Day Implementation Plan</div>
+          <div class="blueprint-row-desc">Milestones, knowledge structuring requirements, and concrete next steps.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 7: CREDENTIALS -->
+  <section class="page page-credentials">
+    <div class="credentials-header">
+      <div class="section-num">06 &mdash; Our Track Record</div>
+      <h2 class="page-title">AI Already Running Inside Our Business</h2>
+    </div>
+    <div class="credentials-grid">
+      <div class="credentials-cell">
+        <div class="icon-box">&#x21C4;</div>
+        <div class="credentials-cell-title">Autonomous Social Agent</div>
+        <div class="credentials-cell-desc">AI agent fully managing company X account &mdash; content calendars, post writing, image creation, and daily publishing. All brand-voice aligned.</div>
+      </div>
+      <div class="credentials-cell">
+        <div class="icon-box">&#x25B6;</div>
+        <div class="credentials-cell-title">Chief of Staff Agent</div>
+        <div class="credentials-cell-desc">Internal reporting, biz dev pipeline monitoring, and marketing funnel oversight &mdash; handled by an AI agent with real supervisory responsibilities.</div>
+      </div>
+      <div class="credentials-cell">
+        <div class="icon-box">&#x2605;</div>
+        <div class="credentials-cell-title">RFP Analysis Platform</div>
+        <div class="credentials-cell-desc">AI-integrated application reviewing RFP and RFQ documents, performing opportunity qualification, and drafting initial responses automatically.</div>
+      </div>
+      <div class="credentials-cell">
+        <div class="icon-box">&#x27F3;</div>
+        <div class="credentials-cell-title">Content Studio</div>
+        <div class="credentials-cell-desc">Thought leadership and SEO content generation with brand imagery integration. Includes competitive content gap analysis and opportunity identification.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 8: LEADS -->
+  <section class="page page-leads">
+    <div class="leads-left">
+      <div class="section-num">07 &mdash; Quick Win</div>
+      <h2 class="page-title">What Every Small Business Needs: Leads</h2>
+      <p style="color: rgba(255,255,255,0.75); font-size: clamp(13px, 1.1vw, 15px); line-height: 1.7; position: relative; z-index: 1;">Haven't met a small business yet that isn't interested in generating more leads. If you're unsure what could go on your AI roadmap, this is a good place to start.</p>
+    </div>
+    <div class="leads-right">
+      <div class="leads-item">
+        <div class="icon-box">&#x25CE;</div>
+        <div>
+          <div class="leads-item-title">Campaign Monitoring &amp; Reporting</div>
+          <div class="leads-item-desc">AI agents that track campaign performance in real time, surface what's working, and flag what needs attention &mdash; before you miss a window.</div>
+        </div>
+      </div>
+      <div class="leads-item">
+        <div class="icon-box">&#x270E;</div>
+        <div>
+          <div class="leads-item-title">Thought Leadership Content Engine</div>
+          <div class="leads-item-desc">Automated content creation aligned to your brand voice &mdash; blog posts, articles, and social content that positions you as the authority in your space.</div>
+        </div>
+      </div>
+      <div class="leads-item">
+        <div class="icon-box">&#x21C4;</div>
+        <div>
+          <div class="leads-item-title">LinkedIn Contact Nurturing</div>
+          <div class="leads-item-desc">AI-powered outreach and relationship building on LinkedIn &mdash; personalized messaging at scale that doesn't feel automated.</div>
+        </div>
+      </div>
+      <div class="leads-item">
+        <div class="icon-box">&#x2709;</div>
+        <div>
+          <div class="leads-item-title">Email Drip Campaigns</div>
+          <div class="leads-item-desc">Intelligent email sequences that adapt to recipient behavior &mdash; right message, right time, with automated follow-up.</div>
+        </div>
+      </div>
+      <div class="leads-item">
+        <div class="icon-box">&#x260E;</div>
+        <div>
+          <div class="leads-item-title">Cold Calling</div>
+          <div class="leads-item-desc">AI-assisted call preparation, script optimization, and follow-up automation &mdash; so your team spends time on conversations, not research.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 9: TWO PATHS  -->
+  <section class="page page-paths">
+    <div class="path-panel path-panel-a">
+      <div class="section-num">08 &mdash; Path A</div>
+      <h2 class="page-title">You Have the Vision</h2>
+      <p class="path-desc path-desc-dark">You know where AI fits in your business. You need an implementation partner to make it real.</p>
+      <ul class="path-items path-items-dark">
+        <li>Purchase a quarterly implementation plan</li>
+        <li>Dedicated builder team assigned</li>
+        <li>60-day implementation phase</li>
+        <li>30-day hypercare support</li>
+        <li>Weekly status reporting included</li>
+      </ul>
+    </div>
+    <div class="path-panel path-panel-b">
+      <div class="section-num">08 &mdash; Path B</div>
+      <h2 class="page-title">You Need the Roadmap</h2>
+      <p class="path-desc path-desc-light">You have ideas but need help translating them into an executable plan for your organization.</p>
+      <ul class="path-items path-items-light">
+        <li>Fast-track AI Clarity Audit &mdash; one 90-minute session</li>
+        <li>Receive your AI Clarity Blueprint</li>
+        <li>Implementation plan for agents within 60 days</li>
+        <li>Execute independently or partner with us</li>
+        <li>Blueprint cost refundable with quarterly plan</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PAGE 10: PRICING -->
+  <section class="page page-pricing">
+    <div class="pricing-left">
+      <div class="section-num" style="color: var(--brand);">09 &mdash; Investment</div>
+      <h2 class="page-title">Pricing</h2>
+      <p class="page-desc-light" style="margin-top: 16px;">Three-month commitment. 60 days of implementation followed by 30 days of hypercare support.</p>
+      <div style="margin-top: 32px;">
+        <div class="verdict" style="color: #fff; background: rgba(255,255,255,0.1); margin-bottom: 12px;">3-Month Commitment</div>
+      </div>
+    </div>
+    <div class="pricing-right">
+      <div class="pricing-tiers">
+        <div class="pricing-tier">
+          <div class="pricing-tier-name">Plus</div>
+          <div class="pricing-tier-price">$5K</div>
+          <div class="pricing-tier-period">per month</div>
+          <div class="pricing-tier-detail">4 builder team days per month</div>
+          <div class="pricing-tier-feature">Account Manager</div>
+          <div class="pricing-tier-feature">Solution Architect</div>
+          <div class="pricing-tier-feature">Software Engineer</div>
+          <div class="pricing-tier-feature">Weekly Status Reports</div>
+          <div class="pricing-tier-feature">Email Support</div>
+        </div>
+        <div class="pricing-tier pricing-tier-featured">
+          <div class="pricing-tier-name">Premium</div>
+          <div class="pricing-tier-price">$7.5K</div>
+          <div class="pricing-tier-period">per month</div>
+          <div class="pricing-tier-detail">6 builder team days per month</div>
+          <div class="pricing-tier-feature">Account Manager</div>
+          <div class="pricing-tier-feature">Solution Architect</div>
+          <div class="pricing-tier-feature">Software Engineer</div>
+          <div class="pricing-tier-feature">Weekly Status Reports</div>
+          <div class="pricing-tier-feature">Email Support</div>
+        </div>
+        <div class="pricing-tier">
+          <div class="pricing-tier-name">Ultimate</div>
+          <div class="pricing-tier-price">$9.5K</div>
+          <div class="pricing-tier-period">per month</div>
+          <div class="pricing-tier-detail">8 builder team days per month</div>
+          <div class="pricing-tier-feature">Account Manager</div>
+          <div class="pricing-tier-feature">Solution Architect</div>
+          <div class="pricing-tier-feature">Software Engineer</div>
+          <div class="pricing-tier-feature">Weekly Status Reports</div>
+          <div class="pricing-tier-feature">Email Support</div>
+        </div>
+      </div>
+      <div class="pricing-footnote">
+        <div class="pricing-footnote-row">
+          <span class="pricing-footnote-label">AI Clarity Blueprint (standalone)</span>
+          <span class="pricing-footnote-value">$1,000</span>
+        </div>
+        <div class="pricing-note">Refundable with a quarterly implementation plan</div>
+        <div class="pricing-footnote-row" style="margin-top: 8px;">
+          <span class="pricing-footnote-label">Basic Maintenance (renewals only)</span>
+          <span class="pricing-footnote-value">$2,000</span>
+        </div>
+        <div class="pricing-note">Steady-state support for existing implementations</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 11: BACK COVER -->
+  <section class="page page-back">
+    <div class="back-content">
+      <div class="back-brand">Lone Rock Point</div>
+      <h2 class="back-title">Let's Build Your AI Future</h2>
+      <p class="back-desc">From the company that rebuilt NASA's website. Nine years of digital strategy. Now fully AI-infused and ready to be your implementation partner.</p>
+      <button class="back-cta">Get Started</button>
+      <span class="back-url">lonerockpoint.com</span>
+    </div>
+  </section>
+
+</div>
+
+<!-- Navigation UI -->
+<div class="nav-dots" id="navDots"></div>
+<div class="page-counter" id="pageCounter">01 / 11</div>
+<div class="swipe-hint" id="swipeHint">
+  <span class="swipe-hint-arrow">&#x2190;</span> Scroll or use arrow keys
+</div>
+
+<script>
+(function() {
+  const magazine = document.getElementById('magazine');
+  const navDotsContainer = document.getElementById('navDots');
+  const pageCounter = document.getElementById('pageCounter');
+  const swipeHint = document.getElementById('swipeHint');
+  const totalPages = 11;
+  let currentPage = 0;
+  let isAnimating = false;
+  const ANIM_DURATION = 650;
+
+  for (let i = 0; i < totalPages; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to page ' + (i + 1));
+    dot.addEventListener('click', () => goToPage(i));
+    navDotsContainer.appendChild(dot);
+  }
+
+  function goToPage(index) {
+    if (index < 0 || index >= totalPages || index === currentPage || isAnimating) return;
+    isAnimating = true;
+    currentPage = index;
+    magazine.style.transform = 'translateX(-' + (currentPage * 100) + 'vw)';
+    updateUI();
+    setTimeout(() => { isAnimating = false; }, ANIM_DURATION);
+  }
+
+  function updateUI() {
+    const dots = navDotsContainer.querySelectorAll('.nav-dot');
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentPage));
+    pageCounter.textContent = String(currentPage + 1).padStart(2, '0') + ' / ' + String(totalPages).padStart(2, '0');
+    if (currentPage > 0) swipeHint.classList.add('hidden');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault(); goToPage(currentPage + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault(); goToPage(currentPage - 1);
+    }
+  });
+
+  let wheelAccumulator = 0;
+  let wheelTimer = null;
+  document.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    wheelAccumulator += (Math.abs(e.deltaX) > Math.abs(e.deltaY)) ? e.deltaX : e.deltaY;
+    if (wheelTimer) clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => { wheelAccumulator = 0; }, 200);
+    if (Math.abs(wheelAccumulator) > 50) {
+      if (wheelAccumulator > 0) goToPage(currentPage + 1);
+      else goToPage(currentPage - 1);
+      wheelAccumulator = 0;
+    }
+  }, { passive: false });
+
+  let touchStartX = 0;
+  let touchMoved = false;
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX; touchMoved = false;
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    touchMoved = true; e.preventDefault();
+  }, { passive: false });
+  document.addEventListener('touchend', (e) => {
+    if (!touchMoved) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) goToPage(currentPage + 1);
+      else goToPage(currentPage - 1);
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    magazine.style.transition = 'none';
+    magazine.style.transform = 'translateX(-' + (currentPage * 100) + 'vw)';
+    requestAnimationFrame(() => { magazine.style.transition = ''; });
+  });
+
+  setTimeout(() => swipeHint.classList.add('hidden'), 6000);
+})();
+</script>
+
+</body>
+</html>
