@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OwnerRX Offer — Lone Rock Point</title>
+<title>OwnerRX Offer · Lone Rock Point</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,7 +23,8 @@
 }
 
 html, body {
-  height: 100vh;
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
   overflow: hidden;
   font-family: var(--body);
@@ -33,14 +34,16 @@ html, body {
 .magazine {
   display: flex;
   width: 1100vw;
-  height: 100vh;
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
   transition: transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
   will-change: transform;
 }
 
 .page {
   flex: 0 0 100vw;
-  height: 100vh;
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
   position: relative;
   overflow: hidden;
@@ -137,38 +140,16 @@ html, body {
 
 .page-desc {
   font-family: var(--body);
-  font-size: clamp(13px, 1.1vw, 15px);
+  font-size: clamp(14px, 1.1vw, 16px);
   line-height: 1.7;
   color: var(--muted);
 }
 
 .page-desc-light {
   font-family: var(--body);
-  font-size: clamp(13px, 1.1vw, 15px);
+  font-size: clamp(14px, 1.1vw, 16px);
   line-height: 1.7;
   color: rgba(255,255,255,0.55);
-}
-
-.trait-list { list-style: none; }
-.trait-list li {
-  font-size: clamp(13px, 1.1vw, 15px);
-  line-height: 1.6;
-  padding: 11px 0;
-  border-bottom: 1px solid rgba(0,0,0,0.07);
-  padding-left: 22px;
-  position: relative;
-}
-.trait-list li::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 17px;
-  width: 8px; height: 8px;
-  background: var(--brand);
-  border-radius: 2px;
-}
-.trait-list-dark li {
-  border-bottom-color: rgba(255,255,255,0.07);
-  color: rgba(255,255,255,0.8);
 }
 
 .big-stat {
@@ -183,12 +164,6 @@ html, body {
   margin-top: 8px;
   font-weight: 500;
 }
-.big-stat-label-dark {
-  font-size: 15px;
-  color: var(--muted);
-  margin-top: 8px;
-  font-weight: 500;
-}
 
 .pull-quote {
   font-family: var(--heading);
@@ -198,12 +173,6 @@ html, body {
   color: rgba(255,255,255,0.85);
   padding-left: 28px;
   border-left: 3px solid var(--brand);
-}
-
-.callout {
-  padding: 24px 28px;
-  background: rgba(200,75,47,0.07);
-  border-radius: 4px;
 }
 
 .icon-box {
@@ -299,19 +268,21 @@ html, body {
   color: #fff;
   position: relative;
   z-index: 1;
+  text-align: center;
 }
 .cover-tagline em {
   color: var(--brand);
   font-style: normal;
 }
-.cover-stat-label {
+.cover-tagline-sub {
   font-size: 16px;
   color: rgba(255,255,255,0.45);
-  margin-top: 12px;
+  margin-top: 16px;
   font-weight: 500;
   letter-spacing: 0.05em;
   position: relative;
   z-index: 1;
+  text-align: center;
 }
 
 /* ---- PAGE 2: THE JOURNEY ---- */
@@ -394,19 +365,12 @@ html, body {
   padding: 6vh 5vw;
   background: var(--dark);
 }
-.bottleneck-stat {
-  font-family: var(--heading);
-  font-size: clamp(80px, 10vw, 140px);
-  line-height: 0.85;
-  color: var(--brand);
-  margin-bottom: 12px;
-}
 .bottleneck-items {
   list-style: none;
   margin-top: 32px;
 }
 .bottleneck-items li {
-  font-size: clamp(13px, 1.1vw, 15px);
+  font-size: clamp(14px, 1.1vw, 16px);
   line-height: 1.6;
   padding: 14px 0;
   border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -421,9 +385,6 @@ html, body {
   width: 8px; height: 8px;
   background: var(--brand);
   border-radius: 2px;
-}
-.bottleneck-verdict {
-  margin-top: 28px;
 }
 
 /* ---- PAGE 4: THE DIFFERENCE ---- */
@@ -491,6 +452,7 @@ html, body {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  --pipeline-count: 3;
   gap: 0;
 }
 .process-col {
@@ -534,7 +496,6 @@ html, body {
   padding: 6vh 4vw;
 }
 .blueprint-left .page-title { color: #fff; }
-.blueprint-left .page-desc-light { margin-bottom: 28px; }
 .blueprint-right {
   display: flex;
   flex-direction: column;
@@ -678,31 +639,23 @@ html, body {
   position: relative;
 }
 .path-panel-a {
-  background: var(--brand);
+  background: var(--dark-warm);
   color: #fff;
 }
-.path-panel-a::before {
-  content: '';
-  position: absolute;
-  bottom: -30%; left: -20%;
-  width: 80%; height: 80%;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.08);
-}
-.path-panel-a .section-num { color: rgba(255,255,255,0.6); }
+.path-panel-a .section-num { color: var(--brand); }
 .path-panel-a .page-title { color: #fff; position: relative; z-index: 1; }
 .path-panel-b {
   background: var(--cream);
 }
 .path-panel-b .page-title { color: var(--dark); }
 .path-desc {
-  font-size: clamp(13px, 1.1vw, 15px);
+  font-size: clamp(14px, 1.1vw, 16px);
   line-height: 1.7;
   margin-bottom: 24px;
   position: relative;
   z-index: 1;
 }
-.path-desc-dark { color: rgba(255,255,255,0.75); }
+.path-desc-dark { color: rgba(255,255,255,0.6); }
 .path-desc-light { color: var(--muted); }
 .path-items {
   list-style: none;
@@ -716,14 +669,6 @@ html, body {
   padding-left: 20px;
   position: relative;
 }
-.path-items-dark li {
-  color: rgba(255,255,255,0.8);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-.path-items-light li {
-  color: var(--dark);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-}
 .path-items li::before {
   content: '\2713';
   position: absolute;
@@ -731,9 +676,17 @@ html, body {
   color: var(--brand);
   font-size: 12px;
 }
-.path-items-dark li::before { color: rgba(255,255,255,0.7); }
+.path-items-dark li {
+  color: rgba(255,255,255,0.8);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.path-items-dark li::before { color: var(--brand); }
+.path-items-light li {
+  color: var(--dark);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
 
-/* ---- PAGE 9: PRICING ---- */
+/* ---- PAGE 10: PRICING ---- */
 .page-pricing {
   display: grid;
   grid-template-columns: 30% 70%;
@@ -843,7 +796,7 @@ html, body {
   font-style: italic;
 }
 
-/* ---- PAGE 10: BACK COVER ---- */
+/* ---- PAGE 11: BACK COVER ---- */
 .page-back {
   display: flex;
   align-items: center;
@@ -914,6 +867,114 @@ html, body {
   color: rgba(255,255,255,0.3);
   letter-spacing: 0.1em;
 }
+
+/* ---- MOBILE RESPONSIVE ---- */
+@media (max-width: 768px) {
+  .page {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Restack split layouts */
+  .page-cover,
+  .page-journey,
+  .page-bottleneck,
+  .page-blueprint,
+  .page-leads,
+  .page-paths,
+  .page-pricing {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    min-height: 100%;
+  }
+
+  /* Restack 2x2 grids */
+  .difference-grid,
+  .credentials-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto);
+  }
+
+  /* Restack pipeline */
+  .process-columns {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(var(--pipeline-count, 3), auto);
+  }
+
+  /* Restack pricing tiers */
+  .pricing-tiers {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, auto);
+  }
+
+  /* Inner padding */
+  .cover-left, .cover-right,
+  .journey-left, .journey-right,
+  .bottleneck-left, .bottleneck-right,
+  .blueprint-left, .blueprint-right,
+  .leads-left, .leads-right,
+  .path-panel,
+  .pricing-left, .pricing-right,
+  .difference-header, .difference-cell,
+  .process-header, .process-col,
+  .credentials-header, .credentials-cell,
+  .back-content {
+    padding: 24px 20px;
+  }
+
+  /* Typography floors */
+  h1, h2, .page-title, .cover-title {
+    font-size: clamp(28px, 7vw, 44px);
+  }
+  .big-stat {
+    font-size: clamp(56px, 18vw, 96px);
+  }
+  .pull-quote {
+    font-size: clamp(18px, 4.5vw, 26px);
+    padding-left: 18px;
+  }
+  .cover-tagline {
+    font-size: clamp(28px, 7vw, 44px);
+  }
+
+  /* Nav UI */
+  .page-counter {
+    top: 16px;
+    right: 16px;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+  .nav-dots {
+    bottom: 16px;
+    gap: 8px;
+    padding: 8px 14px;
+  }
+  .nav-dot { width: 9px; height: 9px; }
+  .swipe-hint { display: none; }
+
+  /* Back cover glow */
+  .page-back::before {
+    width: 90vw;
+    height: 90vw;
+  }
+
+  /* Cover brand stripe */
+  .cover-left::before { width: 4px; }
+
+  /* Remove cell borders on stacked mobile */
+  .difference-cell:nth-child(odd),
+  .credentials-cell:nth-child(odd) {
+    border-right: none;
+  }
+
+  /* Pricing tier borders */
+  .pricing-tier {
+    border-right: none;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .pricing-tier:last-child { border-bottom: none; }
+}
 </style>
 </head>
 <body>
@@ -929,14 +990,14 @@ html, body {
     </div>
     <div class="cover-right">
       <div class="cover-tagline">Everyone could use an<br><em>&ldquo;AI Guy&rdquo;</em></div>
-      <div class="cover-stat-label">Lone Rock Point can be yours.</div>
+      <div class="cover-tagline-sub">Lone Rock Point can be yours.</div>
     </div>
   </section>
 
   <!-- PAGE 2: THE JOURNEY -->
   <section class="page page-journey">
     <div class="journey-left">
-      <div class="section-num">01 &mdash; The Journey</div>
+      <div class="section-num">01 / The Journey</div>
       <h2 class="page-title">Six Weeks of Breaking Barriers</h2>
       <p class="page-desc">OwnerRX was designed to move you from curiosity to capability. Here's what you accomplished.</p>
     </div>
@@ -945,24 +1006,24 @@ html, body {
         <div class="journey-num">01</div>
         <div>
           <div class="journey-step-title">Exposure</div>
-          <div class="journey-step-desc">Explored the art of the possible with AI and Anthropic Claude &mdash; intelligent prompting, skills, agents, and the full platform ecosystem.</div>
+          <div class="journey-step-desc">Explored the art of the possible with AI and Anthropic Claude: intelligent prompting, skills, agents, and the full platform ecosystem.</div>
         </div>
       </div>
       <div class="journey-step">
         <div class="journey-num">02</div>
         <div>
           <div class="journey-step-title">Adoption</div>
-          <div class="journey-step-desc">Broke down barriers through hands-on exercises. Not theory &mdash; actual work getting done with AI tools in real scenarios.</div>
+          <div class="journey-step-desc">Broke down barriers through hands-on exercises. Not theory. Actual work getting done with AI tools in real scenarios.</div>
         </div>
       </div>
       <div class="journey-step">
         <div class="journey-num">03</div>
         <div>
           <div class="journey-step-title">Inspiration</div>
-          <div class="journey-step-desc">Translated AI capabilities into a vision for your business &mdash; growth, efficiency, and competitive advantage powered by intelligent systems.</div>
+          <div class="journey-step-desc">Translated AI capabilities into a vision for your business: growth, efficiency, and competitive advantage powered by intelligent systems.</div>
         </div>
       </div>
-      <div class="journey-step" style="border-bottom: none; padding-top: 20px;">
+      <div class="journey-step">
         <div class="journey-num" style="opacity: 0.6; color: var(--brand);">&#x2713;</div>
         <div>
           <div class="journey-step-title">Your Head Start</div>
@@ -975,7 +1036,7 @@ html, body {
   <!-- PAGE 3: THE BOTTLENECK -->
   <section class="page page-bottleneck">
     <div class="bottleneck-left">
-      <div class="section-num" style="color: var(--brand);">02 &mdash; The Reality</div>
+      <div class="section-num">02 / The Reality</div>
       <h2 class="page-title">The Bottleneck Isn't Ideas.<br>It's Implementation.</h2>
       <p class="page-desc-light" style="margin-bottom: 24px;">Your next challenge won't be figuring out what AI can do. It will be making it actually work inside your business.</p>
       <ul class="bottleneck-items">
@@ -987,8 +1048,8 @@ html, body {
       </ul>
     </div>
     <div class="bottleneck-right">
-      <div class="bottleneck-stat">6</div>
-      <div class="big-stat-label">Weeks of hands-on AI training &mdash; complete</div>
+      <div class="big-stat">6</div>
+      <div class="big-stat-label">Weeks of hands-on AI training, complete</div>
       <div style="margin-top: 48px;">
         <div class="pull-quote">"Skills and custom GPTs are table stakes. They're useful, and they're not the destination."</div>
       </div>
@@ -998,7 +1059,7 @@ html, body {
   <!-- PAGE 4: THE DIFFERENCE -->
   <section class="page page-difference">
     <div class="difference-header">
-      <div class="section-num">03 &mdash; The Difference</div>
+      <div class="section-num">03 / The Difference</div>
       <h2 class="page-title">Most Consultants Get Off the Bus at ChatGPT</h2>
     </div>
     <div class="difference-grid">
@@ -1024,7 +1085,7 @@ html, body {
         <div class="icon-box">&#x2713;</div>
         <div class="difference-cell-label">Our Promise</div>
         <div class="difference-cell-title">First Functional Agent in 90 Days</div>
-        <div class="difference-cell-desc">Our goal is a real agent running a real workflow inside your business within 90 days &mdash; with the change management, governance, and guardrails you need to trust it with the work.</div>
+        <div class="difference-cell-desc">Our goal is a real agent running a real workflow inside your business within 90 days, with the change management, governance, and guardrails you need to trust it with the work.</div>
       </div>
     </div>
   </section>
@@ -1032,7 +1093,7 @@ html, body {
   <!-- PAGE 5: THE PROCESS -->
   <section class="page page-process">
     <div class="process-header">
-      <div class="section-num">04 &mdash; The Process</div>
+      <div class="section-num">04 / The Process</div>
       <h2 class="page-title">Typical Lone Rock Point Process</h2>
     </div>
     <div class="process-columns">
@@ -1040,14 +1101,14 @@ html, body {
         <div class="process-col-num">01</div>
         <div>
           <div class="process-col-title">Assess</div>
-          <div class="process-col-desc">We learn how your business actually works. Not the org chart version. The real version &mdash; where time goes, what's repetitive, what frustrates you, where your team is stretched, what "good" looks like to you.</div>
+          <div class="process-col-desc">We learn how your business actually works. Not the org chart version. The real version: where time goes, what's repetitive, what frustrates you, where your team is stretched, what "good" looks like to you.</div>
         </div>
       </div>
       <div class="process-col">
         <div class="process-col-num">02</div>
         <div>
           <div class="process-col-title">Identify</div>
-          <div class="process-col-desc">We surface the highest-impact opportunities for AI. Not 50 ideas. The handful that actually matter &mdash; ranked by impact and feasibility so you know exactly where to focus.</div>
+          <div class="process-col-desc">We surface the highest-impact opportunities for AI. Not 50 ideas. The handful that actually matter, ranked by impact and feasibility so you know exactly where to focus.</div>
         </div>
       </div>
       <div class="process-col">
@@ -1063,9 +1124,9 @@ html, body {
   <!-- PAGE 6: THE BLUEPRINT -->
   <section class="page page-blueprint">
     <div class="blueprint-left">
-      <div class="section-num">05 &mdash; The Deliverable</div>
+      <div class="section-num">05 / The Deliverable</div>
       <h2 class="page-title">The AI Clarity Blueprint</h2>
-      <p class="page-desc-light" style="margin-bottom: 28px;">A practical, executable document &mdash; not a slide deck that gathers dust. Everything you need to move from vision to first operating agent.</p>
+      <p class="page-desc-light" style="margin-bottom: 28px;">A practical, executable document. Not a slide deck that gathers dust. Everything you need to move from vision to first operating agent.</p>
       <div class="verdict" style="color: #fff; background: rgba(255,255,255,0.1);">7 Core Sections</div>
     </div>
     <div class="blueprint-right">
@@ -1101,7 +1162,7 @@ html, body {
         <div class="blueprint-row-num">05</div>
         <div>
           <div class="blueprint-row-title">Automation Roadmap</div>
-          <div class="blueprint-row-desc">What to automate first, second, and third &mdash; and why.</div>
+          <div class="blueprint-row-desc">What to automate first, second, and third. And why.</div>
         </div>
       </div>
       <div class="blueprint-row">
@@ -1124,19 +1185,19 @@ html, body {
   <!-- PAGE 7: CREDENTIALS -->
   <section class="page page-credentials">
     <div class="credentials-header">
-      <div class="section-num">06 &mdash; Our Track Record</div>
+      <div class="section-num">06 / Our Track Record</div>
       <h2 class="page-title">AI Already Running Inside Our Business</h2>
     </div>
     <div class="credentials-grid">
       <div class="credentials-cell">
         <div class="icon-box">&#x21C4;</div>
         <div class="credentials-cell-title">Autonomous Social Agent</div>
-        <div class="credentials-cell-desc">AI agent fully managing company X account &mdash; content calendars, post writing, image creation, and daily publishing. All brand-voice aligned.</div>
+        <div class="credentials-cell-desc">AI agent fully managing company X account: content calendars, post writing, image creation, and daily publishing. All brand-voice aligned.</div>
       </div>
       <div class="credentials-cell">
         <div class="icon-box">&#x25B6;</div>
         <div class="credentials-cell-title">Chief of Staff Agent</div>
-        <div class="credentials-cell-desc">Internal reporting, biz dev pipeline monitoring, and marketing funnel oversight &mdash; handled by an AI agent with real supervisory responsibilities.</div>
+        <div class="credentials-cell-desc">Internal reporting, biz dev pipeline monitoring, and marketing funnel oversight, handled by an AI agent with real supervisory responsibilities.</div>
       </div>
       <div class="credentials-cell">
         <div class="icon-box">&#x2605;</div>
@@ -1154,53 +1215,53 @@ html, body {
   <!-- PAGE 8: LEADS -->
   <section class="page page-leads">
     <div class="leads-left">
-      <div class="section-num">07 &mdash; Quick Win</div>
+      <div class="section-num">07 / Quick Win</div>
       <h2 class="page-title">What Every Small Business Needs: Leads</h2>
-      <p style="color: rgba(255,255,255,0.75); font-size: clamp(13px, 1.1vw, 15px); line-height: 1.7; position: relative; z-index: 1;">Haven't met a small business yet that isn't interested in generating more leads. If you're unsure what could go on your AI roadmap, this is a good place to start.</p>
+      <p style="color: rgba(255,255,255,0.75); font-size: clamp(14px, 1.1vw, 16px); line-height: 1.7; position: relative; z-index: 1;">Haven't met a small business yet that isn't interested in generating more leads. If you're unsure what could go on your AI roadmap, this is a good place to start.</p>
     </div>
     <div class="leads-right">
       <div class="leads-item">
         <div class="icon-box">&#x25CE;</div>
         <div>
           <div class="leads-item-title">Campaign Monitoring &amp; Reporting</div>
-          <div class="leads-item-desc">AI agents that track campaign performance in real time, surface what's working, and flag what needs attention &mdash; before you miss a window.</div>
+          <div class="leads-item-desc">AI agents that track campaign performance in real time, surface what's working, and flag what needs attention before you miss a window.</div>
         </div>
       </div>
       <div class="leads-item">
         <div class="icon-box">&#x270E;</div>
         <div>
           <div class="leads-item-title">Thought Leadership Content Engine</div>
-          <div class="leads-item-desc">Automated content creation aligned to your brand voice &mdash; blog posts, articles, and social content that positions you as the authority in your space.</div>
+          <div class="leads-item-desc">Automated content creation aligned to your brand voice: blog posts, articles, and social content that positions you as the authority in your space.</div>
         </div>
       </div>
       <div class="leads-item">
         <div class="icon-box">&#x21C4;</div>
         <div>
           <div class="leads-item-title">LinkedIn Contact Nurturing</div>
-          <div class="leads-item-desc">AI-powered outreach and relationship building on LinkedIn &mdash; personalized messaging at scale that doesn't feel automated.</div>
+          <div class="leads-item-desc">AI-powered outreach and relationship building on LinkedIn. Personalized messaging at scale that doesn't feel automated.</div>
         </div>
       </div>
       <div class="leads-item">
         <div class="icon-box">&#x2709;</div>
         <div>
           <div class="leads-item-title">Email Drip Campaigns</div>
-          <div class="leads-item-desc">Intelligent email sequences that adapt to recipient behavior &mdash; right message, right time, with automated follow-up.</div>
+          <div class="leads-item-desc">Intelligent email sequences that adapt to recipient behavior. Right message, right time, with automated follow-up.</div>
         </div>
       </div>
       <div class="leads-item">
         <div class="icon-box">&#x260E;</div>
         <div>
           <div class="leads-item-title">Cold Calling</div>
-          <div class="leads-item-desc">AI-assisted call preparation, script optimization, and follow-up automation &mdash; so your team spends time on conversations, not research.</div>
+          <div class="leads-item-desc">AI-assisted call preparation, script optimization, and follow-up automation so your team spends time on conversations, not research.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PAGE 9: TWO PATHS  -->
+  <!-- PAGE 9: TWO PATHS -->
   <section class="page page-paths">
     <div class="path-panel path-panel-a">
-      <div class="section-num">08 &mdash; Path A</div>
+      <div class="section-num">08 / Path A</div>
       <h2 class="page-title">You Have the Vision</h2>
       <p class="path-desc path-desc-dark">You know where AI fits in your business. You need an implementation partner to make it real.</p>
       <ul class="path-items path-items-dark">
@@ -1212,11 +1273,11 @@ html, body {
       </ul>
     </div>
     <div class="path-panel path-panel-b">
-      <div class="section-num">08 &mdash; Path B</div>
+      <div class="section-num">08 / Path B</div>
       <h2 class="page-title">You Need the Roadmap</h2>
       <p class="path-desc path-desc-light">You have ideas but need help translating them into an executable plan for your organization.</p>
       <ul class="path-items path-items-light">
-        <li>Fast-track AI Clarity Audit &mdash; one 90-minute session</li>
+        <li>Fast-track AI Clarity Audit: one 90-minute session</li>
         <li>Receive your AI Clarity Blueprint</li>
         <li>Implementation plan for agents within 60 days</li>
         <li>Execute independently or partner with us</li>
@@ -1228,7 +1289,7 @@ html, body {
   <!-- PAGE 10: PRICING -->
   <section class="page page-pricing">
     <div class="pricing-left">
-      <div class="section-num" style="color: var(--brand);">09 &mdash; Investment</div>
+      <div class="section-num" style="color: var(--brand);">09 / Investment</div>
       <h2 class="page-title">Pricing</h2>
       <p class="page-desc-light" style="margin-top: 16px;">Three-month commitment. 60 days of implementation followed by 30 days of hypercare support.</p>
       <div style="margin-top: 32px;">
@@ -1317,6 +1378,14 @@ html, body {
   let isAnimating = false;
   const ANIM_DURATION = 650;
 
+  // --vh fallback for browsers without 100dvh
+  function setVH() {
+    document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+  }
+  setVH();
+  window.addEventListener('orientationchange', setVH);
+
+  // Create nav dots
   for (let i = 0; i < totalPages; i++) {
     const dot = document.createElement('button');
     dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
@@ -1341,6 +1410,7 @@ html, body {
     if (currentPage > 0) swipeHint.classList.add('hidden');
   }
 
+  // Arrow keys
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
       e.preventDefault(); goToPage(currentPage + 1);
@@ -1349,6 +1419,7 @@ html, body {
     }
   });
 
+  // Mouse wheel
   let wheelAccumulator = 0;
   let wheelTimer = null;
   document.addEventListener('wheel', (e) => {
@@ -1363,16 +1434,32 @@ html, body {
     }
   }, { passive: false });
 
+  // Touch swipe — horizontal navigates, vertical passes through to native page scroll
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchMoved = false;
+  let swipeAxis = null;
   document.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX; touchMoved = false;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoved = false;
+    swipeAxis = null;
   }, { passive: true });
   document.addEventListener('touchmove', (e) => {
-    touchMoved = true; e.preventDefault();
+    touchMoved = true;
+    if (swipeAxis === null) {
+      const dx = Math.abs(e.touches[0].clientX - touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      if (dx + dy > 10) {
+        swipeAxis = (dx > dy) ? 'x' : 'y';
+      }
+    }
+    if (swipeAxis === 'x') {
+      e.preventDefault();
+    }
   }, { passive: false });
   document.addEventListener('touchend', (e) => {
-    if (!touchMoved) return;
+    if (!touchMoved || swipeAxis !== 'x') return;
     const dx = e.changedTouches[0].clientX - touchStartX;
     if (Math.abs(dx) > 50) {
       if (dx < 0) goToPage(currentPage + 1);
@@ -1380,7 +1467,9 @@ html, body {
     }
   });
 
+  // Resize snap + refresh --vh
   window.addEventListener('resize', () => {
+    setVH();
     magazine.style.transition = 'none';
     magazine.style.transform = 'translateX(-' + (currentPage * 100) + 'vw)';
     requestAnimationFrame(() => { magazine.style.transition = ''; });
