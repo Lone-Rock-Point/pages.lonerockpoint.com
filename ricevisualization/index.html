@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NE Paradigm — AI Clarity Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --bg: #0e0f11;
+  --surface: #161719;
+  --surface2: #1e2023;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text: #f0ede8;
+  --text2: #9b9890;
+  --text3: #5e5c59;
+  --accent: #d4a853;
+  --accent2: #c47a3a;
+  --highlight: #e8c97a;
+  --teal: #4ec9b0;
+  --coral: #e07b6a;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'DM Mono', monospace; min-height: 100vh; }
+
+.header {
+  padding: clamp(16px,4vw,36px) clamp(16px,4vw,40px) clamp(12px,3vw,24px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between;
+  flex-wrap: wrap; gap: 14px;
+}
+.eyebrow { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+h1 { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(18px,4vw,28px); color: var(--text); line-height: 1.2; }
+h1 em { font-style: italic; color: var(--highlight); }
+.subtitle { font-size: clamp(10px,2vw,11px); color: var(--text2); margin-top: 6px; line-height: 1.6; max-width: 520px; }
+
+.toggle-wrap {
+  display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text2);
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 99px; padding: 4px 10px 4px 12px; white-space: nowrap; flex-shrink: 0;
+}
+.toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute; inset: 0; background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 99px; cursor: pointer; transition: background .25s;
+}
+.toggle-slider::before {
+  content: ''; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px;
+  background: var(--text3); border-radius: 50%; transition: transform .25s, background .25s;
+}
+.toggle input:checked + .toggle-slider { background: var(--accent2); border-color: var(--accent); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(20px); background: var(--highlight); }
+.score-mode-label {
+  font-size: 10px; color: var(--text3); text-transform: uppercase;
+  letter-spacing: 0.1em; padding: 3px 8px; border: 1px solid var(--border);
+  border-radius: 3px; transition: all .2s; white-space: nowrap;
+}
+.score-mode-label.alt { color: var(--accent); border-color: var(--accent2); }
+
+.context-note {
+  margin: 14px clamp(12px,4vw,32px) 0; padding: 10px 14px; background: var(--surface2);
+  border: 1px solid var(--border2); border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm); font-size: 10.5px; color: var(--text2); line-height: 1.6;
+}
+.context-note strong { color: var(--accent); font-weight: 500; }
+
+.layout {
+  display: grid; grid-template-columns: 240px 1fr; grid-template-rows: auto auto; gap: 0;
+}
+.sidebar {
+  grid-row: 1 / 3; border-right: 1px solid var(--border); padding: 20px 0;
+  overflow-y: auto; max-height: calc(100vh - 160px); position: sticky; top: 0;
+}
+.sidebar-label { font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: var(--text3); padding: 0 16px 10px; }
+.task-list-desktop { display: flex; flex-direction: column; gap: 2px; padding: 0 8px; }
+
+.task-pills {
+  display: none; overflow-x: auto; gap: 6px;
+  padding: 12px clamp(12px,4vw,32px); border-bottom: 1px solid var(--border); scrollbar-width: none;
+}
+.task-pills::-webkit-scrollbar { display: none; }
+
+.task-btn {
+  display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; background: transparent;
+  border: 1px solid transparent; border-radius: var(--radius-sm); cursor: pointer; text-align: left;
+  transition: all .15s; font-family: 'DM Mono', monospace; color: var(--text2);
+  font-size: 10px; line-height: 1.4; width: 100%;
+}
+.task-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+.task-btn.active { background: var(--surface2); border-color: var(--border2); color: var(--text); }
+.task-btn.active .task-dot { transform: scale(1.5); box-shadow: 0 0 7px var(--dot-color); }
+.task-btn.all-btn {
+  font-size: 9.5px; letter-spacing: .08em; color: var(--text3); padding: 7px 10px;
+  justify-content: center; text-transform: uppercase; margin-bottom: 6px; border-color: var(--border); width: 100%;
+}
+.task-btn.all-btn.active, .task-btn.all-btn:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent2); }
+
+.pill-btn {
+  flex-shrink: 0; display: flex; align-items: center; gap: 6px; padding: 6px 12px;
+  border-radius: 99px; background: var(--surface2); border: 1px solid var(--border2);
+  cursor: pointer; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text2);
+  white-space: nowrap; transition: all .15s;
+}
+.pill-btn:hover, .pill-btn.active { border-color: var(--accent2); color: var(--text); }
+.pill-btn.all-pill { color: var(--accent); border-color: var(--accent2); }
+
+.task-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--dot-color); flex-shrink: 0; margin-top: 3px; transition: transform .15s, box-shadow .15s; }
+.task-name { flex: 1; }
+.task-hrs { font-size: 8.5px; color: var(--text3); white-space: nowrap; margin-top: 2px; }
+.dept-badge { font-size: 8px; padding: 1px 5px; border-radius: 3px; background: rgba(255,255,255,0.05); color: var(--text3); margin-top: 3px; display: inline-block; }
+
+.main-area { padding: clamp(16px,3vw,24px) clamp(12px,4vw,32px) 0; }
+.hours-area { padding: 0 clamp(12px,4vw,32px) clamp(16px,3vw,32px); }
+.chart-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 6px; }
+.chart-title { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(13px,2.5vw,16px); color: var(--text); }
+.chart-hint { font-size: 10px; color: var(--text3); }
+.chart-wrap { position: relative; width: 100%; height: clamp(300px,50vw,420px); }
+.hours-wrap { position: relative; width: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 0; font-size: 10px; color: var(--text2); }
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+.divider { height: 1px; background: var(--border); margin: clamp(14px,3vw,24px) clamp(12px,4vw,32px); }
+
+/* ── DETAIL PANEL ── */
+.detail-panel {
+  margin: 12px 0 0;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: opacity .2s;
+}
+.detail-panel.empty {
+  border-color: var(--border);
+  background: transparent;
+}
+.detail-empty-msg {
+  padding: 12px 16px;
+  font-size: 10.5px;
+  color: var(--text3);
+  font-style: italic;
+}
+.detail-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px 10px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+.detail-color-bar {
+  width: 4px; height: 36px; border-radius: 2px; flex-shrink: 0;
+}
+.detail-title-block { flex: 1; min-width: 0; }
+.detail-task-name {
+  font-family: 'Fraunces', serif; font-weight: 300;
+  font-size: clamp(13px,2vw,16px); color: var(--text); line-height: 1.2;
+}
+.detail-star { color: var(--accent); font-size: 12px; margin-left: 5px; }
+.detail-meta { font-size: 9.5px; color: var(--text3); margin-top: 3px; }
+.detail-scores {
+  display: flex; gap: 12px; flex-shrink: 0; flex-wrap: wrap;
+}
+.score-chip {
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 5px; padding: 4px 10px; min-width: 44px;
+}
+.score-chip-val { font-size: 14px; font-weight: 500; color: var(--highlight); line-height: 1; }
+.score-chip-lbl { font-size: 8px; color: var(--text3); margin-top: 2px; letter-spacing: .06em; text-transform: uppercase; }
+
+.detail-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: var(--surface);
+}
+.detail-section {
+  padding: 12px 16px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.detail-section:nth-child(even) { border-right: none; }
+.detail-section:last-child, .detail-section:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+.detail-section-label {
+  font-size: 8.5px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 6px; display: flex; align-items: center; gap: 5px;
+}
+.detail-section-label .icon { font-size: 10px; }
+.detail-section-text { font-size: 10.5px; color: var(--text2); line-height: 1.65; }
+
+.approach-band {
+  padding: 12px 16px;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.approach-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.approach-label { font-size: 8.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.approach-text { font-size: 10.5px; color: var(--text2); line-height: 1.65; }
+.note-tag {
+  display: inline-block; font-size: 8.5px; padding: 1px 7px;
+  border-radius: 3px; background: rgba(212,168,83,0.15);
+  border: 1px solid rgba(212,168,83,0.3); color: var(--accent);
+  margin-top: 6px; letter-spacing: .04em;
+}
+
+@media (max-width: 700px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .task-pills { display: flex; }
+  .detail-body { grid-template-columns: 1fr; }
+  .detail-section { border-right: none !important; }
+  .detail-scores { gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="eyebrow">NE Paradigm · AI Clarity</div>
+    <h1>Task <em>Prioritization</em> Dashboard</h1>
+    <p class="subtitle">Impact vs. Effort scoring for AI/automation opportunities. Bubble size = monthly hours. Top candidates: <strong style="color:var(--teal)">Scavenger Hunt</strong>, <strong style="color:var(--teal)">Note Taking</strong>, <strong style="color:var(--coral)">Email Management</strong>.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;">
+    <div class="toggle-wrap">
+      <span>RICE</span>
+      <label class="toggle"><input type="checkbox" id="scoreToggle"><span class="toggle-slider"></span></label>
+      <span>Total</span>
+    </div>
+    <div id="scoreModeLabel" class="score-mode-label">RICE: R×I×C÷E</div>
+  </div>
+</div>
+
+<div class="context-note">
+  <strong>Context:</strong> Plot each task on Impact vs. Effort with estimated hours. Top candidates: <em>Scavenger Hunt</em> and <em>Note Taking</em> (high-impact, high-confidence); <em>Email Management</em> is high-impact but lower confidence.
+</div>
+
+<div class="task-pills" id="taskPills"></div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-label">Filter by task</div>
+    <div class="task-list-desktop" id="taskListDesktop"></div>
+  </aside>
+
+  <div>
+    <div class="main-area">
+      <div class="chart-header">
+        <span class="chart-title" id="impactTitle">Impact vs. Effort — bubble size = monthly hours</span>
+        <span class="chart-hint">click to isolate · hover for scores</span>
+      </div>
+      <div class="legend" id="legend"></div>
+
+      <!-- Detail panel lives between legend and chart -->
+      <div class="detail-panel empty" id="detailPanel">
+        <div class="detail-empty-msg">↑ Select a task to see full details</div>
+      </div>
+
+      <div class="chart-wrap" style="margin-top:14px;">
+        <canvas id="impactChart"></canvas>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="hours-area">
+      <div class="chart-header">
+        <span class="chart-title">Monthly hours per task</span>
+        <span class="chart-hint">total time investment</span>
+      </div>
+      <div class="hours-wrap" id="hoursWrap">
+        <canvas id="hoursChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TASKS = [
+  {
+    id:0, label:"Email management", short:"Email mgmt",
+    dept:"Client Ops", team:"Client Operations (5 people)", hrs:1250,
+    r:9,i:5,c:5,e:2, total:21, starred:true,
+    note:"High-impact but lower confidence",
+    process:"Drafting and replying to inbound emails across the team. Includes scheduling, rescheduling, follow-ups, and general inbox triage. Heavy use of grammar/copy tools to match tone.",
+    tools:"Outlook, Grammarly, Copy AI, Copilot",
+    approach:"Email assistant agent that monitors inboxes and drafts replies based on company tone/voice and common reply structures (e.g. rescheduling meetings).",
+    mode:"Hybrid"
+  },
+  {
+    id:1, label:"Social media design", short:"Social design",
+    dept:"Marketing", team:"Marketing (4 people)", hrs:300,
+    r:7,i:7,c:8,e:8, total:30, starred:false,
+    process:"Creating visual assets for social media posts across all client accounts. Each client has its own brand guidelines requiring manual adaptation per post.",
+    tools:"Canva, Illustrator",
+    approach:"Define design.md files. Create skills for content planning, content calendar, and regular posting scheduling.",
+    mode:"Manual"
+  },
+  {
+    id:2, label:"Scavenger hunt for info", short:"Scavenger hunt",
+    dept:"Internal Ops", team:"All staff (14 people)", hrs:280,
+    r:8,i:8,c:8,e:6, total:30, starred:true,
+    note:"High-impact, high-confidence — top candidate",
+    process:"Staff spend significant time hunting across siloed tools (Monday.com, email, Slack, shared drives, Harvest) to find project status, files, client history, and context. Described internally as 'island hopping between siloed tools.'",
+    tools:"Monday.com, Harvest, Outlook, shared drives",
+    approach:"Enterprise MCP aggregator — connecting an AI agent to all information repositories via MCP. Possible standalone Node application. Goal: identify signal from noise. Chat agent answers 'Where is _______' across all systems.",
+    mode:"Manual"
+  },
+  {
+    id:3, label:"Social media copy", short:"Social copy",
+    dept:"Marketing", team:"Marketing (4 people)", hrs:210,
+    r:7,i:7,c:8,e:8, total:30, starred:false,
+    process:"Writing copy for social media posts across client accounts. Requires understanding of each client's voice, audience, and campaign goals. Currently uses AI tools but inconsistently.",
+    tools:"ChatGPT, CopyAI",
+    approach:"Similar to social media design — define subject matter and tone guidelines, populate a content calendar. AI skill that runs regularly.",
+    mode:"Hybrid"
+  },
+  {
+    id:4, label:"Short form video creation", short:"Short video",
+    dept:"Design", team:"Ava, Bella, Vic", hrs:200,
+    r:5,i:6,c:7,e:6, total:24, starred:false,
+    process:"Producing short-form video content for clients. Process is consistent across clients: brief → script → design → export. Tools vary slightly per client.",
+    tools:"Canva, Illustrator",
+    approach:"Generate video and audio based on text documents and creative briefs.",
+    mode:"Hybrid"
+  },
+  {
+    id:5, label:"Spec sheets", short:"Spec sheets",
+    dept:"Design", team:"Kate, Bella, Vic", hrs:200,
+    r:7,i:7,c:7,e:7, total:28, starred:false,
+    process:"Building product/service spec sheets for clients. Follows a standard layout but requires pulling content from multiple sources and reformatting per client brand.",
+    tools:"",
+    approach:"If using standard design for sheets, create via management of markdown files.",
+    mode:"Hybrid"
+  },
+  {
+    id:6, label:"Email sends / newsletters", short:"Newsletters",
+    dept:"Client Ops", team:"Elodie, Jillian", hrs:200,
+    r:6,i:6,c:8,e:7, total:27, starred:false,
+    process:"End-to-end newsletter production: copy, design, list management, scheduling, and send. Each client has a different platform and list setup.",
+    tools:"Constant Contact, HubSpot, Mailchimp",
+    approach:"Establish a design system via design.md file. Voice/tone guidelines to standardize production.",
+    mode:"Hybrid"
+  },
+  {
+    id:7, label:"Monthly meeting prep", short:"Meeting prep",
+    dept:"Client Ops", team:"All client-facing staff (14 people)", hrs:125,
+    r:8,i:9,c:7,e:7, total:31, starred:false,
+    process:"Assembling materials before monthly client meetings: pulling project status from Monday.com, time data from Harvest, creating recap slides in Canva. High manual effort across tools.",
+    tools:"Canva, Monday.com, Harvest",
+    approach:"Similar to scavenger hunt — pull information from various sources and propose meeting agendas and supporting materials automatically.",
+    mode:"Manual"
+  },
+  {
+    id:8, label:"Social media reporting", short:"Social reporting",
+    dept:"Client Ops", team:"Ryan, Chloe", hrs:90,
+    r:6,i:6,c:8,e:8, total:28, starred:false,
+    process:"Pulling and formatting social media performance reports for clients. Data comes from multiple platforms and must be combined into a consistent report format.",
+    tools:"Sendable, HubSpot",
+    approach:"Standard reporting dashboard connected to social media via MCP connectors.",
+    mode:"Hybrid"
+  },
+  {
+    id:9, label:"Website builds", short:"Website builds",
+    dept:"Design", team:"Kate", hrs:80,
+    r:6,i:5,c:5,e:3, total:19, starred:false,
+    process:"Full website builds including wireframing, copywriting, and development. Each build is largely custom to the client and currently done entirely by one person.",
+    tools:"Wix",
+    approach:"ClaudeDesign, Lovable, or similar AI-assisted website generation tools.",
+    mode:"Unspecified"
+  },
+  {
+    id:10, label:"Note taking & recaps", short:"Note taking",
+    dept:"Client Ops", team:"All client-facing staff (14 people)", hrs:60,
+    r:8,i:8,c:9,e:8, total:33, starred:true,
+    note:"High-impact, high-confidence — top candidate",
+    process:"Taking notes during client meetings, formatting them, writing recap emails with next steps, and distributing to attendees. Currently uses a mix of AI transcription and manual cleanup.",
+    tools:"Otter.ai, Copilot, Canva (next steps), OneNote, Monday.com",
+    approach:"Auto-generate recaps based on meeting notes. Utilize standard email templates. Auto-send.",
+    mode:"Hybrid"
+  },
+  {
+    id:11, label:"Reviews / quality checks", short:"QA reviews",
+    dept:"Marketing", team:"Taylor, Kate, Jillian, Elodie", hrs:32,
+    r:5,i:4,c:4,e:4, total:17, starred:false,
+    process:"Management team manually reviews deliverables before client submission. Process described internally as 'crazy' — no standard checklist, relies on individual judgment.",
+    tools:"",
+    approach:"Review agents for common quality checks. Assumes there are standard quality checks done every time.",
+    mode:"Manual"
+  },
+  {
+    id:12, label:"90-day strategy", short:"90-day strategy",
+    dept:"Internal Ops", team:"Avery", hrs:30,
+    r:5,i:6,c:6,e:6, total:23, starred:false,
+    process:"Assembling quarterly strategy briefs for internal planning. Requires pulling together performance data, project status, and team input from multiple sources.",
+    tools:"",
+    approach:"Semi-automated. AI agents can assemble strategy briefings for the team by bringing together information from across systems.",
+    mode:"Manual"
+  },
+  {
+    id:13, label:"Overview presentations", short:"Proposals/slides",
+    dept:"Design", team:"Bella, Kate", hrs:25,
+    r:7,i:7,c:9,e:8, total:31, starred:false,
+    process:"Creating overview decks and client proposals. Triggered by discovery calls or new business opportunities. Requires assembling messaging, visuals, and pricing from templates.",
+    tools:"Canva",
+    approach:"Slideshow generator based on doc input. Proposal generation based on discovery call transcripts.",
+    mode:"Hybrid"
+  },
+  {
+    id:14, label:"Monday.com board review", short:"Monday.com review",
+    dept:"Client Ops", team:"Client Ops team", hrs:20,
+    r:5,i:7,c:7,e:7, total:26, starred:false,
+    process:"Weekly review of client project boards in Monday.com to assess project health, identify blockers, and prioritize work. Currently manual and inconsistently done.",
+    tools:"Monday.com",
+    approach:"Automatically generated weekly report comparing projects in Monday.com based on company prioritization rules.",
+    mode:"Hybrid"
+  },
+  {
+    id:15, label:"One-pagers", short:"One-pagers",
+    dept:"Design", team:"Bella, Kate, Ava", hrs:20,
+    r:7,i:7,c:7,e:7, total:28, starred:false,
+    process:"Designing single-page summary documents for clients or internal use. Standard layout with variable content — relatively templatable.",
+    tools:"",
+    approach:"Similar to other design/creation approaches — template-driven generation from structured content input.",
+    mode:"Hybrid"
+  },
+  {
+    id:16, label:"Landing pages", short:"Landing pages",
+    dept:"Marketing", team:"Ava", hrs:18,
+    r:7,i:7,c:7,e:7, total:28, starred:false,
+    process:"Building marketing landing pages for client campaigns. Uses Wix; each page is campaign-specific but follows repeatable structure.",
+    tools:"Wix",
+    approach:"Similar to other design/creation approaches — template-driven generation from structured content input.",
+    mode:"Unspecified"
+  },
+  {
+    id:17, label:"Postcards / mailers", short:"Postcards",
+    dept:"Marketing", team:"Bella", hrs:16,
+    r:7,i:7,c:7,e:7, total:28, starred:false,
+    process:"Designing print mailers and postcards for clients. Standard size/format with variable copy and imagery per campaign.",
+    tools:"",
+    approach:"Similar to other design/creation approaches — template-driven generation from structured content input.",
+    mode:"Manual"
+  },
+  {
+    id:18, label:"Client onboarding", short:"Client onboarding",
+    dept:"Internal Ops", team:"Avery", hrs:10,
+    r:4,i:5,c:5,e:6, total:20, starred:false,
+    process:"Setting up new clients across internal systems: Monday.com, email lists, shared drives, HubSpot. Currently manual and sequential — one tool at a time.",
+    tools:"",
+    approach:"Kick off digital onboarding comms. Add clients to systems from a single skill/prompt.",
+    mode:"Manual"
+  },
+  {
+    id:19, label:"Blog writing", short:"Blog writing",
+    dept:"Marketing", team:"Elodie, Jillian", hrs:10,
+    r:7,i:7,c:7,e:7, total:28, starred:false,
+    process:"Writing blog posts and storyboards for client content programs. Requires research, brand voice alignment, and SEO considerations.",
+    tools:"",
+    approach:"Similar to other design/creation approaches — template-driven generation from structured content input.",
+    mode:"Unspecified"
+  },
+  {
+    id:20, label:"Website maintenance", short:"Web maintenance",
+    dept:"Client Ops", team:"Bella, Kate, Ava", hrs:10,
+    r:7,i:7,c:7,e:7, total:28, starred:false,
+    process:"Ongoing updates to client websites: copy changes, image swaps, plugin updates. Small tasks that collectively add up.",
+    tools:"Wix",
+    approach:"Similar to other design/creation approaches — template-driven generation from structured content input.",
+    mode:"Unspecified"
+  },
+  {
+    id:21, label:"Lead gen follow up", short:"Lead nurturing",
+    dept:"Hubspot", team:"Avery", hrs:8,
+    r:4,i:7,c:6,e:5, total:22, starred:false,
+    process:"Following up with leads after initial contact. Requires selecting appropriate nurturing content and timing based on the prospect's stage and profile.",
+    tools:"HubSpot",
+    approach:"Automated nurturing sequences. AI model picks the nurturing materials based on the prospect/opportunity.",
+    mode:"Hybrid"
+  },
+];
+
+const DEPT_COLORS = {
+  "Client Ops":   "#e07b6a",
+  "Marketing":    "#9d8fdf",
+  "Design":       "#d47aaa",
+  "Internal Ops": "#4ec9b0",
+  "Hubspot":      "#d4a853",
+};
+TASKS.forEach(t => { t.color = DEPT_COLORS[t.dept] || "#9b9890"; });
+
+const maxHrs = Math.max(...TASKS.map(t => t.hrs));
+let selectedId = null;
+let useTotal = false;
+
+function getRice(t) { return Math.round((t.r * t.i * t.c) / t.e * 10) / 10; }
+function getYVal(t) { return useTotal ? t.total : t.i; }
+function getBubbleR(hrs) { return Math.max(7, Math.sqrt(hrs / maxHrs) * 44); }
+function hexRgb(h) { return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)].join(','); }
+function alpha(id) { return selectedId === null ? 1 : (id === selectedId ? 1 : 0.1); }
+
+/* ── DETAIL PANEL ── */
+function renderDetail(task) {
+  const panel = document.getElementById('detailPanel');
+  if (!task) {
+    panel.className = 'detail-panel empty';
+    panel.innerHTML = '<div class="detail-empty-msg">↑ Select a task to see full details</div>';
+    return;
+  }
+  panel.className = 'detail-panel';
+  const rice = getRice(task);
+  panel.innerHTML = `
+    <div class="detail-header">
+      <div class="detail-color-bar" style="background:${task.color}"></div>
+      <div class="detail-title-block">
+        <div class="detail-task-name">${task.label}${task.starred ? '<span class="detail-star">★</span>' : ''}</div>
+        <div class="detail-meta">${task.dept} &nbsp;·&nbsp; ${task.team} &nbsp;·&nbsp; ${task.hrs.toLocaleString()} hrs/mo &nbsp;·&nbsp; ${task.mode}</div>
+      </div>
+      <div class="detail-scores">
+        <div class="score-chip"><span class="score-chip-val">${rice}</span><span class="score-chip-lbl">RICE</span></div>
+        <div class="score-chip"><span class="score-chip-val">${task.total}</span><span class="score-chip-lbl">Total</span></div>
+        <div class="score-chip"><span class="score-chip-val">${task.c}</span><span class="score-chip-lbl">Conf.</span></div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-section">
+        <div class="detail-section-label"><span class="icon">📋</span> Task / Process</div>
+        <div class="detail-section-text">${task.process}</div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-label"><span class="icon">🛠</span> Tools Currently Used</div>
+        <div class="detail-section-text">${task.tools || '<span style="color:var(--text3);font-style:italic;">None specified</span>'}</div>
+      </div>
+    </div>
+    <div class="approach-band">
+      <div class="approach-icon">🤖</div>
+      <div>
+        <div class="approach-label">AI / Automation Approach</div>
+        <div class="approach-text">${task.approach}</div>
+        ${task.note ? `<div class="note-tag">★ ${task.note}</div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+/* ── SIDEBAR (desktop) ── */
+const desktopList = document.getElementById('taskListDesktop');
+const allBtnD = document.createElement('button');
+allBtnD.className = 'task-btn all-btn active';
+allBtnD.dataset.role = 'all';
+allBtnD.textContent = '◈ Show all tasks';
+allBtnD.onclick = () => { selectedId = null; updateAll(); };
+desktopList.appendChild(allBtnD);
+
+TASKS.forEach(t => {
+  const btn = document.createElement('button');
+  btn.className = 'task-btn';
+  btn.dataset.id = t.id;
+  btn.style.setProperty('--dot-color', t.color);
+  btn.innerHTML = `<span class="task-dot"></span><span><span class="task-name">${t.label}${t.starred?' <span style="color:var(--accent);font-size:9px;">★</span>':''}</span><span class="task-hrs">${t.hrs.toLocaleString()} hrs/mo</span><span class="dept-badge">${t.dept}</span></span>`;
+  btn.onclick = () => { selectedId = selectedId === t.id ? null : t.id; updateAll(); };
+  desktopList.appendChild(btn);
+});
+
+/* ── PILL ROW (mobile) ── */
+const pillRow = document.getElementById('taskPills');
+const allPill = document.createElement('button');
+allPill.className = 'pill-btn all-pill active';
+allPill.dataset.role = 'all';
+allPill.textContent = '◈ All';
+allPill.onclick = () => { selectedId = null; updateAll(); };
+pillRow.appendChild(allPill);
+
+TASKS.forEach(t => {
+  const p = document.createElement('button');
+  p.className = 'pill-btn';
+  p.dataset.id = t.id;
+  p.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:${t.color};flex-shrink:0;display:inline-block;"></span>${t.short}${t.starred?' ★':''}`;
+  p.onclick = () => { selectedId = selectedId === t.id ? null : t.id; updateAll(); };
+  pillRow.appendChild(p);
+});
+
+/* ── LEGEND ── */
+const legend = document.getElementById('legend');
+Object.entries(DEPT_COLORS).forEach(([dept, color]) => {
+  const el = document.createElement('div');
+  el.className = 'legend-item';
+  el.innerHTML = `<span class="legend-dot" style="background:${color}"></span><span>${dept}</span>`;
+  legend.appendChild(el);
+});
+const starEl = document.createElement('div');
+starEl.className = 'legend-item';
+starEl.innerHTML = `<span style="color:var(--accent);font-size:11px;line-height:1;">★</span><span>Top candidate</span>`;
+legend.appendChild(starEl);
+
+/* ── QUADRANT PLUGIN ── */
+const quadPlugin = {
+  id: 'quad',
+  beforeDraw(chart) {
+    const { ctx, chartArea: { left, right, top, bottom, width, height } } = chart;
+    const mx = left + width/2, my = top + height/2;
+    ctx.save();
+    ctx.fillStyle = 'rgba(224,123,106,0.06)'; ctx.fillRect(left, top, mx-left, my-top);
+    ctx.fillStyle = 'rgba(78,201,176,0.07)';  ctx.fillRect(mx, top, right-mx, my-top);
+    ctx.fillStyle = 'rgba(20,22,25,0.4)';     ctx.fillRect(left, my, mx-left, bottom-my);
+    ctx.fillStyle = 'rgba(91,159,212,0.05)';  ctx.fillRect(mx, my, right-mx, bottom-my);
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(mx,top); ctx.lineTo(mx,bottom); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(left,my); ctx.lineTo(right,my); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font = '500 10px DM Mono,monospace'; ctx.fillStyle = 'rgba(255,255,255,0.16)';
+    ctx.fillText('Hard bets', left+8, top+16);
+    ctx.fillText('Top priority', mx+8, top+16);
+    ctx.fillText('Skip', left+8, bottom-8);
+    ctx.fillText('Quick wins', mx+8, bottom-8);
+    ctx.restore();
+  }
+};
+
+/* ── LABEL PLUGIN ── */
+const labelPlugin = {
+  id: 'bubbleLabels',
+  afterDatasetsDraw(chart) {
+    const ctx = chart.ctx;
+    chart.data.datasets.forEach((ds, di) => {
+      const meta = chart.getDatasetMeta(di);
+      if (!meta.visible) return;
+      const t = TASKS[di];
+      if (alpha(t.id) < 0.5) return;
+      meta.data.forEach(pt => {
+        const { x, y } = pt.getCenterPoint ? pt.getCenterPoint() : pt;
+        const r = pt.options?.radius || 10;
+        const words = t.short.split(' ');
+        const maxLen = Math.max(5, Math.floor(r * 0.95));
+        const lines = []; let cur = '';
+        for (const w of words) {
+          if ((cur+' '+w).trim().length <= maxLen) cur = (cur+' '+w).trim();
+          else { if (cur) lines.push(cur); cur = w; }
+        }
+        if (cur) lines.push(cur);
+        const fs = Math.max(8, Math.min(11, r * 0.36));
+        ctx.save();
+        ctx.font = `500 ${fs}px DM Mono,monospace`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        const lh = fs * 1.35;
+        const sy = y - (lines.length * lh)/2 + lh/2;
+        lines.forEach((line, li) => {
+          const ly = sy + li * lh;
+          ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(14,15,17,0.85)'; ctx.strokeText(line, x, ly);
+          ctx.fillStyle = 'rgba(240,237,232,0.92)'; ctx.fillText(line, x, ly);
+        });
+        ctx.restore();
+      });
+    });
+  }
+};
+
+/* ── IMPACT CHART ── */
+const impactChart = new Chart(document.getElementById('impactChart'), {
+  type: 'bubble',
+  data: {
+    datasets: TASKS.map(t => ({
+      label: t.label,
+      data: [{ x: t.e, y: getYVal(t), r: getBubbleR(t.hrs) }],
+      backgroundColor: `rgba(${hexRgb(t.color)},${0.65 * (t.starred ? 1 : 0.85)})`,
+      borderColor: `rgba(${hexRgb(t.color)},1)`,
+      borderWidth: t.starred ? 2 : 1,
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    layout: { padding: { top: 28, right: 32, bottom: 8, left: 8 } },
+    scales: {
+      x: {
+        title: { display: true, text: 'Effort / Ease →', color: '#5e5c59', font: { size: 11, family: 'DM Mono' } },
+        min: 0, max: 11, grid: { color: 'rgba(255,255,255,0.05)' },
+        ticks: { color: '#5e5c59', font: { size: 10 } }
+      },
+      y: {
+        title: { display: true, text: 'Impact (I score) →', color: '#5e5c59', font: { size: 11, family: 'DM Mono' } },
+        min: 0, max: 11, grid: { color: 'rgba(255,255,255,0.05)' },
+        ticks: { color: '#5e5c59', font: { size: 10 } }
+      }
+    },
+    onHover(e, els) { document.getElementById('impactChart').style.cursor = els.length ? 'pointer' : 'default'; },
+    onClick(e, els) {
+      if (!els.length) { selectedId = null; updateAll(); return; }
+      const t = TASKS[els[0].datasetIndex];
+      selectedId = selectedId === t.id ? null : t.id;
+      updateAll();
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1e2023', borderColor: 'rgba(255,255,255,0.15)', borderWidth: 1,
+        titleColor: '#f0ede8', bodyColor: '#9b9890',
+        titleFont: { family: 'DM Mono', size: 12, weight: '500' },
+        bodyFont: { family: 'DM Mono', size: 11 }, padding: 12,
+        callbacks: {
+          title: (items) => TASKS[items[0].datasetIndex].label + (TASKS[items[0].datasetIndex].starred ? ' ★' : ''),
+          label: (item) => {
+            const t = TASKS[item.datasetIndex];
+            return [
+              `RICE: ${getRice(t)}   Total: ${t.total}`,
+              `R:${t.r}  I:${t.i}  C:${t.c}  E:${t.e}`,
+              `Monthly hours: ${t.hrs.toLocaleString()} hrs`,
+              `Team: ${t.team}`,
+            ];
+          }
+        }
+      }
+    }
+  },
+  plugins: [quadPlugin, labelPlugin]
+});
+
+/* ── HOURS CHART ── */
+function buildHoursChart() {
+  const barH = 28;
+  document.getElementById('hoursWrap').style.height = (TASKS.length * barH + 60) + 'px';
+  const ctx2d = document.createElement('canvas').getContext('2d');
+  ctx2d.font = '9.5px DM Mono, monospace';
+  const maxLabelW = Math.max(...TASKS.map(t => ctx2d.measureText(t.short).width)) + 12;
+
+  return new Chart(document.getElementById('hoursChart'), {
+    type: 'bar',
+    data: {
+      labels: TASKS.map(t => t.short),
+      datasets: [{
+        data: TASKS.map(t => t.hrs),
+        backgroundColor: TASKS.map(t => `rgba(${hexRgb(t.color)},0.55)`),
+        borderColor: TASKS.map(t => t.color),
+        borderWidth: 1, borderRadius: 3,
+      }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      layout: { padding: { right: 20 } },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          ticks: { color: '#5e5c59', font: { size: 9.5, family: 'DM Mono' } },
+          title: { display: true, text: 'hours / month', color: '#5e5c59', font: { size: 10 } }
+        },
+        y: {
+          grid: { display: false },
+          ticks: { color: '#9b9890', font: { size: 9.5, family: 'DM Mono' }, padding: 6,
+            callback: (val, i) => TASKS[i].short },
+          afterFit(scale) { scale.width = Math.max(scale.width, maxLabelW); }
+        }
+      },
+      onHover(e, els) { document.getElementById('hoursChart').style.cursor = els.length ? 'pointer' : 'default'; },
+      onClick(e, els) {
+        if (!els.length) { selectedId = null; updateAll(); return; }
+        selectedId = selectedId === TASKS[els[0].index].id ? null : TASKS[els[0].index].id;
+        updateAll();
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1e2023', borderColor: 'rgba(255,255,255,0.15)', borderWidth: 1,
+          titleColor: '#f0ede8', bodyColor: '#9b9890',
+          titleFont: { family: 'DM Mono', size: 11 }, bodyFont: { family: 'DM Mono', size: 10 }, padding: 10,
+          callbacks: {
+            title: (items) => TASKS[items[0].dataIndex].label,
+            label: (item) => ` ${item.raw.toLocaleString()} hrs/month · ${TASKS[item.dataIndex].team}`
+          }
+        }
+      }
+    }
+  });
+}
+const hoursChart = buildHoursChart();
+
+/* ── TOGGLE ── */
+document.getElementById('scoreToggle').addEventListener('change', e => {
+  useTotal = e.target.checked;
+  const lbl = document.getElementById('scoreModeLabel');
+  lbl.textContent = useTotal ? 'Total: R+I+C+E' : 'RICE: R×I×C÷E';
+  lbl.className = 'score-mode-label' + (useTotal ? ' alt' : '');
+  document.getElementById('impactTitle').textContent = useTotal
+    ? 'Total Score vs. Effort — bubble size = monthly hours'
+    : 'Impact vs. Effort — bubble size = monthly hours';
+  impactChart.options.scales.y.title.text = useTotal ? 'Total Score (R+I+C+E) →' : 'Impact (I score) →';
+  impactChart.options.scales.y.max = useTotal ? 38 : 11;
+  TASKS.forEach((t, di) => { impactChart.data.datasets[di].data[0].y = getYVal(t); });
+  impactChart.update();
+});
+
+/* ── UPDATE ALL ── */
+function updateAll() {
+  // sidebar
+  document.querySelectorAll('#taskListDesktop .task-btn').forEach(btn => {
+    if (btn.dataset.role === 'all') btn.classList.toggle('active', selectedId === null);
+    else btn.classList.toggle('active', parseInt(btn.dataset.id) === selectedId);
+  });
+  document.querySelectorAll('#taskPills button').forEach(btn => {
+    if (btn.dataset.role === 'all') btn.classList.toggle('active', selectedId === null);
+    else btn.classList.toggle('active', parseInt(btn.dataset.id) === selectedId);
+  });
+
+  // detail panel
+  const selTask = selectedId !== null ? TASKS.find(t => t.id === selectedId) : null;
+  renderDetail(selTask);
+
+  // impact chart
+  TASKS.forEach((t, di) => {
+    const a = alpha(t.id);
+    const ds = impactChart.data.datasets[di];
+    ds.backgroundColor = `rgba(${hexRgb(t.color)},${a * (t.starred ? 0.85 : 0.65)})`;
+    ds.borderColor = `rgba(${hexRgb(t.color)},${a})`;
+    ds.borderWidth = (t.starred || t.id === selectedId) ? 2.5 : 1;
+  });
+
+  // hours chart
+  hoursChart.data.datasets[0].backgroundColor = TASKS.map(t => `rgba(${hexRgb(t.color)},${alpha(t.id) * 0.55})`);
+  hoursChart.data.datasets[0].borderColor = TASKS.map(t => `rgba(${hexRgb(t.color)},${alpha(t.id)})`);
+
+  impactChart.update('none');
+  hoursChart.update('none');
+}
+
+updateAll();
+</script>
+</body>
+</html>
